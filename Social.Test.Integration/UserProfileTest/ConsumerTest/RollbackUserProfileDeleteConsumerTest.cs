@@ -52,7 +52,7 @@ public class RollbackUserProfileDeleteConsumerTest : IntegrationTestBase
         await _sut.Consume(fakeConsumeContext);
 
         // Assert
-        Db.UserProfile.AsNoTracking().FirstOrDefault()!.DeletedAt.Should().BeNull();
+        Db.UserProfile.AsNoTracking().FirstOrDefault()!.Deleted.Should().BeNull();
     }
 
     [Fact]
@@ -74,6 +74,6 @@ public class RollbackUserProfileDeleteConsumerTest : IntegrationTestBase
         await _sut.Consume(fakeConsumeContext);
 
         // Assert
-        Db.UserProfile.AsNoTracking().FirstOrDefault()!.DeletedAt.Should().NotBeNull();
+        Db.UserProfile.AsNoTracking().FirstOrDefault()!.Deleted.Should().NotBeNull();
     }
 }

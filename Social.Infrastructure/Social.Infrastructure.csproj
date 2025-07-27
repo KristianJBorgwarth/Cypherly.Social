@@ -25,4 +25,8 @@
       <ProjectReference Include="..\Social.Domain\Social.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Persistence\Migrations\" />
+    </ItemGroup>
+
 </Project>
