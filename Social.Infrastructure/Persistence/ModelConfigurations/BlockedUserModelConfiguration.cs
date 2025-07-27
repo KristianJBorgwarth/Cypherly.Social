@@ -1,5 +1,5 @@
-﻿using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.Entities;
+﻿using Social.Domain.Aggregates;
+using Social.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

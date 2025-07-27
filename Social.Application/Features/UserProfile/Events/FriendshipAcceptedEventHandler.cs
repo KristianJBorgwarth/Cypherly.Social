@@ -1,7 +1,7 @@
 ﻿using Cypherly.Application.Abstractions;
 using Cypherly.Message.Contracts.Abstractions;
 using Cypherly.Message.Contracts.Messages.Friendship;
-using Cypherly.UserManagement.Domain.Events.UserProfile;
+using Social.Domain.Events.UserProfile;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
@@ -44,8 +44,8 @@ public sealed class FriendshipAcceptedEventHandler(
     }
 
     private async Task PublishFriendshipAcceptedAsync(
-        Cypherly.UserManagement.Domain.Aggregates.UserProfile receiver,
-        Cypherly.UserManagement.Domain.Aggregates.UserProfile friend,
+        Domain.Aggregates.UserProfile receiver,
+        Domain.Aggregates.UserProfile friend,
         CancellationToken cancellationToken)
     {
         var connectionIds = await connectionIdProvider.GetConnectionIdsByUsers([receiver.Id, friend.Id], cancellationToken);

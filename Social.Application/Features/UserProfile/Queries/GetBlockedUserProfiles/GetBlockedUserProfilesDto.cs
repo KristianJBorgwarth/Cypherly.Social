@@ -8,7 +8,7 @@ public class GetBlockedUserProfilesDto
 
     private GetBlockedUserProfilesDto() { } // Hide the constructor
 
-    public static GetBlockedUserProfilesDto MapFrom(Cypherly.UserManagement.Domain.Aggregates.UserProfile userProfile)
+    public static GetBlockedUserProfilesDto MapFrom(Domain.Aggregates.UserProfile userProfile)
     {
         return new GetBlockedUserProfilesDto
         {

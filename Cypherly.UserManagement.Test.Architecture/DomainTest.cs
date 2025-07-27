@@ -1,6 +1,6 @@
-﻿using Cypherly.UserManagement.Domain.Abstractions;
+﻿using Social.Domain.Abstractions;
 using Cypherly.UserManagement.Test.Architecture.Helpers;
-using Cypherly.UserManagement.Domain.Aggregates;
+using Social.Domain.Aggregates;
 using FluentAssertions;
 using NetArchTest.Rules;
 
@@ -13,7 +13,7 @@ public class DomainTest
     {
         var result = Types.InAssembly(typeof(UserProfile).Assembly)
             .That()
-            .ResideInNamespace("Cypherly.UserManagement.Domain")
+            .ResideInNamespace("SocialSocial.Domain")
             .ShouldNot()
             .HaveDependencyOn("Social.Application")
             .GetResult();
@@ -26,7 +26,7 @@ public class DomainTest
     {
         var result = Types.InAssembly(typeof(UserProfile).Assembly)
             .That()
-            .ResideInNamespace("Cypherly.UserManagement.Domain")
+            .ResideInNamespace("SocialSocial.Domain")
             .ShouldNot()
             .HaveDependencyOn("Social.Infrastructure")
             .GetResult();
@@ -39,7 +39,7 @@ public class DomainTest
     {
         var result = Types.InAssembly(typeof(UserProfile).Assembly)
             .That()
-            .ResideInNamespace("Cypherly.UserManagement.Domain")
+            .ResideInNamespace("SocialSocial.Domain")
             .ShouldNot()
             .HaveDependencyOn("Social.API")
             .GetResult();
@@ -52,7 +52,7 @@ public class DomainTest
     {
         var result = Types.InAssembly(typeof(UserProfile).Assembly)
             .That()
-            .AreClasses().And().ResideInNamespace("Cypherly.UserManagement.Domain.AggregateRoots")
+            .AreClasses().And().ResideInNamespace("SocialSocial.Domain.AggregateRoots")
             .Should()
             .Inherit(typeof(AggregateRoot))
             .GetResult();
@@ -67,7 +67,7 @@ public class DomainTest
             .That()
             .AreClasses()
             .And()
-            .ResideInNamespace("Cypherly.UserManagement.Domain.Entities")
+            .ResideInNamespace("SocialSocial.Domain.Entities")
             .Should()
             .Inherit(typeof(Entity))
             .GetResult();
@@ -82,7 +82,7 @@ public class DomainTest
             .That()
             .AreClasses()
             .And()
-            .ResideInNamespace("Cypherly.UserManagement.Domain.ValueObjects")
+            .ResideInNamespace("SocialSocial.Domain.ValueObjects")
             .Should()
             .Inherit(typeof(ValueObject))
             .GetResult();

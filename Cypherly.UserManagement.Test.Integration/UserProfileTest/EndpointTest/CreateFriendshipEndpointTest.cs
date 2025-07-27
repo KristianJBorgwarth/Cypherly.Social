@@ -1,13 +1,13 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.ValueObjects;
 using Social.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Test.Integration.Setup;
 using Cypherly.UserManagement.Test.Integration.Setup.Attributes;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Social.Application.Features.UserProfile.Commands.Create.Friendship;
+using Social.Domain.Aggregates;
+using Social.Domain.ValueObjects;
 
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataQuery
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataUsage

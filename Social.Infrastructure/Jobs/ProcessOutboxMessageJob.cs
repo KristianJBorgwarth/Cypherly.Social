@@ -1,5 +1,5 @@
 ﻿using Social.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Domain.Abstractions;
+using Social.Domain.Abstractions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;

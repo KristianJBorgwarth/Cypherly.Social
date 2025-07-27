@@ -45,7 +45,7 @@ public class PersistenceTest
             .HaveNameEndingWith("Repository")
             .And().DoNotHaveNameEndingWith("OutboxRepository")
             .Should()
-            .HaveDependencyOn("Cypherly.UserManagement.Domain")
+            .HaveDependencyOn("SocialSocial.Domain")
             .GetResult();
 
         result.ShouldBeSuccessful("All repositories should reference Domain project");

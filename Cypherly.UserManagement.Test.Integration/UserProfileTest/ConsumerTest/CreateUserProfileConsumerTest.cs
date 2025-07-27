@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
 using Cypherly.Message.Contracts.Messages.Profile;
-using Cypherly.UserManagement.Domain.Services;
 using Social.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Test.Integration.Setup;
 using FakeItEasy;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Consumers;
+using Social.Domain.Services;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.ConsumerTest;
 

@@ -1,7 +1,5 @@
 ﻿using System.Net;
 using System.Text.Json;
-using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.ValueObjects;
 using Social.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Test.Integration.Setup;
 using Cypherly.UserManagement.Test.Integration.Setup.Attributes;
@@ -9,6 +7,8 @@ using Cypherly.UserManagement.Test.Integration.Setup.Helpers;
 using FluentAssertions;
 using Social.API.Common;
 using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
+using Social.Domain.Aggregates;
+using Social.Domain.ValueObjects;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.EndpointTest;
 

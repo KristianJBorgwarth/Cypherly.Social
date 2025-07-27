@@ -1,6 +1,6 @@
 ﻿using Cypherly.Application.Abstractions;
 using Social.Application.Contracts;
-using Cypherly.UserManagement.Domain.Events.UserProfile;
+using Social.Domain.Events.UserProfile;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
 

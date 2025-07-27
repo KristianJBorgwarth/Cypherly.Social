@@ -1,8 +1,7 @@
-﻿using Cypherly.UserManagement.Domain.Common;
-using Cypherly.UserManagement.Domain.ValueObjects;
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using Social.API.Common;
+using Social.Domain.Common;
+using Social.Domain.ValueObjects;
 using Envelope = Social.API.Common.Envelope;
 
 namespace Social.API.Controllers;

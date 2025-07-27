@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.ValueObjects;
 using Social.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Test.Integration.Setup;
 using FluentAssertions;
@@ -9,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
+using Social.Domain.Aggregates;
+using Social.Domain.ValueObjects;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.CommandTest.UpdateTest.DisplayName;
 

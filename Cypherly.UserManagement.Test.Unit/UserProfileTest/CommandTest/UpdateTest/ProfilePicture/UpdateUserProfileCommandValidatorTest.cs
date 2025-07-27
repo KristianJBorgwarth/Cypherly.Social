@@ -1,8 +1,8 @@
 ﻿using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
-using Cypherly.UserManagement.Domain.Common;
 using FakeItEasy;
 using FluentValidation.TestHelper;
 using Microsoft.AspNetCore.Http;
+using Social.Domain.Common;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.UserProfileTest.CommandTest.UpdateTest.ProfilePicture;

@@ -1,13 +1,13 @@
 using System.Reflection;
 using System.Text;
 using Social.Application.Extensions;
-using Cypherly.UserManagement.Domain.Extensions;
 using Social.Infrastructure.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Social.API.Extensions;
 using Social.API.Filters;
+using Social.Domain.Extensions;
 
 // ReSharper disable UseCollectionExpression
 
@@ -43,7 +43,7 @@ builder.Services.AddObservability(configuration);
 
 #region Domain Layer
 
-builder.Services.AddUserManagementDomainServices();
+builder.Services.AddDomain();
 
 #endregion
 

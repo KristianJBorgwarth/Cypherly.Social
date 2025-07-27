@@ -1,5 +1,5 @@
 ﻿using System.Text.Json.Serialization;
-using Cypherly.UserManagement.Domain.Dtos;
+using Social.Domain.Dtos;
 
 namespace Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
 
@@ -21,7 +21,7 @@ public sealed record GetUserProfileByTagDto
         FriendshipStatus = friendshipStatus;
     }
 
-    public static GetUserProfileByTagDto MapFrom(Cypherly.UserManagement.Domain.Aggregates.UserProfile friendProfile, string? presignedUrl, FriendshipStatusDto friendshipStatusDto)
+    public static GetUserProfileByTagDto MapFrom(Domain.Aggregates.UserProfile friendProfile, string? presignedUrl, FriendshipStatusDto friendshipStatusDto)
     {
         return new GetUserProfileByTagDto(
             friendProfile.Username,

@@ -8,7 +8,7 @@ public sealed class AcceptFriendshipDto
     public string? ProfilePictureUrl { get; private init; }
     public IReadOnlyCollection<Guid> ConnectionIds { get; private init; }
 
-    public static AcceptFriendshipDto MapFrom(Cypherly.UserManagement.Domain.Aggregates.UserProfile userProfile, string? profilePictureUrl, IReadOnlyCollection<Guid>? connectionIds)
+    public static AcceptFriendshipDto MapFrom(Domain.Aggregates.UserProfile userProfile, string? profilePictureUrl, IReadOnlyCollection<Guid>? connectionIds)
     {
         return new AcceptFriendshipDto
         {

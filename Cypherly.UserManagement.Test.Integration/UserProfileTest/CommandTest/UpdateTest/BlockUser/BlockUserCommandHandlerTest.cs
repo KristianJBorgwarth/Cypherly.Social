@@ -1,8 +1,4 @@
-﻿using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.Common;
-using Cypherly.UserManagement.Domain.Services;
-using Cypherly.UserManagement.Domain.ValueObjects;
-using Social.Infrastructure.Persistence.Context;
+﻿using Social.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Test.Integration.Setup;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Commands.Update.BlockUser;
+using Social.Domain.Aggregates;
+using Social.Domain.Common;
+using Social.Domain.Services;
+using Social.Domain.ValueObjects;
 
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataQuery
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataUsage

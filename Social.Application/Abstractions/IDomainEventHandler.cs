@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Domain.Abstractions;
+﻿using Social.Domain.Abstractions;
 using MediatR;
 
 namespace Cypherly.Application.Abstractions;

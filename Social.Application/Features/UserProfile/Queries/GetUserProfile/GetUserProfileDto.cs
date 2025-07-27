@@ -12,7 +12,7 @@ public sealed record GetUserProfileDto
     // hide constructor to enforce use of map method
     private GetUserProfileDto() { }
 
-    public static GetUserProfileDto MapFrom(Cypherly.UserManagement.Domain.Aggregates.UserProfile userProfile, string? profilePictureUrl, Guid[] connectionIds)
+    public static GetUserProfileDto MapFrom(Domain.Aggregates.UserProfile userProfile, string? profilePictureUrl, Guid[] connectionIds)
     {
         return new GetUserProfileDto()
         {

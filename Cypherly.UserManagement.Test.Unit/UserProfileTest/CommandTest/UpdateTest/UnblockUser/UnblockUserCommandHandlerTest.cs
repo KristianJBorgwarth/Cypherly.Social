@@ -1,11 +1,11 @@
 ﻿using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Commands.Update.UnblockUser;
-using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.Common;
-using Cypherly.UserManagement.Domain.Services;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Social.Domain.Aggregates;
+using Social.Domain.Common;
+using Social.Domain.Services;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.UserProfileTest.CommandTest.UpdateTest.UnblockUser;

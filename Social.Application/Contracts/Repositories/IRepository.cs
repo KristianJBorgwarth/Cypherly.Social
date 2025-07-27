@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Domain.Abstractions;
+﻿using Social.Domain.Abstractions;
 
 namespace Social.Application.Contracts.Repositories;
 

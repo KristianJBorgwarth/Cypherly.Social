@@ -1,5 +1,5 @@
-﻿using Cypherly.UserManagement.Domain.Common;
-using Cypherly.UserManagement.Domain.ValueObjects;
+﻿using Social.Domain.Common;
+using Social.Domain.ValueObjects;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;

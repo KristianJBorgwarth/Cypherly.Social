@@ -1,7 +1,7 @@
 ﻿using Cypherly.Application.Abstractions;
 using Cypherly.Message.Contracts.Abstractions;
 using Cypherly.Message.Contracts.Messages.Profile;
-using Cypherly.UserManagement.Domain.Events.UserProfile;
+using Social.Domain.Events.UserProfile;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
@@ -57,7 +57,7 @@ public class UserProfilePictureUpdatedEventHandler(
         }
     }
 
-    private async Task<IReadOnlyCollection<Guid>> GetConnectionIds(Cypherly.UserManagement.Domain.Aggregates.UserProfile userProfile)
+    private async Task<IReadOnlyCollection<Guid>> GetConnectionIds(Domain.Aggregates.UserProfile userProfile)
     {
         var connectionIds = new List<Guid>();
 

@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Domain.Aggregates;
+﻿using Social.Domain.Aggregates;
 
 namespace Social.Application.Contracts.Repositories;
 

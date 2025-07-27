@@ -11,7 +11,7 @@ public sealed class GetFriendsDto
 
     private GetFriendsDto() { }
 
-    public static GetFriendsDto MapFrom(Cypherly.UserManagement.Domain.Aggregates.UserProfile userProfile, List<Guid> connectionIds, string? presignedUrl)
+    public static GetFriendsDto MapFrom(Domain.Aggregates.UserProfile userProfile, List<Guid> connectionIds, string? presignedUrl)
     {
         return new GetFriendsDto
         {

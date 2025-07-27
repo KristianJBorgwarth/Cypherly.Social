@@ -1,6 +1,4 @@
-﻿using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.ValueObjects;
-using Social.Infrastructure.Persistence.Context;
+﻿using Social.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Test.Integration.Setup;
 using FakeItEasy;
 using FluentAssertions;
@@ -10,6 +8,8 @@ using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
+using Social.Domain.Aggregates;
+using Social.Domain.ValueObjects;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.QueryTest.GetUserProfileTest;
 

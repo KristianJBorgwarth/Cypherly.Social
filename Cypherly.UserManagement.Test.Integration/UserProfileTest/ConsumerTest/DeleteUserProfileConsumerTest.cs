@@ -2,9 +2,6 @@
 using Cypherly.Message.Contracts.Abstractions;
 using Cypherly.Message.Contracts.Messages.Common;
 using Cypherly.Message.Contracts.Messages.User;
-using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.Services;
-using Cypherly.UserManagement.Domain.ValueObjects;
 using Social.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Test.Integration.Setup;
 using FakeItEasy;
@@ -15,6 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Consumers;
+using Social.Domain.Aggregates;
+using Social.Domain.Services;
+using Social.Domain.ValueObjects;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.ConsumerTest;
 

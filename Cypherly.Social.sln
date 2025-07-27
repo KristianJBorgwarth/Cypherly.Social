@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Test.Integration", "Cypherly.UserManagement.Test.Integration\Cypherly.UserManagement.Test.Integration.csproj", "{804CA16A-7F52-4686-A90B-0071E86BCE45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Domain", "Cypherly.UserManagement.Domain\Cypherly.UserManagement.Domain.csproj", "{1E6F534E-232E-43EB-AD55-E5906D2E994C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social.Domain", "Social.Domain\Social.Domain.csproj", "{1E6F534E-232E-43EB-AD55-E5906D2E994C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Test.Unit", "Cypherly.UserManagement.Test.Unit\Cypherly.UserManagement.Test.Unit.csproj", "{C6C12BAE-3C25-477B-A096-E15AA57C85FC}"
 EndProject

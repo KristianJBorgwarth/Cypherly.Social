@@ -1,6 +1,6 @@
 ﻿using Cypherly.Message.Contracts.Messages.Profile;
 using Cypherly.Message.Contracts.Responses.Profile;
-using Cypherly.UserManagement.Domain.Services;
+using Social.Domain.Services;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;

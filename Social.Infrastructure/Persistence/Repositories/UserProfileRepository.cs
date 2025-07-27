@@ -1,6 +1,6 @@
 ﻿using Social.Application.Contracts;
 using Social.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Domain.Aggregates;
+using Social.Domain.Aggregates;
 using Microsoft.EntityFrameworkCore;
 using Social.Infrastructure.Persistence.Context;
 

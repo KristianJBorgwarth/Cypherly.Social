@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Cypherly.Application.Abstractions;
 using Social.Application.Contracts;
-using Cypherly.UserManagement.Domain.Common;
+using Social.Domain.Common;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;

@@ -1,5 +1,5 @@
 ﻿using Social.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Domain.Abstractions;
+using Social.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Social.Infrastructure.Persistence.Context;

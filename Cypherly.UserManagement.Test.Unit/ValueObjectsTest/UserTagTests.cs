@@ -1,5 +1,5 @@
-﻿using Cypherly.UserManagement.Domain.ValueObjects;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Social.Domain.ValueObjects;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.ValueObjectsTest

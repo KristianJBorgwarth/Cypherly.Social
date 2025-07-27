@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Domain.Common;
+﻿using Social.Domain.Common;
 using Microsoft.AspNetCore.Http;
 
 namespace Social.Application.Contracts.Services;

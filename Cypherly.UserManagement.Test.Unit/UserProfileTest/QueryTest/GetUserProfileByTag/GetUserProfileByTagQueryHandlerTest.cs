@@ -1,13 +1,12 @@
-﻿using Social.Application.Contracts;
-using Social.Application.Contracts.Repositories;
+﻿using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
-using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.Interfaces;
-using Cypherly.UserManagement.Domain.Services;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Social.Domain.Aggregates;
+using Social.Domain.Interfaces;
+using Social.Domain.Services;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.UserProfileTest.QueryTest.GetUserProfileByTag;

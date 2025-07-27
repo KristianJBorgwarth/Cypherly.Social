@@ -1,6 +1,6 @@
 ﻿using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
-using Cypherly.UserManagement.Domain.Common;
 using FluentAssertions;
+using Social.Domain.Common;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName

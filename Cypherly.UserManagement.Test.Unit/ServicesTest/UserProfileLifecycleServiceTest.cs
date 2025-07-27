@@ -1,5 +1,5 @@
-﻿using Cypherly.UserManagement.Domain.Services;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Social.Domain.Services;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.ServicesTest

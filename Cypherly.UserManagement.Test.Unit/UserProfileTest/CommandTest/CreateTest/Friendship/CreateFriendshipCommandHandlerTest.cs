@@ -1,12 +1,12 @@
 ﻿using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Commands.Create.Friendship;
-using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.Common;
-using Cypherly.UserManagement.Domain.Interfaces;
-using Cypherly.UserManagement.Domain.ValueObjects;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Social.Domain.Aggregates;
+using Social.Domain.Common;
+using Social.Domain.Interfaces;
+using Social.Domain.ValueObjects;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship;

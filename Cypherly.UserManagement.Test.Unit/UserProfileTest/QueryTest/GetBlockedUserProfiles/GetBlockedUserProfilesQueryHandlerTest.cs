@@ -1,10 +1,10 @@
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Queries.GetBlockedUserProfiles;
-using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.Common;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Social.Domain.Aggregates;
+using Social.Domain.Common;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.UserProfileTest.QueryTest.GetBlockedUserProfiles;

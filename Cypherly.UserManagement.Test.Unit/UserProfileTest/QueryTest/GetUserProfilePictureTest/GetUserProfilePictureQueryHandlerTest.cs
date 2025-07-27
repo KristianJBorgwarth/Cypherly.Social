@@ -1,9 +1,9 @@
 ﻿using Social.Application.Contracts.Clients;
 using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
-using Cypherly.UserManagement.Domain.Common;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Social.Domain.Common;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.UserProfileTest.QueryTest.GetUserProfilePictureTest;

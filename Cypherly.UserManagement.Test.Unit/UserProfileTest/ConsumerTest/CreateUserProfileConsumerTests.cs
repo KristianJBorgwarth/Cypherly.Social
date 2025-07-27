@@ -3,12 +3,12 @@ using Cypherly.Message.Contracts.Messages.Profile;
 using Cypherly.Message.Contracts.Responses.Profile;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Consumers;
-using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.Services;
-using Cypherly.UserManagement.Domain.ValueObjects;
 using FakeItEasy;
 using MassTransit;
 using Microsoft.Extensions.Logging;
+using Social.Domain.Aggregates;
+using Social.Domain.Services;
+using Social.Domain.ValueObjects;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.UserProfileTest.ConsumerTest

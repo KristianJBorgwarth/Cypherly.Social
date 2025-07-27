@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Cypherly.UserManagement.Domain.Aggregates;
+using Social.Domain.Aggregates;
 using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
 using Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;

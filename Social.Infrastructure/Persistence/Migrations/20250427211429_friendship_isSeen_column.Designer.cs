@@ -56,7 +56,7 @@ namespace Cypherly.UserManagement.Persistence.Migrations
                     b.ToTable("OutboxMessage", (string)null);
                 });
 
-            modelBuilder.Entity("Cypherly.UserManagement.Domain.Aggregates.UserProfile", b =>
+            modelBuilder.Entity("Social.Domain.Aggregates.UserProfile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -93,7 +93,7 @@ namespace Cypherly.UserManagement.Persistence.Migrations
                     b.ToTable("UserProfile");
                 });
 
-            modelBuilder.Entity("Cypherly.UserManagement.Domain.Entities.BlockedUser", b =>
+            modelBuilder.Entity("Social.Domain.Entities.BlockedUser", b =>
                 {
                     b.Property<Guid>("BlockingUserProfileId")
                         .HasColumnType("uuid");
@@ -117,7 +117,7 @@ namespace Cypherly.UserManagement.Persistence.Migrations
                     b.ToTable("BlockedUser", (string)null);
                 });
 
-            modelBuilder.Entity("Cypherly.UserManagement.Domain.Entities.Friendship", b =>
+            modelBuilder.Entity("Social.Domain.Entities.Friendship", b =>
                 {
                     b.Property<Guid>("UserProfileId")
                         .HasColumnType("uuid");
@@ -149,9 +149,9 @@ namespace Cypherly.UserManagement.Persistence.Migrations
                     b.ToTable("Friendship", (string)null);
                 });
 
-            modelBuilder.Entity("Cypherly.UserManagement.Domain.Aggregates.UserProfile", b =>
+            modelBuilder.Entity("Social.Domain.Aggregates.UserProfile", b =>
                 {
-                    b.OwnsOne("Cypherly.UserManagement.Domain.ValueObjects.UserTag", "UserTag", b1 =>
+                    b.OwnsOne("Social.Domain.ValueObjects.UserTag", "UserTag", b1 =>
                         {
                             b1.Property<Guid>("UserProfileId")
                                 .HasColumnType("uuid");
@@ -173,15 +173,15 @@ namespace Cypherly.UserManagement.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Cypherly.UserManagement.Domain.Entities.BlockedUser", b =>
+            modelBuilder.Entity("Social.Domain.Entities.BlockedUser", b =>
                 {
-                    b.HasOne("Cypherly.UserManagement.Domain.Aggregates.UserProfile", "BlockedUserProfile")
+                    b.HasOne("Social.Domain.Aggregates.UserProfile", "BlockedUserProfile")
                         .WithMany()
                         .HasForeignKey("BlockedUserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cypherly.UserManagement.Domain.Aggregates.UserProfile", null)
+                    b.HasOne("Social.Domain.Aggregates.UserProfile", null)
                         .WithMany("BlockedUsers")
                         .HasForeignKey("BlockingUserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -190,15 +190,15 @@ namespace Cypherly.UserManagement.Persistence.Migrations
                     b.Navigation("BlockedUserProfile");
                 });
 
-            modelBuilder.Entity("Cypherly.UserManagement.Domain.Entities.Friendship", b =>
+            modelBuilder.Entity("Social.Domain.Entities.Friendship", b =>
                 {
-                    b.HasOne("Cypherly.UserManagement.Domain.Aggregates.UserProfile", "FriendProfile")
+                    b.HasOne("Social.Domain.Aggregates.UserProfile", "FriendProfile")
                         .WithMany("FriendshipsReceived")
                         .HasForeignKey("FriendProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cypherly.UserManagement.Domain.Aggregates.UserProfile", "UserProfile")
+                    b.HasOne("Social.Domain.Aggregates.UserProfile", "UserProfile")
                         .WithMany("FriendshipsInitiated")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -209,7 +209,7 @@ namespace Cypherly.UserManagement.Persistence.Migrations
                     b.Navigation("UserProfile");
                 });
 
-            modelBuilder.Entity("Cypherly.UserManagement.Domain.Aggregates.UserProfile", b =>
+            modelBuilder.Entity("Social.Domain.Aggregates.UserProfile", b =>
                 {
                     b.Navigation("BlockedUsers");
 

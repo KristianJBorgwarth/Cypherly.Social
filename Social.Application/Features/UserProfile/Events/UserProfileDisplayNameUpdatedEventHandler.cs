@@ -1,5 +1,5 @@
 ﻿using Cypherly.Application.Abstractions;
-using Cypherly.UserManagement.Domain.Events.UserProfile;
+using Social.Domain.Events.UserProfile;
 
 namespace Social.Application.Features.UserProfile.Events;
 

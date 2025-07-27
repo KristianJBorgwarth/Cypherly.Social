@@ -53,7 +53,7 @@ public class ApplicationTest
             .That()
             .HaveNameEndingWith("Repository")
             .Should()
-            .HaveDependencyOn("Cypherly.UserManagement.Domain")
+            .HaveDependencyOn("SocialSocial.Domain")
             .GetResult();
 
         result.ShouldBeSuccessful("All repositories should reference Domain project");

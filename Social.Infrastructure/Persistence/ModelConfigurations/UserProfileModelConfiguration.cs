@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Domain.Aggregates;
+﻿using Social.Domain.Aggregates;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

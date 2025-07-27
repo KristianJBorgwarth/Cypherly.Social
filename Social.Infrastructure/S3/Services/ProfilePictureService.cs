@@ -3,7 +3,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Social.Application.Contracts;
 using Social.Application.Contracts.Services;
-using Cypherly.UserManagement.Domain.Common;
+using Social.Domain.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Social.Infrastructure.S3.Utilities;

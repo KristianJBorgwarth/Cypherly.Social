@@ -1,6 +1,6 @@
-﻿using Cypherly.UserManagement.Domain.Aggregates;
-using Cypherly.UserManagement.Domain.ValueObjects;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Social.Domain.Aggregates;
+using Social.Domain.ValueObjects;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.AggregateRootTest

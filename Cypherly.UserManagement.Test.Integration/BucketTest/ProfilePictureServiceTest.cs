@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using Amazon.S3;
 using Amazon.S3.Model;
-using Cypherly.UserManagement.Domain.Common;
 using Social.Infrastructure.S3.Services;
 using Social.Infrastructure.S3.Utilities;
 using Social.Infrastructure.S3.Validation;
@@ -10,6 +9,7 @@ using Cypherly.UserManagement.Test.Integration.Setup.Helpers;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
+using Social.Domain.Common;
 
 namespace Cypherly.UserManagement.Test.Integration.BucketTest;
 
@@ -29,7 +29,7 @@ public class ProfilePictureServiceTests
     }
 
     [Fact]
-    public async void UploadProfilePictureAsync_Valid_Picture_Should_Upload_And_Return_Key()
+    public async Task UploadProfilePictureAsync_Valid_Picture_Should_Upload_And_Return_Key()
     {
         // Arrange
         var userId = Guid.NewGuid();
@@ -55,7 +55,7 @@ public class ProfilePictureServiceTests
 
 
     [Fact]
-    public async void UploadProfilePictureAsync_Invalid_Picture_Should_ReturnFail()
+    public async Task UploadProfilePictureAsync_Invalid_Picture_Should_ReturnFail()
     {
         // Arrange
         var userId = Guid.NewGuid();
@@ -96,10 +96,10 @@ public class ProfilePictureServiceTests
 
 
     [Fact]
-    public async void DeleteProfilePictureAsync_Valid_Delete_Should_Delete_And_Return_ResultOk()
+    public async Task DeleteProfilePictureAsync_Valid_Delete_Should_Delete_And_Return_ResultOk()
     {
         // Arrange
-        var keyName = "profile-pictures/test.jpg";
+        const string keyName = "profile-pictures/test.jpg";
         var deleteObjectResponse = new DeleteObjectResponse { HttpStatusCode = HttpStatusCode.NoContent };
         A.CallTo(() => _fakeS3Client.DeleteObjectAsync(A<DeleteObjectRequest>._, A<CancellationToken>._))
             .Returns(Task.FromResult(deleteObjectResponse));
@@ -112,10 +112,10 @@ public class ProfilePictureServiceTests
     }
 
     [Fact]
-    public async void DeleteProfilePictureAsync_Invalid_Delete_Should_Return_ResultFail()
+    public async Task DeleteProfilePictureAsync_Invalid_Delete_Should_Return_ResultFail()
     {
         // Arrange
-        var keyName = "profile-pictures/test.jpg";
+        const string keyName = "profile-pictures/test.jpg";
         var deleteObjectResponse = new DeleteObjectResponse { HttpStatusCode = HttpStatusCode.InternalServerError };
         A.CallTo(() => _fakeS3Client.DeleteObjectAsync(A<DeleteObjectRequest>._, A<CancellationToken>._))
             .Returns(Task.FromResult(deleteObjectResponse));

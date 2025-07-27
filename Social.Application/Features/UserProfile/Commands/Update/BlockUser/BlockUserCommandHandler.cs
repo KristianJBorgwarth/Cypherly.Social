@@ -1,7 +1,7 @@
 using Cypherly.Application.Abstractions;
 using Social.Application.Contracts;
-using Cypherly.UserManagement.Domain.Common;
-using Cypherly.UserManagement.Domain.Services;
+using Social.Domain.Common;
+using Social.Domain.Services;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;

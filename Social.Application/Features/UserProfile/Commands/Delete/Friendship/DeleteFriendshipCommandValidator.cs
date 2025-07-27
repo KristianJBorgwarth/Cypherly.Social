@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Domain.Common;
+﻿using Social.Domain.Common;
 using FluentValidation;
 
 namespace Social.Application.Features.UserProfile.Commands.Delete.Friendship;

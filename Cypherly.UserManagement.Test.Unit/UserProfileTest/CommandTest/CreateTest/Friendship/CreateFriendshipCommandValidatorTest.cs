@@ -1,6 +1,6 @@
 ﻿using Social.Application.Features.UserProfile.Commands.Create.Friendship;
-using Cypherly.UserManagement.Domain.Common;
 using FluentValidation.TestHelper;
+using Social.Domain.Common;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship

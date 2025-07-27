@@ -2,7 +2,7 @@
 using Cypherly.Message.Contracts.Enums;
 using Cypherly.Message.Contracts.Messages.Common;
 using Cypherly.Message.Contracts.Messages.User;
-using Cypherly.UserManagement.Domain.Services;
+using Social.Domain.Services;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;

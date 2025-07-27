@@ -1,8 +1,8 @@
-﻿using Cypherly.UserManagement.Domain.Enums;
-using Cypherly.UserManagement.Domain.Events.UserProfile;
-using Cypherly.UserManagement.Domain.Interfaces;
-using Cypherly.UserManagement.Domain.Services;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Social.Domain.Enums;
+using Social.Domain.Events.UserProfile;
+using Social.Domain.Interfaces;
+using Social.Domain.Services;
 using Xunit;
 
 namespace Cypherly.UserManagement.Test.Unit.ServicesTest;
