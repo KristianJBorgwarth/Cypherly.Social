@@ -1,5 +1,5 @@
-﻿using Cypherly.UserManagement.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
+﻿using Social.Application.Contracts.Repositories;
+using Social.Application.Features.UserProfile.Commands.Create.Friendship;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.Common;
 using Cypherly.UserManagement.Domain.Interfaces;

@@ -1,6 +1,6 @@
 using System.Reflection;
 using System.Text;
-using Cypherly.UserManagement.Application.Extensions;
+using Social.Application.Extensions;
 using Cypherly.UserManagement.Domain.Extensions;
 using Cypherly.UserManagement.Infrastructure.Extensions;
 using Microsoft.IdentityModel.Tokens;
@@ -49,7 +49,7 @@ builder.Services.AddUserManagementDomainServices();
 
 #region Application Layer
 
-builder.Services.AddUserManagementApplication(Assembly.Load("Cypherly.UserManagement.Application"));
+builder.Services.AddApplication(Assembly.Load("Social.Application"));
 
 #endregion
 
@@ -162,6 +162,5 @@ app.MapControllers();
 
 Log.Information("Starting Cypherly.Usermanagament.API"); 
 app.Run();
-
 
 public partial class Program {}

@@ -1,5 +1,5 @@
-﻿using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Contracts.Clients;
+﻿using Social.Application.Contracts;
+using Social.Application.Contracts.Clients;
 using Cypherly.UserManagement.Infrastructure.HttpClients;
 using Cypherly.UserManagement.Infrastructure.HttpClients.Clients;
 using Cypherly.UserManagement.Infrastructure.Settings;

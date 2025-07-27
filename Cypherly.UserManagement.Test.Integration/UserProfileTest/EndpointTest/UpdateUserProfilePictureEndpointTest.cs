@@ -1,7 +1,5 @@
 ﻿using System.Net;
 using System.Text.Json;
-using Cypherly.UserManagement.API.Common;
-using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using Cypherly.UserManagement.Infrastructure.Persistence.Context;
@@ -9,6 +7,8 @@ using Cypherly.UserManagement.Test.Integration.Setup;
 using Cypherly.UserManagement.Test.Integration.Setup.Attributes;
 using Cypherly.UserManagement.Test.Integration.Setup.Helpers;
 using FluentAssertions;
+using Social.API.Common;
+using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.EndpointTest;
 
@@ -16,7 +16,7 @@ public class UpdateUserProfilePictureEndpointTest(IntegrationTestFactory<Program
     : IntegrationTestBase(factory)
 {
     [SkipOnGitHubFact]
-    public async void Given_Valid_Command_Should_Update_ProfilePic_And_Return_Dto()
+    public async Task Given_Valid_Command_Should_Update_ProfilePic_And_Return_Dto()
     {
         // Arrange
         var user = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
@@ -55,7 +55,7 @@ public class UpdateUserProfilePictureEndpointTest(IntegrationTestFactory<Program
 
 
     [SkipOnGitHubFact]
-    public async void Given_Invalid_Command_WrongID_Should_Return_NotFound_Fail_Result()
+    public async Task Given_Invalid_Command_WrongID_Should_Return_NotFound_Fail_Result()
     {
         // Arrange
         var invalidUserId = Guid.NewGuid(); // This ID does not exist in the database
@@ -80,7 +80,7 @@ public class UpdateUserProfilePictureEndpointTest(IntegrationTestFactory<Program
     }
 
 
-    private MultipartFormDataContent CreateMultipartFormData(UpdateUserProfilePictureCommand command)
+    private static MultipartFormDataContent CreateMultipartFormData(UpdateUserProfilePictureCommand command)
     {
         var form = new MultipartFormDataContent();
 

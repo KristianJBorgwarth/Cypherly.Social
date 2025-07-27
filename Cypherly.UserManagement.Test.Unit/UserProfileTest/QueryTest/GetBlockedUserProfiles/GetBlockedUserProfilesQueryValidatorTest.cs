@@ -1,4 +1,4 @@
-using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetBlockedUserProfiles;
+using Social.Application.Features.UserProfile.Queries.GetBlockedUserProfiles;
 using FluentAssertions;
 using FluentValidation.TestHelper;
 using Xunit;

@@ -1,8 +1,8 @@
 ﻿using AutoFixture;
 using Cypherly.Message.Contracts.Enums;
 using Cypherly.Message.Contracts.Messages.User;
-using Cypherly.UserManagement.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Application.Features.UserProfile.Consumers;
+using Social.Application.Contracts.Repositories;
+using Social.Application.Features.UserProfile.Consumers;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.Services;
 using Cypherly.UserManagement.Domain.ValueObjects;

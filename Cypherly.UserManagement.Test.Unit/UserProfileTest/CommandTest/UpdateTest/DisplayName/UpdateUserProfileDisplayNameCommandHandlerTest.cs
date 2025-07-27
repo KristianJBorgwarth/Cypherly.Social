@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.DisplayName;
+using Social.Application.Contracts;
+using Social.Application.Contracts.Repositories;
+using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using FakeItEasy;

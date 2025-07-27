@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfilePicture;
+﻿using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
 using FluentValidation.TestHelper;
 using Xunit;
 

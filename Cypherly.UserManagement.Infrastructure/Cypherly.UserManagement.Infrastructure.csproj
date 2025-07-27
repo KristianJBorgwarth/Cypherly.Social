@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Cypherly.UserManagement.Application\Cypherly.UserManagement.Application.csproj" />
+      <ProjectReference Include="..\Social.Application\Social.Application.csproj" />
       <ProjectReference Include="..\Cypherly.UserManagement.Domain\Cypherly.UserManagement.Domain.csproj" />
     </ItemGroup>
 

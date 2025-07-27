@@ -1,5 +1,5 @@
-﻿using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Contracts.Repositories;
+﻿using Social.Application.Contracts;
+using Social.Application.Contracts.Repositories;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;

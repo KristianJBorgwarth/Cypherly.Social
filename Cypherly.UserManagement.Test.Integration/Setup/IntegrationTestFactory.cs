@@ -1,5 +1,4 @@
-﻿using Cypherly.UserManagement.API.Filters;
-using Cypherly.UserManagement.Infrastructure.Settings;
+﻿using Cypherly.UserManagement.Infrastructure.Settings;
 using Cypherly.UserManagement.Test.Integration.Setup.Authentication;
 using Cypherly.UserManagement.Test.Integration.Setup.Helpers;
 using DotNet.Testcontainers.Builders;
@@ -13,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
+using Social.API.Filters;
 using Testcontainers.PostgreSql;
 
 // ReSharper disable ClassNeverInstantiated.Global

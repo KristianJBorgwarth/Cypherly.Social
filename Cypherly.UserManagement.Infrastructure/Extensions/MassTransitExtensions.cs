@@ -3,7 +3,7 @@ using Cypherly.Message.Contracts.Abstractions;
 using Cypherly.Message.Contracts.Messages.Common;
 using Cypherly.Message.Contracts.Messages.Friendship;
 using Cypherly.Message.Contracts.Messages.Profile;
-using Cypherly.UserManagement.Application.Features.UserProfile.Consumers;
+using Social.Application.Features.UserProfile.Consumers;
 using Cypherly.UserManagement.Infrastructure.Messaging;
 using Cypherly.UserManagement.Infrastructure.Settings;
 using MassTransit;
@@ -16,7 +16,7 @@ internal static class MassTransitExtensions
 {
     internal static void AddMassTransitRabbitMq(this IServiceCollection services)
     {
-        services.ConfigureMasstransit(Assembly.Load("Cypherly.UserManagement.Application"), null,
+        services.ConfigureMasstransit(Assembly.Load("Social.Application"), null,
             (cfg, context) =>
             {
                 cfg.ReceiveEndpoint("user_management_fail_queue", e =>

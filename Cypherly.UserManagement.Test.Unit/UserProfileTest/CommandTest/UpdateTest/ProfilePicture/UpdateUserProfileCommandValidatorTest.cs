@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
+﻿using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Cypherly.UserManagement.Domain.Common;
 using FakeItEasy;
 using FluentValidation.TestHelper;

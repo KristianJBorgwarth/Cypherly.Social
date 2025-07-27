@@ -1,7 +1,7 @@
-﻿using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Application.Contracts.Services;
-using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriendRequests;
+﻿using Social.Application.Contracts;
+using Social.Application.Contracts.Repositories;
+using Social.Application.Contracts.Services;
+using Social.Application.Features.UserProfile.Queries.GetFriendRequests;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using FakeItEasy;

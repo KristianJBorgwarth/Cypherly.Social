@@ -1,7 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Application.Contracts.Services;
-using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriendRequests;
-using Cypherly.UserManagement.Domain.Aggregates;
+﻿using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.Common;
 using Cypherly.UserManagement.Domain.Interfaces;
 using Cypherly.UserManagement.Domain.ValueObjects;
@@ -10,6 +7,9 @@ using Cypherly.UserManagement.Test.Integration.Setup;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Social.Application.Contracts.Repositories;
+using Social.Application.Contracts.Services;
+using Social.Application.Features.UserProfile.Queries.GetFriendRequests;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.QueryTest.GetFriendRequestsTest;
 

@@ -1,6 +1,6 @@
-﻿using Cypherly.UserManagement.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Application.Contracts.Services;
-using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
+﻿using Social.Application.Contracts.Repositories;
+using Social.Application.Contracts.Services;
+using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.Common;
 using Cypherly.UserManagement.Domain.ValueObjects;

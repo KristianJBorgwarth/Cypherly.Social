@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Delete.Friendship;
+﻿using Social.Application.Features.UserProfile.Commands.Delete.Friendship;
 using FluentAssertions;
 using Xunit;
 

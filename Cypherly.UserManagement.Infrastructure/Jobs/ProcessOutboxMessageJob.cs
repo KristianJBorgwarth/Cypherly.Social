@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Contracts.Repositories;
+﻿using Social.Application.Contracts.Repositories;
 using Cypherly.UserManagement.Domain.Abstractions;
 using Cypherly.UserManagement.Infrastructure.Persistence.Outbox;
 using Cypherly.UserManagement.Infrastructure.Persistence.Repositories;

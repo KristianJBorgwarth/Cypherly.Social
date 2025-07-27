@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.BlockUser;
+﻿using Social.Application.Features.UserProfile.Commands.Update.BlockUser;
 using FluentValidation.TestHelper;
 using Xunit;
 

@@ -1,6 +1,6 @@
-﻿using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.BlockUser;
+﻿using Social.Application.Contracts;
+using Social.Application.Contracts.Repositories;
+using Social.Application.Features.UserProfile.Commands.Update.BlockUser;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.Services;
 using FakeItEasy;

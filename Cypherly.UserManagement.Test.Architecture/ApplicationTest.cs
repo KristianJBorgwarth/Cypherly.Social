@@ -1,8 +1,7 @@
-﻿using Cypherly.Application.Abstractions;
-using Cypherly.UserManagement.Application.Abstractions;
-using Cypherly.UserManagement.Application.Extensions;
-using Cypherly.UserManagement.Test.Architecture.Helpers;
+﻿using Cypherly.UserManagement.Test.Architecture.Helpers;
 using NetArchTest.Rules;
+using Social.Application.Abstractions;
+using Social.Application.Extensions;
 
 namespace Cypherly.UserManagement.Test.Architecture;
 
@@ -13,7 +12,7 @@ public class ApplicationTest
     {
         var result = Types.InAssembly(typeof(ApplicationExtensions).Assembly)
             .That()
-            .ResideInNamespace("Cypherly.UserManagement.Application")
+            .ResideInNamespace("Social.Application")
             .ShouldNot()
             .HaveDependencyOn("Cypherly.UserManagement.Infrastructure")
             .GetResult();
@@ -26,7 +25,7 @@ public class ApplicationTest
     {
         var result = Types.InAssembly(typeof(ApplicationExtensions).Assembly)
             .That()
-            .ResideInNamespace("Cypherly.UserManagement.Application")
+            .ResideInNamespace("Social.Application")
             .ShouldNot()
             .HaveDependencyOn("Social.API")
             .GetResult();
@@ -41,7 +40,7 @@ public class ApplicationTest
             .That()
             .HaveNameEndingWith("Repository")
             .Should()
-            .HaveDependencyOn("Cypherly.UserManagement.Application.Contracts")
+            .HaveDependencyOn("Social.Application.Contracts")
             .GetResult();
 
         result.ShouldBeSuccessful("All repositories should inherit from IRepository<T>");

@@ -1,7 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.UnblockUser;
-using Cypherly.UserManagement.Domain.Aggregates;
+﻿using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.Services;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using Cypherly.UserManagement.Infrastructure.Persistence.Context;
@@ -9,6 +6,8 @@ using Cypherly.UserManagement.Test.Integration.Setup;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Social.Application.Contracts.Repositories;
+using Social.Application.Features.UserProfile.Commands.Update.UnblockUser;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.CommandTest.UpdateTest.UnblockUser;
 

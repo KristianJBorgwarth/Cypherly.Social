@@ -1,6 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Domain.Aggregates;
+﻿using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.Interfaces;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using Cypherly.UserManagement.Infrastructure.Persistence.Context;
@@ -9,21 +7,23 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Social.Application.Contracts.Repositories;
+using Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.CommandTest.UpdateTest.MarkFriendRequestsReadCommandHandler;
 
 public class MarkFriendRequestsReadCommandHandlerTest : IntegrationTestBase
 {
-    private readonly Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsReadCommandHandler _sut;
+    private readonly Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsReadCommandHandler _sut;
     public MarkFriendRequestsReadCommandHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var userProfileRepository = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         var friendshipService = scope.ServiceProvider.GetRequiredService<IFriendshipService>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsReadCommandHandler>>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsReadCommandHandler>>();
 
-        _sut = new Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsReadCommandHandler(
+        _sut = new(
             userProfileRepository,
             friendshipService,
             unitOfWork,
@@ -35,7 +35,7 @@ public class MarkFriendRequestsReadCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var command = new Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsReadCommand()
+        var command = new MarkFriendRequestsReadCommand()
         {
             Id = userId,
             RequestTags = new List<string> { "tag1", "tag2" }
@@ -62,7 +62,7 @@ public class MarkFriendRequestsReadCommandHandlerTest : IntegrationTestBase
         await Db.SaveChangesAsync();
 
         // Act
-        var result = await _sut.Handle(new Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsReadCommand()
+        var result = await _sut.Handle(new MarkFriendRequestsReadCommand()
         {
             Id = userprofile.Id,
             RequestTags = new List<string> { friendProfile.UserTag.Tag }

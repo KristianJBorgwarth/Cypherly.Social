@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using Cypherly.UserManagement.Infrastructure.Persistence.Context;
@@ -8,6 +7,7 @@ using Cypherly.UserManagement.Test.Integration.Setup;
 using Cypherly.UserManagement.Test.Integration.Setup.Attributes;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.EndpointTest;
 

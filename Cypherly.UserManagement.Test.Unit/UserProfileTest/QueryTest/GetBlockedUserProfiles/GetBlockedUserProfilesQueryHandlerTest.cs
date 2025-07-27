@@ -1,5 +1,5 @@
-using Cypherly.UserManagement.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetBlockedUserProfiles;
+using Social.Application.Contracts.Repositories;
+using Social.Application.Features.UserProfile.Queries.GetBlockedUserProfiles;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.Common;
 using FakeItEasy;

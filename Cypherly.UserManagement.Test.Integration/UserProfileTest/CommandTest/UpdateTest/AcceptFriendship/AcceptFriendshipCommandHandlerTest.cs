@@ -1,14 +1,14 @@
-﻿using Cypherly.UserManagement.Application.Contracts.Clients;
-using Cypherly.UserManagement.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Application.Contracts.Services;
-using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
-using Cypherly.UserManagement.Domain.Aggregates;
+﻿using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.Common;
 using Cypherly.UserManagement.Domain.Interfaces;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Social.Application.Contracts.Clients;
+using Social.Application.Contracts.Repositories;
+using Social.Application.Contracts.Services;
+using Social.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.CommandTest.UpdateTest.AcceptFriendship;
 

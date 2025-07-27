@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Cypherly.UserManagement.Application.Contracts.Clients;
+using Social.Application.Contracts.Clients;
 using Cypherly.UserManagement.Infrastructure.HttpClients.Responses;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;

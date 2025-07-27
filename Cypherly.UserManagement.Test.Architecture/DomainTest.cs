@@ -15,7 +15,7 @@ public class DomainTest
             .That()
             .ResideInNamespace("Cypherly.UserManagement.Domain")
             .ShouldNot()
-            .HaveDependencyOn("Cypherly.UserManagement.Application")
+            .HaveDependencyOn("Social.Application")
             .GetResult();
 
         result.IsSuccessful.Should().BeTrue("Domain project should not reference Application project");

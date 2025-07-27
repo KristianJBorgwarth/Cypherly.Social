@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.UnblockUser;
+﻿using Social.Application.Features.UserProfile.Commands.Update.UnblockUser;
 using FluentAssertions;
 using Xunit;
 

@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriendRequests;
+﻿using Social.Application.Features.UserProfile.Queries.GetFriendRequests;
 using FluentValidation.TestHelper;
 using Xunit;
 

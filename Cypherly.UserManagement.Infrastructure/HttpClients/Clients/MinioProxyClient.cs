@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Contracts.Clients;
+﻿using Social.Application.Contracts.Clients;
 using Microsoft.Extensions.Logging;
 
 namespace Cypherly.UserManagement.Infrastructure.HttpClients.Clients;

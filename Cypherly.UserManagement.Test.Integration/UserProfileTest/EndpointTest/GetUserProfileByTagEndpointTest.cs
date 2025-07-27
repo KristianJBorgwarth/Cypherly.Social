@@ -1,23 +1,19 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Cypherly.UserManagement.API.Common;
-using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfileByTag;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using Cypherly.UserManagement.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Test.Integration.Setup;
 using Cypherly.UserManagement.Test.Integration.Setup.Attributes;
 using FluentAssertions;
+using Social.API.Common;
+using Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.EndpointTest;
 
-public class GetUserProfileByTagEndpointTest : IntegrationTestBase
+public class GetUserProfileByTagEndpointTest(IntegrationTestFactory<Program, UserManagementDbContext> factory)
+    : IntegrationTestBase(factory)
 {
-    public GetUserProfileByTagEndpointTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) :
-        base(factory)
-    {
-    }
-
     [SkipOnGitHubFact]
     public async Task Handle_Valid_Request_Should_Return_UserProfile()
     {

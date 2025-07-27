@@ -1,6 +1,6 @@
 ﻿using Amazon.S3;
-using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Contracts.Services;
+using Social.Application.Contracts;
+using Social.Application.Contracts.Services;
 using Cypherly.UserManagement.Infrastructure.S3.Services;
 using Cypherly.UserManagement.Infrastructure.S3.Validation;
 using Cypherly.UserManagement.Infrastructure.Settings;

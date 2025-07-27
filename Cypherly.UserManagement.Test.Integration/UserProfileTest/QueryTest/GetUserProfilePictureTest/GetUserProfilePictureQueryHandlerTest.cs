@@ -1,13 +1,12 @@
-﻿using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Contracts.Clients;
-using Cypherly.UserManagement.Application.Contracts.Services;
-using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfilePicture;
-using Cypherly.UserManagement.Infrastructure.Persistence.Context;
+﻿using Cypherly.UserManagement.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Test.Integration.Setup;
 using Cypherly.UserManagement.Test.Integration.Setup.Helpers;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Social.Application.Contracts.Clients;
+using Social.Application.Contracts.Services;
+using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
 
 namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.QueryTest.GetUserProfilePictureTest;
 

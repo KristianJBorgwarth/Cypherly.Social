@@ -1,7 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Contracts.Repositories;
-using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
-using Cypherly.UserManagement.Domain.Aggregates;
+﻿using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.Interfaces;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using Cypherly.UserManagement.Infrastructure.Persistence.Context;
@@ -10,6 +7,8 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Social.Application.Contracts.Repositories;
+using Social.Application.Features.UserProfile.Commands.Create.Friendship;
 
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataQuery
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataUsage

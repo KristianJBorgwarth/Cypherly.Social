@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using Amazon.S3;
 using Amazon.S3.Model;
-using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Contracts.Services;
+using Social.Application.Contracts;
+using Social.Application.Contracts.Services;
 using Cypherly.UserManagement.Domain.Common;
 using Cypherly.UserManagement.Infrastructure.S3.Utilities;
 using Cypherly.UserManagement.Infrastructure.S3.Validation;

@@ -1,5 +1,5 @@
-﻿using Cypherly.UserManagement.Application.Contracts.Clients;
-using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfilePicture;
+﻿using Social.Application.Contracts.Clients;
+using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
 using Cypherly.UserManagement.Domain.Common;
 using FakeItEasy;
 using FluentAssertions;

@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.DisplayName;
+﻿using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Cypherly.UserManagement.Domain.Common;
 using FluentAssertions;
 using Xunit;

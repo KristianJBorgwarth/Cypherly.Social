@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
+﻿using Social.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
 using FluentAssertions;
 using Xunit;
 

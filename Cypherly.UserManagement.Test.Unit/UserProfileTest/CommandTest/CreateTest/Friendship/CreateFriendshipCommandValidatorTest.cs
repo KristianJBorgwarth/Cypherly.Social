@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
+﻿using Social.Application.Features.UserProfile.Commands.Create.Friendship;
 using Cypherly.UserManagement.Domain.Common;
 using FluentValidation.TestHelper;
 using Xunit;

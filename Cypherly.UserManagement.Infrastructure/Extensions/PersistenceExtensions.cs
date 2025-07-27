@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
-using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Contracts.Repositories;
+using Social.Application.Contracts;
+using Social.Application.Contracts.Repositories;
 using Cypherly.UserManagement.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;

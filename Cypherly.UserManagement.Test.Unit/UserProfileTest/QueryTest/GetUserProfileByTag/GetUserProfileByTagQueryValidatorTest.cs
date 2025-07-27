@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfileByTag;
+﻿using Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
 using FluentAssertions;
 using Xunit;
 
