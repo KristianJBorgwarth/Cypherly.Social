@@ -50,7 +50,7 @@ public class DeleteUserProfileConsumerTest : IntegrationTestBase
         await _sut.Consume(fakeConsumeContext);
 
         // Assert
-        Db.UserProfile.AsNoTracking().FirstOrDefault()!.DeletedAt.Should().NotBeNull();
+        Db.UserProfile.AsNoTracking().FirstOrDefault()!.Deleted.Should().NotBeNull();
     }
 
     [Fact]
@@ -73,6 +73,6 @@ public class DeleteUserProfileConsumerTest : IntegrationTestBase
 
         // Assert
         await act.Should().ThrowAsync<KeyNotFoundException>();
-        Db.UserProfile.AsNoTracking().FirstOrDefault()!.DeletedAt.Should().BeNull();
+        Db.UserProfile.AsNoTracking().FirstOrDefault()!.Deleted.Should().BeNull();
     }
 }
