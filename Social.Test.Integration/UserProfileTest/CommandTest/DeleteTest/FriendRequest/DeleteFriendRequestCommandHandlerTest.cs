@@ -14,7 +14,7 @@ namespace Social.Test.Integration.UserProfileTest.CommandTest.DeleteTest.FriendR
 public class DeleteFriendRequestCommandHandlerTest : IntegrationTestBase
 {
     private readonly DeleteFriendRequestCommandHandler _sut;
-    public DeleteFriendRequestCommandHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public DeleteFriendRequestCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var userProfileRepository = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

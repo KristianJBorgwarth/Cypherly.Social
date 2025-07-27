@@ -3,7 +3,7 @@
 namespace Social.Test.Integration.Setup.Fixtures;
 
 [CollectionDefinition("UserManagementApplication")]
-public class FactoryTestFixture : ICollectionFixture<IntegrationTestFactory<Program, UserManagementDbContext>>
+public class FactoryTestFixture : ICollectionFixture<IntegrationTestFactory<Program, SocialDbContext>>
 {
 
 }

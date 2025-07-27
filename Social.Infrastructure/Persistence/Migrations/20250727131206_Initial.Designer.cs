@@ -11,7 +11,7 @@ using Social.Infrastructure.Persistence.Context;
 
 namespace Social.Infrastructure.Persistence.Migrations
 {
-    [DbContext(typeof(UserManagementDbContext))]
+    [DbContext(typeof(SocialDbContext))]
     [Migration("20250727131206_Initial")]
     partial class Initial
     {

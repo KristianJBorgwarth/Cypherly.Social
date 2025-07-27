@@ -106,7 +106,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new()
     {
-        Title = "Cypherly.UserManagement.API",
+        Title = "Cypherly.Social.API",
         Version = "v1",
     });
 
@@ -160,7 +160,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-Log.Information("Starting Cypherly.Usermanagament.API"); 
+Log.Information("Starting Cypherly.Social.API"); 
 app.Run();
 
 public partial class Program {}

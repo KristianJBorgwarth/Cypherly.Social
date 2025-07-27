@@ -18,7 +18,7 @@ public class GetUserProfileQueryHandlerTest : IntegrationTestBase
     private readonly GetUserProfileQueryHandler _sut;
     private readonly IConnectionIdProvider _connectionIdProvider;
 
-    public GetUserProfileQueryHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public GetUserProfileQueryHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

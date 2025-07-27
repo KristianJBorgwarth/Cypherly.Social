@@ -1,21 +1,21 @@
-﻿using Social.Infrastructure.Persistence.Context;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
+using Social.Infrastructure.Persistence.Context;
 using Social.Test.Integration.Setup;
 using Social.Test.Integration.Setup.Helpers;
 
-namespace Cypherly.UserManagement.Test.Integration.UserProfileTest.QueryTest.GetUserProfilePictureTest;
+namespace Social.Test.Integration.UserProfileTest.QueryTest.GetUserProfilePictureTest;
 
 public class GetUserProfilePictureQueryHandlerTest : IntegrationTestBase
 {
     private readonly GetUserProfilePictureQueryHandler _sut;
     private readonly IProfilePictureService _profilePictureService;
 
-    public GetUserProfilePictureQueryHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) :
+    public GetUserProfilePictureQueryHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) :
         base(factory)
     {
         var scope = factory.Services.CreateScope();

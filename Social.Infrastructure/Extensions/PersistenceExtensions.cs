@@ -11,11 +11,11 @@ namespace Social.Infrastructure.Extensions;
 
 internal static class PersistenceExtensions
 {
-    private const string ConnectionStringName = "UserManagementDbConnectionString";
+    private const string ConnectionStringName = "SocialDbConnectionString";
 
     internal static void AddPersistence(this IServiceCollection services, IConfiguration configuration, Assembly assembly)
     {
-        services.AddDbContext<UserManagementDbContext>(options =>
+        services.AddDbContext<SocialDbContext>(options =>
         {
             options.UseNpgsql(configuration.GetConnectionString(ConnectionStringName),
                 sqlOptions =>

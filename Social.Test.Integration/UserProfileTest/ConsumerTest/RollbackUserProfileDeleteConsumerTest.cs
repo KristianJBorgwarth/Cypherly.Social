@@ -21,7 +21,7 @@ public class RollbackUserProfileDeleteConsumerTest : IntegrationTestBase
 {
     private readonly RollbackUserProfileDeleteConsumer _sut;
 
-    public RollbackUserProfileDeleteConsumerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public RollbackUserProfileDeleteConsumerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var userProfileRepository = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

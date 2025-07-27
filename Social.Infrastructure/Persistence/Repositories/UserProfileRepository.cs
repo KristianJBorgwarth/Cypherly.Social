@@ -6,7 +6,7 @@ using Social.Infrastructure.Persistence.Context;
 
 namespace Social.Infrastructure.Persistence.Repositories;
 
-public class UserProfileRepository(UserManagementDbContext context) : IUserProfileRepository
+public class UserProfileRepository(SocialDbContext context) : IUserProfileRepository
 {
     public async Task CreateAsync(UserProfile entity)
     {

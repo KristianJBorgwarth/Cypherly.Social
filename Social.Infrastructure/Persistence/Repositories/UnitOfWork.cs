@@ -7,7 +7,7 @@ using Social.Infrastructure.Persistence.Outbox;
 
 namespace Social.Infrastructure.Persistence.Repositories;
 
-public class UnitOfWork(UserManagementDbContext context) : IUnitOfWork
+public class UnitOfWork(SocialDbContext context) : IUnitOfWork
 {
     /// <summary>
     /// Saves all changes made in the context to the database.

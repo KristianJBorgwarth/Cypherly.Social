@@ -12,11 +12,11 @@ public static class MigrationExtensions
         using var scope = provider.CreateScope();
         var services = scope.ServiceProvider;
 
-        var logger = services.GetRequiredService<ILogger<UserManagementDbContext>>();
+        var logger = services.GetRequiredService<ILogger<SocialDbContext>>();
 
         try
         {
-            var dbContext = services.GetRequiredService<UserManagementDbContext>();
+            var dbContext = services.GetRequiredService<SocialDbContext>();
 
             if (dbContext.Database.GetPendingMigrations().Any())
             {

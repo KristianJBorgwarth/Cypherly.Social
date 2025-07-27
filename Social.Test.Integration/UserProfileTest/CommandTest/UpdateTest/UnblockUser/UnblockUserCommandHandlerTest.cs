@@ -14,7 +14,7 @@ namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.Unblock
 public class UnblockUserCommandHandlerTest : IntegrationTestBase
 {
     private readonly UnblockUserCommandHandler _sut;
-    public UnblockUserCommandHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public UnblockUserCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

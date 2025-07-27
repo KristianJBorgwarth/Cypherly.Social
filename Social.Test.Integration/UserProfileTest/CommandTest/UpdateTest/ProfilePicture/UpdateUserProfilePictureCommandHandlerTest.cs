@@ -17,7 +17,7 @@ namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.Profile
 public class UpdateUserProfilePictureCommandHandlerTest : IntegrationTestBase
 {
     private readonly UpdateUserProfilePictureCommandHandler _sut;
-    public UpdateUserProfilePictureCommandHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public UpdateUserProfilePictureCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

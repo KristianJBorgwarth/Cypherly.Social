@@ -15,7 +15,7 @@ public class GetBlockedUserProfilesQueryHandlerTest : IntegrationTestBase
 {
     private readonly GetBlockedUserProfilesQueryHandler _sut;
 
-    public GetBlockedUserProfilesQueryHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public GetBlockedUserProfilesQueryHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

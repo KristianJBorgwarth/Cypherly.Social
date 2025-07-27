@@ -10,7 +10,7 @@ using Social.Infrastructure.Persistence.Context;
 
 namespace Social.Infrastructure.Persistence.Migrations
 {
-    [DbContext(typeof(UserManagementDbContext))]
+    [DbContext(typeof(SocialDbContext))]
     partial class UserManagementDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

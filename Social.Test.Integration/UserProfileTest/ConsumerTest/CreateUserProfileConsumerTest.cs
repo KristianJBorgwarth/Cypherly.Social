@@ -16,7 +16,7 @@ namespace Social.Test.Integration.UserProfileTest.ConsumerTest;
 public class CreateUserProfileConsumerTest : IntegrationTestBase
 {
     private readonly CreateUserProfileConsumer _sut;
-    public CreateUserProfileConsumerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public CreateUserProfileConsumerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var userProfileRepository = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

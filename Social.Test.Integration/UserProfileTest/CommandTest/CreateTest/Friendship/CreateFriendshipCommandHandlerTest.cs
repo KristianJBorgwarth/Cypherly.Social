@@ -18,7 +18,7 @@ namespace Social.Test.Integration.UserProfileTest.CommandTest.CreateTest.Friends
 public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
 {
     private readonly CreateFriendshipCommandHandler _sut;
-    public CreateFriendshipCommandHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public CreateFriendshipCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

@@ -15,7 +15,7 @@ public class TogglePrivacyCommandHandlerTest : IntegrationTestBase
 {
     private readonly TogglePrivacyCommandHandler _sut;
 
-    public TogglePrivacyCommandHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public TogglePrivacyCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
 

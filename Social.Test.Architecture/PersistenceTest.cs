@@ -10,7 +10,7 @@ public class PersistenceTest
     [Fact]
     public void Infrastructure_Should_Not_Reference_Presentation()
     {
-        var result = Types.InAssembly(typeof(UserManagementDbContext).Assembly)
+        var result = Types.InAssembly(typeof(SocialDbContext).Assembly)
             .That()
             .ResideInNamespace("Social.Persistence")
             .ShouldNot()
@@ -23,7 +23,7 @@ public class PersistenceTest
     [Fact]
     public void Infrastructure_Should_Not_Reference_Application_Outside_Of_Repositories()
     {
-        var result = Types.InAssembly(typeof(UserManagementDbContext).Assembly)
+        var result = Types.InAssembly(typeof(SocialDbContext).Assembly)
             .That()
             .ResideInNamespace("Social.Identity.Persistence")
             .And()
@@ -40,7 +40,7 @@ public class PersistenceTest
     [Fact]
     public void All_Repositories_Should_Reference_Domain()
     {
-        var result = Types.InAssembly(typeof(UserManagementDbContext).Assembly)
+        var result = Types.InAssembly(typeof(SocialDbContext).Assembly)
             .That()
             .HaveNameEndingWith("Repository")
             .And().DoNotHaveNameEndingWith("OutboxRepository")
@@ -54,7 +54,7 @@ public class PersistenceTest
     [Fact]
     public void All_Repositories_Should_Reference_Infrastructure_Context()
     {
-        var result = Types.InAssembly(typeof(UserManagementDbContext).Assembly)
+        var result = Types.InAssembly(typeof(SocialDbContext).Assembly)
             .That()
             .HaveNameEndingWith("Repository")
             .And().DoNotHaveNameEndingWith("OutboxRepository")
@@ -68,7 +68,7 @@ public class PersistenceTest
     [Fact]
     public void All_Contexts_Should_Inherit_From_CypherlyDbContext()
     {
-        var result = Types.InAssembly(typeof(UserManagementDbContext).Assembly)
+        var result = Types.InAssembly(typeof(SocialDbContext).Assembly)
             .That()
             .HaveNameEndingWith("DbContext")
             .And().AreClasses()
@@ -82,7 +82,7 @@ public class PersistenceTest
     [Fact]
     public void All_ModelConfigurations_Should_Inherit_From_IEntityTypeConfiguration()
     {
-        var result = Types.InAssembly(typeof(UserManagementDbContext).Assembly)
+        var result = Types.InAssembly(typeof(SocialDbContext).Assembly)
             .That()
             .AreClasses()
             .And()

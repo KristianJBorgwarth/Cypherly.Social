@@ -14,7 +14,7 @@ namespace Social.Test.Integration.UserProfileTest.CommandTest.DeleteTest.Friends
 public class DeleteFriendshipCommandHandlerTest : IntegrationTestBase
 {
     private readonly DeleteFriendshipCommandHandler _sut;
-    public DeleteFriendshipCommandHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public DeleteFriendshipCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

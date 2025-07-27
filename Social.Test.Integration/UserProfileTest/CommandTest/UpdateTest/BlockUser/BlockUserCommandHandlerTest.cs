@@ -19,7 +19,7 @@ namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.BlockUs
 public class BlockUserCommandHandlerTest : IntegrationTestBase
 {
     private readonly BlockUserCommandHandler _sut;
-    public BlockUserCommandHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public BlockUserCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

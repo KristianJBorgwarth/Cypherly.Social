@@ -12,7 +12,7 @@ using Social.Test.Integration.Setup.Helpers;
 
 namespace Social.Test.Integration.UserProfileTest.EndpointTest;
 
-public class UpdateUserProfilePictureEndpointTest(IntegrationTestFactory<Program, UserManagementDbContext> factory)
+public class UpdateUserProfilePictureEndpointTest(IntegrationTestFactory<Program, SocialDbContext> factory)
     : IntegrationTestBase(factory)
 {
     [SkipOnGitHubFact]

@@ -16,7 +16,7 @@ namespace Social.Test.Integration.UserProfileTest.QueryTest.GetUserProfileByTagT
 public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
 {
     private readonly GetUserProfileByTagQueryHandler _sut;
-    public GetUserProfileByTagQueryHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public GetUserProfileByTagQueryHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

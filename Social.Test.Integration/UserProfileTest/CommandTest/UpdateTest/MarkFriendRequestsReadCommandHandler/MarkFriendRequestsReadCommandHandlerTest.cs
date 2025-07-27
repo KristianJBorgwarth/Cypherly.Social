@@ -15,7 +15,7 @@ namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.MarkFri
 public class MarkFriendRequestsReadCommandHandlerTest : IntegrationTestBase
 {
     private readonly Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsReadCommandHandler _sut;
-    public MarkFriendRequestsReadCommandHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public MarkFriendRequestsReadCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var userProfileRepository = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

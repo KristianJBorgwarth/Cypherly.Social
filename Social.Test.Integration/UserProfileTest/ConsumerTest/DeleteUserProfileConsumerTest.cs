@@ -21,7 +21,7 @@ namespace Social.Test.Integration.UserProfileTest.ConsumerTest;
 public class DeleteUserProfileConsumerTest : IntegrationTestBase
 {
     private readonly DeleteUserProfileConsumer _sut;
-    public DeleteUserProfileConsumerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public DeleteUserProfileConsumerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var userProfileRepository = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

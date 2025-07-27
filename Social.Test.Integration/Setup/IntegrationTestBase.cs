@@ -10,17 +10,17 @@ namespace Social.Test.Integration.Setup;
 [Collection("UserManagementApplication")]
 public class IntegrationTestBase : IDisposable
 {
-    protected readonly UserManagementDbContext Db;
+    protected readonly SocialDbContext Db;
     protected readonly HttpClient Client;
     protected readonly ITestHarness Harness;
     protected readonly Fixture Fixture;
 
-    public IntegrationTestBase(IntegrationTestFactory<Program, UserManagementDbContext> factory)
+    public IntegrationTestBase(IntegrationTestFactory<Program, SocialDbContext> factory)
     {
         Fixture = new Fixture();
         Harness = factory.Services.GetTestHarness();
         var scope = factory.Services.CreateScope();
-        Db = scope.ServiceProvider.GetRequiredService<UserManagementDbContext>();
+        Db = scope.ServiceProvider.GetRequiredService<SocialDbContext>();
         Db.Database.EnsureCreated();
         Client = factory.CreateClient();
         Harness.Start();

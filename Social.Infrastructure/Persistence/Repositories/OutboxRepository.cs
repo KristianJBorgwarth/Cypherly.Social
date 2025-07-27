@@ -6,7 +6,7 @@ using OutboxMessage = Social.Infrastructure.Persistence.Outbox.OutboxMessage;
 
 namespace Social.Infrastructure.Persistence.Repositories;
 
-public class OutboxRepository(UserManagementDbContext context) : IOutboxRepository
+public class OutboxRepository(SocialDbContext context) : IOutboxRepository
 {
     /// <summary>
     /// Get unprocessed outbox messages

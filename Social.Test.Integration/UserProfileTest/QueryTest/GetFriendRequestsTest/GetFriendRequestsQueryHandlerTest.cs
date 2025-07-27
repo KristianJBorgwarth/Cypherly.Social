@@ -18,7 +18,7 @@ public class GetFriendRequestsQueryHandlerTest : IntegrationTestBase
     private readonly GetFriendRequestsQueryHandler _sut;
     private readonly IFriendshipService _friendshipService;
 
-    public GetFriendRequestsQueryHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public GetFriendRequestsQueryHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

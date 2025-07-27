@@ -11,7 +11,7 @@ using Social.Test.Integration.Setup.Attributes;
 
 namespace Social.Test.Integration.UserProfileTest.EndpointTest;
 
-public class UpdateUserProfileDisplayNameEndpointTest(IntegrationTestFactory<Program, UserManagementDbContext> factory)
+public class UpdateUserProfileDisplayNameEndpointTest(IntegrationTestFactory<Program, SocialDbContext> factory)
     : IntegrationTestBase(factory)
 {
     [SkipOnGitHubFact]

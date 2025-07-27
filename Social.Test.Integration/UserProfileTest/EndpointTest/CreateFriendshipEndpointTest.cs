@@ -14,7 +14,7 @@ using Social.Test.Integration.Setup.Attributes;
 
 namespace Social.Test.Integration.UserProfileTest.EndpointTest;
 
-public class CreateFriendshipEndpointTest(IntegrationTestFactory<Program, UserManagementDbContext> factory)
+public class CreateFriendshipEndpointTest(IntegrationTestFactory<Program, SocialDbContext> factory)
     : IntegrationTestBase(factory)
 {
     [SkipOnGitHubFact]
