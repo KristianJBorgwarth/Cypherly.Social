@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Infrastructure.Settings;
+﻿using Social.Infrastructure.Settings;
 using Cypherly.UserManagement.Test.Integration.Setup.Authentication;
 using Cypherly.UserManagement.Test.Integration.Setup.Helpers;
 using DotNet.Testcontainers.Builders;

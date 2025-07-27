@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Infrastructure.Persistence.Context;
+﻿using Social.Infrastructure.Persistence.Context;
 
 namespace Cypherly.UserManagement.Test.Integration.Setup.Fixtures;
 

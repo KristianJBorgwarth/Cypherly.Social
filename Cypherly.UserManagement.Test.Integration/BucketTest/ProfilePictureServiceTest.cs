@@ -2,10 +2,10 @@
 using Amazon.S3;
 using Amazon.S3.Model;
 using Cypherly.UserManagement.Domain.Common;
-using Cypherly.UserManagement.Infrastructure.S3.Services;
-using Cypherly.UserManagement.Infrastructure.S3.Utilities;
-using Cypherly.UserManagement.Infrastructure.S3.Validation;
-using Cypherly.UserManagement.Infrastructure.Settings;
+using Social.Infrastructure.S3.Services;
+using Social.Infrastructure.S3.Utilities;
+using Social.Infrastructure.S3.Validation;
+using Social.Infrastructure.Settings;
 using Cypherly.UserManagement.Test.Integration.Setup.Helpers;
 using FakeItEasy;
 using FluentAssertions;

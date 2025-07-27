@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using Cypherly.Message.Contracts.Messages.Profile;
 using Cypherly.UserManagement.Domain.Services;
-using Cypherly.UserManagement.Infrastructure.Persistence.Context;
+using Social.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Test.Integration.Setup;
 using FakeItEasy;
 using FluentAssertions;

@@ -2,7 +2,7 @@
 using Cypherly.UserManagement.Domain.Interfaces;
 using Cypherly.UserManagement.Domain.Services;
 using Cypherly.UserManagement.Domain.ValueObjects;
-using Cypherly.UserManagement.Infrastructure.Persistence.Context;
+using Social.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Test.Integration.Setup;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;

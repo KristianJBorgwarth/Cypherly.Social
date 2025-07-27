@@ -1,5 +1,5 @@
 ﻿using Cypherly.UserManagement.Test.Architecture.Helpers;
-using Cypherly.UserManagement.Infrastructure.Persistence.Context;
+using Social.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using NetArchTest.Rules;
 
@@ -59,7 +59,7 @@ public class PersistenceTest
             .HaveNameEndingWith("Repository")
             .And().DoNotHaveNameEndingWith("OutboxRepository")
             .Should()
-            .HaveDependencyOn("Cypherly.UserManagement.Infrastructure.Persistence.Context")
+            .HaveDependencyOn("Social.Infrastructure.Persistence.Context")
             .GetResult();
 
         result.ShouldBeSuccessful("All repositories should reference Infrastructure Context project");

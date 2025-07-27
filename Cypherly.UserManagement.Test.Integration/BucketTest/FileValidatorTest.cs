@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Infrastructure.S3.Validation;
+﻿using Social.Infrastructure.S3.Validation;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;

@@ -14,7 +14,7 @@ public class ApplicationTest
             .That()
             .ResideInNamespace("Social.Application")
             .ShouldNot()
-            .HaveDependencyOn("Cypherly.UserManagement.Infrastructure")
+            .HaveDependencyOn("Social.Infrastructure")
             .GetResult();
 
         result.ShouldBeSuccessful("Application project should not reference Infrastructure project");

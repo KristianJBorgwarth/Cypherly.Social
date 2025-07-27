@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social.API", "Social.API\So
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social.Application", "Social.Application\Social.Application.csproj", "{69164F7B-65E6-4165-BF99-6984EAA29469}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Infrastructure", "Cypherly.UserManagement.Infrastructure\Cypherly.UserManagement.Infrastructure.csproj", "{E1394983-8C5A-414D-AA07-764C2AE33054}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social.Infrastructure", "Social.Infrastructure\Social.Infrastructure.csproj", "{E1394983-8C5A-414D-AA07-764C2AE33054}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Test.Architecture", "Cypherly.UserManagement.Test.Architecture\Cypherly.UserManagement.Test.Architecture.csproj", "{F9DBD6BB-793F-49A1-8DCB-14122B41B435}"
 EndProject

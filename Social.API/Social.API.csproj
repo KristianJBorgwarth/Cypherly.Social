@@ -34,7 +34,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Social.Application\Social.Application.csproj" />
-      <ProjectReference Include="..\Cypherly.UserManagement.Infrastructure\Cypherly.UserManagement.Infrastructure.csproj" />
+      <ProjectReference Include="..\Social.Infrastructure\Social.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

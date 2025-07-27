@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using Cypherly.UserManagement.Infrastructure.Persistence.Context;
+using Social.Infrastructure.Persistence.Context;
 using MassTransit.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

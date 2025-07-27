@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Text;
 using Social.Application.Extensions;
 using Cypherly.UserManagement.Domain.Extensions;
-using Cypherly.UserManagement.Infrastructure.Extensions;
+using Social.Infrastructure.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -55,7 +55,7 @@ builder.Services.AddApplication(Assembly.Load("Social.Application"));
 
 #region Infrastructure Layer
 
-builder.Services.AddInfrastructure(configuration, Assembly.Load("Cypherly.UserManagement.Infrastructure"));
+builder.Services.AddInfrastructure(configuration, Assembly.Load("Social.Infrastructure"));
 
 #endregion
 

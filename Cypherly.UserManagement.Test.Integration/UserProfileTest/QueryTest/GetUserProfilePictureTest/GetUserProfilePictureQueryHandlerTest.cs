@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Infrastructure.Persistence.Context;
+﻿using Social.Infrastructure.Persistence.Context;
 using Cypherly.UserManagement.Test.Integration.Setup;
 using Cypherly.UserManagement.Test.Integration.Setup.Helpers;
 using FluentAssertions;
