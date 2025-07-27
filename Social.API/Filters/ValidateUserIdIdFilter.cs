@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Cypherly.UserManagement.API.Filters;
+namespace Social.API.Filters;
 
-public class ValidateUserIdIdFilter(ILogger<ValidateUserIdIdFilter> logger) : UserManagement.API.Filters.IValidateUserIdFilter
+public class ValidateUserIdIdFilter(ILogger<ValidateUserIdIdFilter> logger) : IValidateUserIdFilter
 {
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {

@@ -2,9 +2,10 @@
 using Cypherly.UserManagement.Domain.ValueObjects;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using Envelope = Cypherly.UserManagement.API.Common.Envelope;
+using Social.API.Common;
+using Envelope = Social.API.Common.Envelope;
 
-namespace Cypherly.UserManagement.API.Controllers;
+namespace Social.API.Controllers;
 
 public class BaseController : ControllerBase
 {

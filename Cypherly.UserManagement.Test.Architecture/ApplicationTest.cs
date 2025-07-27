@@ -28,7 +28,7 @@ public class ApplicationTest
             .That()
             .ResideInNamespace("Cypherly.UserManagement.Application")
             .ShouldNot()
-            .HaveDependencyOn("Cypherly.UserManagement.API")
+            .HaveDependencyOn("Social.API")
             .GetResult();
 
         result.ShouldBeSuccessful("Application project should not reference Presentation project");

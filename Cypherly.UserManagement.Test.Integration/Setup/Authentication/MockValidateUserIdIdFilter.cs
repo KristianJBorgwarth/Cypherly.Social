@@ -1,5 +1,5 @@
-﻿using Cypherly.UserManagement.API.Filters;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
+using Social.API.Filters;
 
 namespace Cypherly.UserManagement.Test.Integration.Setup.Authentication;
 

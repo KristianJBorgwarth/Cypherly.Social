@@ -1,6 +1,6 @@
-﻿using Cypherly.UserManagement.API.Controllers;
-using Cypherly.UserManagement.Test.Architecture.Helpers;
+﻿using Cypherly.UserManagement.Test.Architecture.Helpers;
 using NetArchTest.Rules;
+using Social.API.Controllers;
 
 namespace Cypherly.UserManagement.Test.Architecture;
 

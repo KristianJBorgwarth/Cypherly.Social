@@ -1,14 +1,13 @@
 using System.Reflection;
 using System.Text;
-using Cypherly.UserManagement.API.Extensions;
 using Cypherly.UserManagement.Application.Extensions;
 using Cypherly.UserManagement.Domain.Extensions;
 using Cypherly.UserManagement.Infrastructure.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using IValidateUserIdFilter = Cypherly.UserManagement.API.Filters.IValidateUserIdFilter;
-using ValidateUserIdIdFilter = Cypherly.UserManagement.API.Filters.ValidateUserIdIdFilter;
+using Social.API.Extensions;
+using Social.API.Filters;
 
 // ReSharper disable UseCollectionExpression
 
@@ -165,4 +164,4 @@ Log.Information("Starting Cypherly.Usermanagament.API");
 app.Run();
 
 
-public partial class Program { }
+public partial class Program {}

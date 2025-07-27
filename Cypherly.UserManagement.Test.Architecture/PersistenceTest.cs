@@ -14,7 +14,7 @@ public class PersistenceTest
             .That()
             .ResideInNamespace("Cypherly.UserManagement.Persistence")
             .ShouldNot()
-            .HaveDependencyOn("Cypherly.UserManagement.API")
+            .HaveDependencyOn("Social.API")
             .GetResult();
 
         result.ShouldBeSuccessful("Infrastructure project should not reference Presentation project");

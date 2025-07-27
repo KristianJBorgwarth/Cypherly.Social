@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Cypherly.UserManagement.API.Filters;
+namespace Social.API.Filters;
 
 public interface IValidateUserIdFilter : IAsyncActionFilter
 {

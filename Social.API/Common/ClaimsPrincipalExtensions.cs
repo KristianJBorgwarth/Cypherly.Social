@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Cypherly.UserManagement.API.Common;
+namespace Social.API.Common;
 
 public static class ClaimsPrincipalExtensions
 {

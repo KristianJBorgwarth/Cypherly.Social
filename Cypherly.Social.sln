@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9B5C64C1-999
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{8E21E2AB-E6AB-4D29-A264-71F08BE8EA7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.API", "Cypherly.UserManagement.API\Cypherly.UserManagement.API.csproj", "{B71474D6-5657-4638-B21D-C169E2318819}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social.API", "Social.API\Social.API.csproj", "{B71474D6-5657-4638-B21D-C169E2318819}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Application", "Cypherly.UserManagement.Application\Cypherly.UserManagement.Application.csproj", "{69164F7B-65E6-4165-BF99-6984EAA29469}"
 EndProject

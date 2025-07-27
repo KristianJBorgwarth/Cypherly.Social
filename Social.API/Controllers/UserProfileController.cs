@@ -1,5 +1,4 @@
-﻿using Cypherly.UserManagement.API.Filters;
-using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
+﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Delete.FriendRequest;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Delete.Friendship;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
@@ -18,8 +17,9 @@ using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserPr
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Social.API.Filters;
 
-namespace Cypherly.UserManagement.API.Controllers;
+namespace Social.API.Controllers;
 
 [Authorize]
 [Route("api/[controller]")]

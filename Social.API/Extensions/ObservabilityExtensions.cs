@@ -4,7 +4,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
-namespace Cypherly.UserManagement.API.Extensions;
+namespace Social.API.Extensions;
 
 public static class ObservabilityExtensions
 {
