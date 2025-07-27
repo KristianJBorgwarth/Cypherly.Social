@@ -16,13 +16,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social.Application", "Socia
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social.Infrastructure", "Social.Infrastructure\Social.Infrastructure.csproj", "{E1394983-8C5A-414D-AA07-764C2AE33054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Test.Architecture", "Cypherly.UserManagement.Test.Architecture\Cypherly.UserManagement.Test.Architecture.csproj", "{F9DBD6BB-793F-49A1-8DCB-14122B41B435}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social.Test.Architecture", "Social.Test.Architecture\Social.Test.Architecture.csproj", "{F9DBD6BB-793F-49A1-8DCB-14122B41B435}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Test.Integration", "Cypherly.UserManagement.Test.Integration\Cypherly.UserManagement.Test.Integration.csproj", "{804CA16A-7F52-4686-A90B-0071E86BCE45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social.Test.Integration", "Social.Test.Integration\Social.Test.Integration.csproj", "{804CA16A-7F52-4686-A90B-0071E86BCE45}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social.Domain", "Social.Domain\Social.Domain.csproj", "{1E6F534E-232E-43EB-AD55-E5906D2E994C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Test.Unit", "Cypherly.UserManagement.Test.Unit\Cypherly.UserManagement.Test.Unit.csproj", "{C6C12BAE-3C25-477B-A096-E15AA57C85FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Social.Test.Unit", "Social.Test.Unit\Social.Test.Unit.csproj", "{C6C12BAE-3C25-477B-A096-E15AA57C85FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
