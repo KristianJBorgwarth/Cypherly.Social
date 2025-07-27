@@ -1,0 +1,25 @@
+﻿using Cypherly.UserManagement.Domain.Aggregates;
+using Cypherly.UserManagement.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Cypherly.UserManagement.Infrastructure.Persistence.ModelConfigurations;
+
+public class BlockedUserModelConfiguration : IEntityTypeConfiguration<BlockedUser>
+{
+    public void Configure(EntityTypeBuilder<BlockedUser> builder)
+    {
+        builder.ToTable("BlockedUser");
+
+        builder.Ignore(e => e.Id);
+
+        builder.HasKey(e => new { UserId = e.BlockingUserProfileId, BlockedUserId = e.BlockedUserProfileId });
+
+        builder.Property(e => e.BlockingUserProfileId)
+            .IsRequired();
+
+        builder.HasOne<UserProfile>(c => c.BlockedUserProfile)
+            .WithMany()
+            .HasForeignKey(c => c.BlockedUserProfileId);
+    }
+}
