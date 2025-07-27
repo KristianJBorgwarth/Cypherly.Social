@@ -8,6 +8,8 @@ public class UserProfileModelConfiguration : BaseModelConfiguration<UserProfile>
 {
     public override void Configure(EntityTypeBuilder<UserProfile> builder)
     {
+        builder.ToTable("user_profile");
+        
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
