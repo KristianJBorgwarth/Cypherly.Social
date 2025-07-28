@@ -22,7 +22,8 @@ internal static class PersistenceExtensions
                 {
                     sqlOptions.MigrationsAssembly(assembly.FullName);
                     sqlOptions.EnableRetryOnFailure();
-                });
+                })
+                .UseLazyLoadingProxies();
         });
 
         services.AddRepositories();
