@@ -9,7 +9,7 @@ namespace Social.Infrastructure.Extensions;
 
 public static class InfrastructureExtensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, Assembly assembly)
+    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration, Assembly assembly)
     {
         services.AddSettings(configuration);
         services.AddMassTransitRabbitMq();
@@ -17,7 +17,6 @@ public static class InfrastructureExtensions
         services.AddProviders();
         services.AddOutboxProcessingJob(assembly);
         services.AddStorage();
-        return services;
     }
 
     private static void AddSettings(this IServiceCollection services, IConfiguration configuration)

@@ -13,7 +13,7 @@ namespace Social.Infrastructure.Extensions;
 
 internal static class HttpClientExtensions
 {
-    internal static IServiceCollection AddProviders(this IServiceCollection services)
+    internal static void AddProviders(this IServiceCollection services)
     {
         services.AddHttpClient<IConnectionIdProvider, ConnectionIdClient>((sp, client) =>
         {
@@ -32,12 +32,15 @@ internal static class HttpClientExtensions
         services.AddHttpClient<IMinioProxyClient, MinioProxyClient>((sp, client) =>
         {
             var options = sp.GetRequiredService<IOptions<MinioSettings>>().Value;
+            if (string.IsNullOrWhiteSpace(options.Host))
+            {
+                throw new InvalidOperationException("Minio host is not configured properly.");
+            }
+            
             client.BaseAddress = new Uri(options.Host);
         })
         .AddPolicyHandler(GetRetryPolicy())
         .AddPolicyHandler(GetTimeoutPolicy());
-
-        return services;
     }
 
     private static AsyncPolicy<HttpResponseMessage> GetRetryPolicy()
