@@ -1,5 +1,4 @@
-﻿using Cypherly.Application.Abstractions;
-using Social.Application.Contracts;
+﻿using Social.Application.Contracts;
 using Social.Domain.Common;
 using Social.Domain.Entities;
 using Social.Domain.Enums;

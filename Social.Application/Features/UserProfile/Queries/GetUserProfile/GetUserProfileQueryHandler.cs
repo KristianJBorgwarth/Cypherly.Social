@@ -1,5 +1,4 @@
-﻿using Cypherly.Application.Abstractions;
-using Social.Application.Contracts;
+﻿using Social.Application.Contracts;
 using Social.Domain.Common;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
@@ -25,7 +24,7 @@ public class GetUserProfileQueryHandler(
             if (userprofile is null)
                 return Result.Fail<GetUserProfileDto>(Errors.General.NotFound(request.UserProfileId.ToString()));
 
-            var connectionIds = await GetConnectionIdsAsync(request.UserProfileId, request.ExlusiveConnectionId, cancellationToken);
+            var connectionIds = await GetConnectionIdsAsync(request.UserProfileId, request.ExclusiveConnectionId, cancellationToken);
 
             var profilePictureUrl = "";
 
@@ -55,12 +54,12 @@ public class GetUserProfileQueryHandler(
         }
     }
 
-    private async Task<Guid[]> GetConnectionIdsAsync(Guid userProfileId, Guid exlusiveConnectionId, CancellationToken cancellationToken)
+    private async Task<Guid[]> GetConnectionIdsAsync(Guid userProfileId, Guid exclusiveConnectionId, CancellationToken cancellationToken)
     {
         var connectionIds = await connectionIdProvider.GetConnectionIdsByUser(userProfileId, cancellationToken);
 
         var filteredConnectionIds = connectionIds
-            .Where(id => id != exlusiveConnectionId)
+            .Where(id => id != exclusiveConnectionId)
             .ToArray();
 
         return filteredConnectionIds;

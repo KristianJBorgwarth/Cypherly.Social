@@ -1,5 +1,4 @@
-﻿using Cypherly.Application.Abstractions;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Social.Application.Abstractions;
 
 namespace Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
