@@ -1,4 +1,4 @@
-﻿using Cypherly.Application.Abstractions;
+﻿using Social.Application.Abstractions;
 using Social.Domain.Events.UserProfile;
 
 namespace Social.Application.Features.UserProfile.Events;

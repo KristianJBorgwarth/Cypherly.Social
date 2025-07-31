@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Cypherly.Application.Abstractions;
 using Social.Application.Contracts;
 using Social.Domain.Common;
 using Microsoft.Extensions.Logging;

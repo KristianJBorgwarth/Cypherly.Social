@@ -1,8 +1,8 @@
-﻿using Cypherly.Application.Abstractions;
-using Cypherly.Message.Contracts.Abstractions;
+﻿using Cypherly.Message.Contracts.Abstractions;
 using Cypherly.Message.Contracts.Messages.Friendship;
 using Social.Domain.Events.UserProfile;
 using Microsoft.Extensions.Logging;
+using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 

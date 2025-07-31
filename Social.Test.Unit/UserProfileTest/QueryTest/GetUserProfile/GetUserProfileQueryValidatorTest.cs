@@ -18,7 +18,7 @@ namespace Social.Test.Unit.UserProfileTest.QueryTest.GetUserProfile
         public void Should_Have_Error_When_UserProfileId_Is_Null()
         {
             // Arrange
-            var query = new GetUserProfileQuery { UserProfileId = Guid.Empty, ExlusiveConnectionId = Guid.NewGuid() };
+            var query = new GetUserProfileQuery { UserProfileId = Guid.Empty, ExclusiveConnectionId = Guid.NewGuid() };
 
             // Act
             var result = _validator.TestValidate(query);
@@ -32,7 +32,7 @@ namespace Social.Test.Unit.UserProfileTest.QueryTest.GetUserProfile
         public void Should_Have_Error_When_UserProfileId_Is_Empty()
         {
             // Arrange
-            var query = new GetUserProfileQuery { UserProfileId = Guid.Empty, ExlusiveConnectionId = Guid.Empty}; // Empty Guid
+            var query = new GetUserProfileQuery { UserProfileId = Guid.Empty, ExclusiveConnectionId = Guid.Empty}; // Empty Guid
 
             // Act
             var result = _validator.TestValidate(query);
@@ -46,7 +46,7 @@ namespace Social.Test.Unit.UserProfileTest.QueryTest.GetUserProfile
         public void Should_Not_Have_Error_When_UserProfileId_Is_Valid()
         {
             // Arrange
-            var query = new GetUserProfileQuery { UserProfileId = Guid.NewGuid(), ExlusiveConnectionId = Guid.NewGuid()};
+            var query = new GetUserProfileQuery { UserProfileId = Guid.NewGuid(), ExclusiveConnectionId = Guid.NewGuid()};
 
             // Act
             var result = _validator.TestValidate(query);

@@ -1,7 +1,7 @@
-﻿using Social.Domain.Abstractions;
-using MediatR;
+﻿using MediatR;
+using Social.Domain.Abstractions;
 
-namespace Cypherly.Application.Abstractions;
+namespace Social.Application.Abstractions;
 
 public interface IDomainEventHandler<in TDomainEvent> : INotificationHandler<TDomainEvent> where TDomainEvent : IDomainEvent
 {

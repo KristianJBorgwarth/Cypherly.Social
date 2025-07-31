@@ -1,5 +1,4 @@
-﻿using Cypherly.Application.Abstractions;
-using Social.Application.Abstractions;
+﻿using Social.Application.Abstractions;
 
 namespace Social.Application.Features.UserProfile.Queries.GetBlockedUserProfiles;
 

@@ -1,5 +1,4 @@
 using System.Windows.Input;
-using Cypherly.Application.Abstractions;
 using Social.Application.Abstractions;
 using ICommand = Social.Application.Abstractions.ICommand;
 
