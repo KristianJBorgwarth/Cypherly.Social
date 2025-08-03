@@ -18,11 +18,11 @@ public class BlockUserCommandHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.Id);
+            var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
             if (userProfile is null)
             {
-                logger.LogError("User profile not found for user id {UserId}", request.Id);
-                return Result.Fail(Errors.General.NotFound(request.Id));
+                logger.LogError("User profile not found for user id {UserId}", request.TenantId);
+                return Result.Fail(Errors.General.NotFound(request.TenantId));
             }
 
             var blockedUserProfile = await userProfileRepository.GetByUserTag(request.BlockedUserTag);
@@ -39,7 +39,7 @@ public class BlockUserCommandHandler(
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Error blocking user {UserId} for user {BlockedUserTag}", request.Id,
+            logger.LogError(e, "Error blocking user {UserId} for user {BlockedUserTag}", request.TenantId,
                 request.BlockedUserTag);
             return Result.Fail(Errors.General.UnspecifiedError(
                 "Exception occured whilte attempting to block user. Please Check logs for more details"));

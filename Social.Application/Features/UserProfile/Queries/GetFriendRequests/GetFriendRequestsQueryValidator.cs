@@ -7,7 +7,7 @@ public class GetFriendRequestsQueryValidator : AbstractValidator<GetFriendReques
 {
     public GetFriendRequestsQueryValidator()
     {
-        RuleFor(x => x.UserId)
-            .NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(GetFriendRequestsQuery.UserId)).Message);
+        RuleFor(x => x.TenantId)
+            .NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(GetFriendRequestsQuery.TenantId)).Message);
     }
 }

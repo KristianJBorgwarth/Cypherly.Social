@@ -41,7 +41,7 @@ public class GetUserProfileQueryHandlerTest : IntegrationTestBase
         A.CallTo(()=> _connectionIdProvider.GetConnectionIdsByUser(userProfile.Id, A<CancellationToken>._))
             .Returns([Guid.NewGuid(), exclusiveConnectionId]);
 
-        var query = new GetUserProfileQuery { UserProfileId = userProfile.Id, ExclusiveConnectionId = exclusiveConnectionId};
+        var query = new GetUserProfileQuery { TenantId = userProfile.Id, ExclusiveConnectionId = exclusiveConnectionId};
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -57,7 +57,7 @@ public class GetUserProfileQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Query_With_Invalid_ID_Should_Return_NotFound()
     {
         // Arrange
-        var query = new GetUserProfileQuery { UserProfileId = Guid.NewGuid(), ExclusiveConnectionId = Guid.NewGuid()};
+        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid(), ExclusiveConnectionId = Guid.NewGuid()};
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);

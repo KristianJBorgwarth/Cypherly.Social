@@ -25,7 +25,7 @@ public class GetUserProfileByTagEndpointTest(IntegrationTestFactory<Program, Soc
 
         var query = new GetUserProfileByTagQuery()
         {
-            Id = requestingUser.Id,
+            TenantId = requestingUser.Id,
             Tag = userProfile.UserTag.Tag
         };
 
@@ -34,7 +34,7 @@ public class GetUserProfileByTagEndpointTest(IntegrationTestFactory<Program, Soc
         //Act
         var response =
             await Client.GetFromJsonAsync<Envelope<GetUserProfileByTagDto>>(
-                $"api/userprofile/tag?Id={query.Id}&Tag={encodedFriendTag}");
+                $"api/userprofile/tag?Id={query.TenantId}&Tag={encodedFriendTag}");
 
         response.Should().NotBeNull();
         response.Result.Should().NotBeNull();
@@ -51,14 +51,14 @@ public class GetUserProfileByTagEndpointTest(IntegrationTestFactory<Program, Soc
 
         var query = new GetUserProfileByTagQuery()
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             Tag = userProfile.UserTag.Tag
         };
 
         var encodedFriendTag = Uri.EscapeDataString(query.Tag);
 
         // Act
-        var response = await Client.GetAsync($"api/UserProfile/tag?Id={query.Id}&Tag={encodedFriendTag}");
+        var response = await Client.GetAsync($"api/UserProfile/tag?Id={query.TenantId}&Tag={encodedFriendTag}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -75,14 +75,14 @@ public class GetUserProfileByTagEndpointTest(IntegrationTestFactory<Program, Soc
 
         var query = new GetUserProfileByTagQuery()
         {
-            Id = requestingUser.Id,
+            TenantId = requestingUser.Id,
             Tag = "dummyTag"
         };
 
         var encodedFriendTag = Uri.EscapeDataString(query.Tag);
 
         // Act
-        var response = await Client.GetAsync($"api/UserProfile/tag?Id={query.Id}&Tag={encodedFriendTag}");
+        var response = await Client.GetAsync($"api/UserProfile/tag?Id={query.TenantId}&Tag={encodedFriendTag}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);

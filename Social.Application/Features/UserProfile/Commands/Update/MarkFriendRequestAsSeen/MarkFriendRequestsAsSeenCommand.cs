@@ -2,8 +2,8 @@
 
 namespace Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen;
 
-public class MarkFriendRequestsReadCommand : ICommandId
+public class MarkFriendRequestsAsSeenCommand : ICommand
 {
-    public required Guid Id { get; init; }
+    public required Guid TenantId { get; init; }
     public required IReadOnlyCollection<string> RequestTags { get; init; }
 }

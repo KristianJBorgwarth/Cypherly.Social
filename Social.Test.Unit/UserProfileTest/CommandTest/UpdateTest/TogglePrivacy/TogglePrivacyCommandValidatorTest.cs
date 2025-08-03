@@ -14,7 +14,7 @@ public class TogglePrivacyCommandValidatorTest
         // Arrange
         var command = new TogglePrivacyCommand
         {
-            Id = Guid.Empty,
+            TenantId = Guid.Empty,
             IsPrivate = false
         };
 
@@ -23,7 +23,7 @@ public class TogglePrivacyCommandValidatorTest
 
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(TogglePrivacyCommand.Id));
+        result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(TogglePrivacyCommand.TenantId));
     }
 
     [Fact]
@@ -32,7 +32,7 @@ public class TogglePrivacyCommandValidatorTest
         // Arrange
         var command = new TogglePrivacyCommand
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             IsPrivate = false
         };
 

@@ -41,7 +41,7 @@ public class BlockUserCommandHandlerTest : IntegrationTestBase
         var command = new BlockUserCommand()
         {
             BlockedUserTag = blockuser.UserTag.Tag,
-            Id = Guid.NewGuid()
+            TenantId = Guid.NewGuid()
         };
 
         // Act
@@ -49,7 +49,7 @@ public class BlockUserCommandHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Should().BeEquivalentTo(Errors.General.NotFound(command.Id));
+        result.Error.Should().BeEquivalentTo(Errors.General.NotFound(command.TenantId));
     }
 
     [Fact]
@@ -63,7 +63,7 @@ public class BlockUserCommandHandlerTest : IntegrationTestBase
         var command = new BlockUserCommand()
         {
             BlockedUserTag = "John",
-            Id = user.Id
+            TenantId = user.Id
         };
 
         // Act
@@ -88,7 +88,7 @@ public class BlockUserCommandHandlerTest : IntegrationTestBase
         var command = new BlockUserCommand()
         {
             BlockedUserTag = blockedUser.UserTag.Tag,
-            Id = user.Id
+            TenantId = user.Id
         };
 
         // Act

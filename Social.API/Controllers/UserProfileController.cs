@@ -17,21 +17,28 @@ using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Social.API.Common;
 using Social.API.Filters;
+using Social.API.Requests;
+using Social.API.Requests.Command;
+using Social.API.Requests.Query;
 
 namespace Social.API.Controllers;
 
 [Authorize]
 [Route("api/[controller]")]
-public class UserProfileController(ISender sender) : BaseController
+public class UserProfileController(ISender sender)
+    : BaseController
 {
-
     [HttpGet("")]
     [ProducesResponseType(typeof(GetUserProfileDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetUserProfile([FromQuery] GetUserProfileQuery query)
+    public async Task<IActionResult> GetUserProfile([FromQuery] GetUserProfileRequest request, HttpContext ctx,
+        CancellationToken cancellationToken = default)
     {
-        var result = await sender.Send(query);
+        var tenantId = ctx.User.GetUserId();
+        var result = await sender.Send(new GetUserProfileQuery
+            { TenantId = tenantId, ExclusiveConnectionId = request.ExclusiveConnectionId }, cancellationToken);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 
@@ -39,9 +46,12 @@ public class UserProfileController(ISender sender) : BaseController
     [ProducesResponseType(typeof(GetUserProfileByTagDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetUserProfileByTag([FromQuery] GetUserProfileByTagQuery query)
+    public async Task<IActionResult> GetUserProfileByTag([FromQuery] GetUserProfileByTagRequest request,
+        HttpContext ctx, CancellationToken cancellationToken = default)
     {
-        var result = await sender.Send(query);
+        var tenantId = ctx.User.GetUserId();
+        var result = await sender.Send(new GetUserProfileByTagQuery { TenantId = tenantId, Tag = request.Tag },
+            cancellationToken);
         if (result.Success is false) return Error(result.Error);
 
         return result.Value is not null ? Ok(result.Value) : NoContent();
@@ -50,9 +60,11 @@ public class UserProfileController(ISender sender) : BaseController
     [HttpGet("profile-picture")]
     [ProducesResponseType(typeof(GetUserProfilePictureDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetProfilePicture([FromQuery] GetUserProfilePictureQuery query)
+    public async Task<IActionResult> GetProfilePicture([FromQuery] GetUserProfilePictureRequest request,
+        CancellationToken ct = default)
     {
-        var result = await sender.Send(query);
+        var query = new GetUserProfilePictureQuery { ProfilePictureUrl = request.ProfilePictureUrl };
+        var result = await sender.Send(query, ct);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 
@@ -60,9 +72,12 @@ public class UserProfileController(ISender sender) : BaseController
     [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(typeof(UpdateUserProfilePictureDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetProfilePicture([FromForm] UpdateUserProfilePictureCommand command)
+    public async Task<IActionResult> UpdateProfilePicture([FromForm] UpdateUserProfilePictureRequest request,
+        HttpContext ctx, CancellationToken ct = default)
     {
-        var result = await sender.Send(command);
+        var tenantId = ctx.User.GetUserId();
+        var result = await sender.Send(new UpdateUserProfilePictureCommand
+            { TenantId = tenantId, NewProfilePicture = request.ProfilePicture }, ct);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 
@@ -70,9 +85,13 @@ public class UserProfileController(ISender sender) : BaseController
     [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(typeof(UpdateUserProfileDisplayNameDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateDisplayName([FromBody] UpdateUserProfileDisplayNameCommand command)
+    public async Task<IActionResult> UpdateDisplayName([FromBody] UpdateDisplayNameRequest request, HttpContext ctx,
+        CancellationToken ct = default)
     {
-        var result = await sender.Send(command);
+        var tenantId = ctx.User.GetUserId();
+        var result =
+            await sender.Send(
+                new UpdateUserProfileDisplayNameCommand { TenantId = tenantId, DisplayName = request.DisplayName }, ct);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 
@@ -80,9 +99,13 @@ public class UserProfileController(ISender sender) : BaseController
     [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> BlockUser([FromBody] BlockUserCommand command)
+    public async Task<IActionResult> BlockUser([FromBody] BlockUserRequest request, HttpContext ctx,
+        CancellationToken ct = default)
     {
-        var result = await sender.Send(command);
+        var tenantId = ctx.User.GetUserId();
+        var result =
+            await sender.Send(new BlockUserCommand() { TenantId = tenantId, BlockedUserTag = request.BlockedUserTag },
+                ct);
         return result.Success ? Ok() : Error(result.Error);
     }
 
@@ -90,9 +113,11 @@ public class UserProfileController(ISender sender) : BaseController
     [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UnblockUser([FromBody] UnblockUserCommand command)
+    public async Task<IActionResult> UnblockUser([FromBody] UnblockUserRequest request, HttpContext ctx,
+        CancellationToken ct = default)
     {
-        var result = await sender.Send(command);
+        var tenantId = ctx.User.GetUserId();
+        var result = await sender.Send(new UnblockUserCommand { TenantId = tenantId, Tag = request.Tag }, ct);
         return result.Success ? Ok() : Error(result.Error);
     }
 
@@ -100,21 +125,25 @@ public class UserProfileController(ISender sender) : BaseController
     [ProducesResponseType(typeof(GetBlockedUserProfilesDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetBlockedUserProfiles([FromQuery] GetBlockedUserProfilesQuery query)
+    public async Task<IActionResult> GetBlockedUserProfiles(HttpContext ctx, CancellationToken ct = default)
     {
-        var result = await sender.Send(query);
+        var tenantId = ctx.User.GetUserId();
+        var result = await sender.Send(new GetBlockedUserProfilesQuery { TenantId = tenantId }, ct);
         if (result.Success is false) return Error(result.Error);
 
         return result.Value!.Count > 0 ? Ok(result.Value) : NoContent();
     }
 
-    [HttpPost("friendship/create")]
+    [HttpPost("friendship")]
     [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> CreateFriendship([FromBody] CreateFriendshipCommand command)
+    public async Task<ActionResult> CreateFriendship([FromBody] CreateFriendshipRequest request, HttpContext ctx,
+        CancellationToken ct = default)
     {
-        var result = await sender.Send(command);
+        var tenantId = ctx.User.GetUserId();
+        var result = await sender.Send(new CreateFriendshipCommand
+            { TenantId = tenantId, FriendTag = request.FriendTag }, ct);
         return result.Success ? Ok() : Error(result.Error);
     }
 
@@ -123,9 +152,11 @@ public class UserProfileController(ISender sender) : BaseController
     [ProducesResponseType(typeof(GetFriendsDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetFriends([FromQuery] GetFriendsQuery query)
+    public async Task<IActionResult> GetFriends(HttpContext ctx,
+        CancellationToken ct = default)
     {
-        var result = await sender.Send(query);
+        var tenantId = ctx.User.GetUserId();
+        var result = await sender.Send(new GetFriendsQuery {TenantId = tenantId}, ct);
 
         if (result.Success is false) return Error(result.Error);
 
@@ -136,9 +167,10 @@ public class UserProfileController(ISender sender) : BaseController
     [ProducesResponseType(typeof(GetFriendRequestsDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetFriendRequests([FromQuery] GetFriendRequestsQuery query)
+    public async Task<IActionResult> GetFriendRequests(HttpContext ctx, CancellationToken ct = default)
     {
-        var result = await sender.Send(query);
+        var tenantId = ctx.User.GetUserId();
+        var result = await sender.Send(new GetFriendRequestsQuery() {TenantId = tenantId}, ct);
 
         if (result.Success is false) return Error(result.Error);
 
@@ -148,9 +180,11 @@ public class UserProfileController(ISender sender) : BaseController
     [HttpPut("friendship/accept")]
     [ProducesResponseType(typeof(AcceptFriendshipDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AcceptFriendship([FromBody] AcceptFriendshipCommand command)
+    public async Task<IActionResult> AcceptFriendship([FromBody] AcceptFriendshipRequest request, HttpContext ctx,
+        CancellationToken ct = default)
     {
-        var result = await sender.Send(command);
+        var tenantId = ctx.User.GetUserId();
+        var result = await sender.Send(new AcceptFriendshipCommand {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 
@@ -158,19 +192,23 @@ public class UserProfileController(ISender sender) : BaseController
     [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> RemoveFriendship([FromQuery] DeleteFriendshipCommand command)
+    public async Task<IActionResult> RemoveFriendship([FromQuery] DeleteFriendshipRequest request, HttpContext ctx,
+        CancellationToken ct = default)
     {
-        var result = await sender.Send(command);
+        var tenantId = ctx.User.GetUserId();
+        var result = await sender.Send(new DeleteFriendshipCommand {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
         return result.Success ? Ok() : Error(result.Error);
     }
 
-    [HttpPut("friendship/mark-seen")]
+    [HttpPut("friendship/seen")]
     [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> MarkFriendRequestsAsSeen([FromBody] MarkFriendRequestsReadCommand command)
+    public async Task<IActionResult> MarkFriendRequestsAsSeen([FromBody] MarkFriendRequestsAsSeenRequest friendRequest,
+        HttpContext ctx, CancellationToken ct = default)
     {
-        var result = await sender.Send(command);
+        var tenantId =  ctx.User.GetUserId();
+        var result = await sender.Send(new MarkFriendRequestsAsSeenCommand() {TenantId = tenantId, RequestTags = friendRequest.RequestTags}, ct);
         return result.Success ? Ok() : Error(result.Error);
     }
 
@@ -178,9 +216,11 @@ public class UserProfileController(ISender sender) : BaseController
     [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> TogglePrivacy([FromBody] TogglePrivacyCommand command)
+    public async Task<IActionResult> TogglePrivacy([FromBody] TogglePrivacyRequest request, HttpContext ctx,
+        CancellationToken ct = default)
     {
-        var result = await sender.Send(command);
+        var tenantId = ctx.User.GetUserId();
+        var result = await sender.Send(new TogglePrivacyCommand(){TenantId = tenantId, IsPrivate = request.IsPrivate}, ct);
         return result.Success ? Ok() : Error(result.Error);
     }
 
@@ -188,9 +228,11 @@ public class UserProfileController(ISender sender) : BaseController
     [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> RejectFriendship([FromQuery] DeleteFriendRequestCommand command)
+    public async Task<IActionResult> RejectFriendship([FromQuery] DeleteFriendRequest request, HttpContext ctx,
+        CancellationToken ct = default)
     {
-        var result = await sender.Send(command);
+        var tenantId = ctx.User.GetUserId();
+        var result = await sender.Send(new DeleteFriendshipCommand() {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
         return result.Success ? Ok() : Error(result.Error);
     }
 }

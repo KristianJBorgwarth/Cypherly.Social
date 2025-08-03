@@ -37,7 +37,7 @@ public class GetBlockedUserProfilesQueryHandlerTest : IntegrationTestBase
         await Db.AddRangeAsync(blockedUserProfile, blockedUserProfile2, userProfile);
         await Db.SaveChangesAsync();
 
-        var query = new GetBlockedUserProfilesQuery() { UserId = userProfile.Id };
+        var query = new GetBlockedUserProfilesQuery() { TenantId = userProfile.Id };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -55,7 +55,7 @@ public class GetBlockedUserProfilesQueryHandlerTest : IntegrationTestBase
         // Arrange
         var query = new GetBlockedUserProfilesQuery()
         {
-            UserId = Guid.NewGuid()
+            TenantId = Guid.NewGuid()
         };
 
         // Act
@@ -63,7 +63,7 @@ public class GetBlockedUserProfilesQueryHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().BeEquivalentTo(Errors.General.NotFound(query.UserId).Message);
+        result.Error.Message.Should().BeEquivalentTo(Errors.General.NotFound(query.TenantId).Message);
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public class GetBlockedUserProfilesQueryHandlerTest : IntegrationTestBase
         await Db.AddAsync(userProfile);
         await Db.SaveChangesAsync();
 
-        var query = new GetBlockedUserProfilesQuery() { UserId = userProfile.Id };
+        var query = new GetBlockedUserProfilesQuery() { TenantId = userProfile.Id };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);

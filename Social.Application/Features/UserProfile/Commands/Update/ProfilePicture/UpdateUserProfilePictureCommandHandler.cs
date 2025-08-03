@@ -18,10 +18,10 @@ public class UpdateUserProfilePictureCommandHandler(
     {
         try
         {
-            var user = await userProfileRepository.GetByIdAsync(request.Id);
-            if (user is null) return Result.Fail<UpdateUserProfilePictureDto>(Errors.General.NotFound(request.Id));
+            var user = await userProfileRepository.GetByIdAsync(request.TenantId);
+            if (user is null) return Result.Fail<UpdateUserProfilePictureDto>(Errors.General.NotFound(request.TenantId));
 
-            var result = await profilePictureService.UploadProfilePictureAsync(request.NewProfilePicture, request.Id);
+            var result = await profilePictureService.UploadProfilePictureAsync(request.NewProfilePicture, request.TenantId);
             if (result.Success is false) return Result.Fail<UpdateUserProfilePictureDto>(result.Error);
 
             user.SetProfilePictureUrl(result.Value);
@@ -35,7 +35,7 @@ public class UpdateUserProfilePictureCommandHandler(
             if (presignedUrlResult.Success is false)
             {
                 logger.LogWarning("Failed to retrieve presigned URL for profile picture with key {Key} for user {UserId}",
-                    result.Value, request.Id);
+                    result.Value, request.TenantId);
             }
             else
             {
@@ -49,7 +49,7 @@ public class UpdateUserProfilePictureCommandHandler(
         catch (Exception ex)
         {
             logger.LogCritical(ex, "An exception occurred in {Handler}, while attempting to update the profile picture for {UserProfileId}",
-                nameof(UpdateUserProfilePictureCommandHandler), request.Id);
+                nameof(UpdateUserProfilePictureCommandHandler), request.TenantId);
             return Result.Fail<UpdateUserProfilePictureDto>(
                 Errors.General.UnspecifiedError("An exception was thrown during the update process"));
         }

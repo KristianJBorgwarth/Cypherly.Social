@@ -30,11 +30,11 @@ public class TogglePrivacyCommandHandlerTest
         var profile = new UserProfile(Guid.NewGuid(), "ValidUsername", UserTag.Create("ValidUsername"));
         var command = new TogglePrivacyCommand
         {
-            Id = profile.Id,
+            TenantId = profile.Id,
             IsPrivate = true
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns(profile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).Returns(profile);
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>.Ignored)).DoesNothing();
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
@@ -42,7 +42,7 @@ public class TogglePrivacyCommandHandlerTest
         // Assert
         result.Success.Should().BeTrue();
         profile.IsPrivate.Should().BeTrue();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>.Ignored)).MustHaveHappenedOnceExactly();
     }
 
@@ -51,17 +51,17 @@ public class TogglePrivacyCommandHandlerTest
     {
         var command = new TogglePrivacyCommand
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             IsPrivate = true
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns<UserProfile>(null);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).Returns<UserProfile>(null);
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
 
         // Assert
         result.Success.Should().BeFalse();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>.Ignored)).MustNotHaveHappened();
     }
 }

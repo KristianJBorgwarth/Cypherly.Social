@@ -30,13 +30,13 @@ public class DeleteFriendshipEndpointTest(IntegrationTestFactory<Program, Social
 
         var cmd = new DeleteFriendshipCommand
         {
-            Id = userProfile.Id,
+            TenantId = userProfile.Id,
             FriendTag = friendProfile.UserTag.Tag
         };
 
         // Act
         var encodedFriendTag = Uri.EscapeDataString(cmd.FriendTag);
-        var response = await Client.DeleteAsync($"api/userprofile/friendship/delete?Id={cmd.Id}&friendTag={encodedFriendTag}");
+        var response = await Client.DeleteAsync($"api/userprofile/friendship/delete?Id={cmd.TenantId}&friendTag={encodedFriendTag}");
 
         // Assert
         var result = await response.Content.ReadFromJsonAsync<Envelope>();
@@ -61,13 +61,13 @@ public class DeleteFriendshipEndpointTest(IntegrationTestFactory<Program, Social
 
         var cmd = new DeleteFriendshipCommand
         {
-            Id = userProfile.Id,
+            TenantId = userProfile.Id,
             FriendTag = "InvalidFriendTag"
         };
 
         // Act
         var encodedFriendTag = Uri.EscapeDataString(cmd.FriendTag);
-        var response = await Client.DeleteAsync($"api/userprofile/friendship/delete?Id={cmd.Id}&friendTag={encodedFriendTag}");
+        var response = await Client.DeleteAsync($"api/userprofile/friendship/delete?Id={cmd.TenantId}&friendTag={encodedFriendTag}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);

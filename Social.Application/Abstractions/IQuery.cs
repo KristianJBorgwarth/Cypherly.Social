@@ -7,5 +7,5 @@ public interface IQuery<TResponse> : IRequest<Result<TResponse>> { }
 
 public interface IQueryLimited<TResponse> : IRequest<Result<TResponse>>
 {
-    public Guid UserProfileId { get; init; }
+    public Guid TenantId { get; init; }
 }

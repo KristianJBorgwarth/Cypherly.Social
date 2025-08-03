@@ -31,7 +31,7 @@ public class GetFriendRequestsQuerHandlerTest
 
         var query = new GetFriendRequestsQuery()
         {
-            UserId = user.Id,
+            TenantId = user.Id,
         };
 
         A.CallTo(() => _fakeRepo.GetByIdAsync(user.Id)).Returns(user);
@@ -50,10 +50,10 @@ public class GetFriendRequestsQuerHandlerTest
         // Arrange
         var query = new GetFriendRequestsQuery()
         {
-            UserId = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.UserId)).Returns((UserProfile)null);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).Returns((UserProfile)null);
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -69,10 +69,10 @@ public class GetFriendRequestsQuerHandlerTest
         // Arrange
         var query = new GetFriendRequestsQuery()
         {
-            UserId = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.UserId)).Throws<Exception>();
+        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).Throws<Exception>();
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);

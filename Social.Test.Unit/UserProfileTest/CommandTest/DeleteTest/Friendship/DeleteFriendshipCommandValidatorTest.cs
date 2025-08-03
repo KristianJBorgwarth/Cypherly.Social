@@ -14,7 +14,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.DeleteTest.Friendship
             // Arrange
             var command = new DeleteFriendshipCommand
             {
-                Id = Guid.Empty,
+                TenantId = Guid.Empty,
                 FriendTag = "ValidTag"
             };
 
@@ -22,7 +22,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.DeleteTest.Friendship
             var result = _validator.Validate(command);
 
             // Assert
-            result.Errors.Should().Contain(x => x.PropertyName == nameof(DeleteFriendshipCommand.Id));
+            result.Errors.Should().Contain(x => x.PropertyName == nameof(DeleteFriendshipCommand.TenantId));
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.DeleteTest.Friendship
             // Arrange
             var command = new DeleteFriendshipCommand
             {
-                Id = Guid.Empty,
+                TenantId = Guid.Empty,
                 FriendTag = "ValidTag"
             };
 
@@ -39,7 +39,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.DeleteTest.Friendship
             var result = _validator.Validate(command);
 
             // Assert
-            result.Errors.Should().Contain(x => x.PropertyName == nameof(DeleteFriendshipCommand.Id));
+            result.Errors.Should().Contain(x => x.PropertyName == nameof(DeleteFriendshipCommand.TenantId));
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.DeleteTest.Friendship
             // Arrange
             var command = new DeleteFriendshipCommand
             {
-                Id = Guid.NewGuid(),
+                TenantId = Guid.NewGuid(),
                 FriendTag = null
             };
 
@@ -65,7 +65,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.DeleteTest.Friendship
             // Arrange
             var command = new DeleteFriendshipCommand
             {
-                Id = Guid.NewGuid(),
+                TenantId = Guid.NewGuid(),
                 FriendTag = string.Empty
             };
 
@@ -82,7 +82,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.DeleteTest.Friendship
             // Arrange
             var command = new DeleteFriendshipCommand
             {
-                Id = Guid.NewGuid(),
+                TenantId = Guid.NewGuid(),
                 FriendTag = new string('A', 21) // 21 characters long
             };
 
@@ -99,7 +99,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.DeleteTest.Friendship
             // Arrange
             var command = new DeleteFriendshipCommand
             {
-                Id = Guid.NewGuid(),
+                TenantId = Guid.NewGuid(),
                 FriendTag = "ValidTag"
             };
 

@@ -7,8 +7,8 @@ public class GetUserProfileQueryValidator : AbstractValidator<GetUserProfileQuer
 {
     public GetUserProfileQueryValidator()
     {
-        RuleFor(x => x.UserProfileId)
-            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(GetUserProfileQuery.UserProfileId)).Message)
-            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(GetUserProfileQuery.UserProfileId)).Message);
+        RuleFor(x => x.TenantId)
+            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(GetUserProfileQuery.TenantId)).Message)
+            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(GetUserProfileQuery.TenantId)).Message);
     }
 }

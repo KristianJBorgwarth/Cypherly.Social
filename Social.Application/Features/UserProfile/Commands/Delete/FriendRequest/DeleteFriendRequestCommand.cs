@@ -2,8 +2,8 @@
 
 namespace Social.Application.Features.UserProfile.Commands.Delete.FriendRequest;
 
-public sealed record DeleteFriendRequestCommand : ICommandId
+public sealed record DeleteFriendRequestCommand : ICommand
 {
-    public required Guid Id { get; init; }
+    public required Guid TenantId { get; init; }
     public required string FriendTag { get; init; }
 }

@@ -46,7 +46,7 @@ public class GetFriendRequestsQueryHandlerTest : IntegrationTestBase
 
         var query = new GetFriendRequestsQuery()
         {
-            UserId = user.Id,
+            TenantId = user.Id,
         };
 
         // Act
@@ -70,7 +70,7 @@ public class GetFriendRequestsQueryHandlerTest : IntegrationTestBase
 
         var query = new GetFriendRequestsQuery()
         {
-            UserId = user.Id,
+            TenantId = user.Id,
         };
 
         // Act
@@ -87,7 +87,7 @@ public class GetFriendRequestsQueryHandlerTest : IntegrationTestBase
         // Arrange
         var query = new GetFriendRequestsQuery()
         {
-            UserId = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
         };
 
         // Act
@@ -95,6 +95,6 @@ public class GetFriendRequestsQueryHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Should().BeEquivalentTo(Errors.General.NotFound(query.UserId));
+        result.Error.Should().BeEquivalentTo(Errors.General.NotFound(query.TenantId));
     }
 }

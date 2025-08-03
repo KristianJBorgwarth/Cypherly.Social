@@ -15,7 +15,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName
             // Arrange
             var command = new UpdateUserProfileDisplayNameCommand
             {
-                Id = Guid.Empty,
+                TenantId = Guid.Empty,
                 DisplayName = "ValidDisplayName"
             };
 
@@ -25,7 +25,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName
             // Assert
             result.IsValid.Should().BeFalse();
             result.Errors[0].ErrorMessage.Should()
-                .Be(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.Id)).Message);
+                .Be(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.TenantId)).Message);
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName
             // Arrange
             var command = new UpdateUserProfileDisplayNameCommand
             {
-                Id = Guid.NewGuid(),
+                TenantId = Guid.NewGuid(),
                 DisplayName = null
             };
 
@@ -53,7 +53,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName
             // Arrange
             var command = new UpdateUserProfileDisplayNameCommand
             {
-                Id = Guid.NewGuid(),
+                TenantId = Guid.NewGuid(),
                 DisplayName = "ValidDisplayName"
             };
 
@@ -70,7 +70,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName
             // Arrange
             var command = new UpdateUserProfileDisplayNameCommand
             {
-                Id = Guid.Empty,
+                TenantId = Guid.Empty,
                 DisplayName = "ValidDisplayName"
             };
 
@@ -80,7 +80,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName
             // Assert
             result.IsValid.Should().BeFalse();
             result.Errors[0].ErrorMessage.Should()
-                .Be(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.Id)).Message);
+                .Be(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.TenantId)).Message);
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName
             // Arrange
             var command = new UpdateUserProfileDisplayNameCommand
             {
-                Id = Guid.NewGuid(),
+                TenantId = Guid.NewGuid(),
                 DisplayName = ""
             };
 

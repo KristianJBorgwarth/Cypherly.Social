@@ -29,7 +29,7 @@ public class CreateFriendshipEndpointTest(IntegrationTestFactory<Program, Social
         var command = new CreateFriendshipCommand()
         {
             FriendTag = friend.UserTag.Tag,
-            Id = user.Id
+            TenantId = user.Id
         };
 
         // Act
@@ -59,7 +59,7 @@ public class CreateFriendshipEndpointTest(IntegrationTestFactory<Program, Social
         var request = new CreateFriendshipCommand()
         {
             FriendTag = friend.UserTag.Tag,
-            Id = user.Id
+            TenantId = user.Id
         };
 
         // Act

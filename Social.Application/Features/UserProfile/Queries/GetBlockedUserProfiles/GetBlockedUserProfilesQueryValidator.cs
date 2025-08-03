@@ -7,8 +7,8 @@ public class GetBlockedUserProfilesQueryValidator : AbstractValidator<GetBlocked
 {
     public GetBlockedUserProfilesQueryValidator()
     {
-        RuleFor(x => x.UserId)
+        RuleFor(x => x.TenantId)
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsEmpty(nameof(GetBlockedUserProfilesQuery.UserId)).Message);
+            .WithMessage(Errors.General.ValueIsEmpty(nameof(GetBlockedUserProfilesQuery.TenantId)).Message);
     }
 }

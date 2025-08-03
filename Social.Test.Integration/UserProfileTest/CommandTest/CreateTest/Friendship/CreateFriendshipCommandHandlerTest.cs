@@ -40,7 +40,7 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
         var command = new CreateFriendshipCommand()
         {
             FriendTag = friend.UserTag.Tag,
-            Id = user.Id
+            TenantId = user.Id
         };
 
         // Act
@@ -69,7 +69,7 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
         var command = new CreateFriendshipCommand()
         {
             FriendTag = friend.UserTag.Tag,
-            Id = user.Id
+            TenantId = user.Id
         };
 
         // Act
@@ -91,7 +91,7 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
         var command = new CreateFriendshipCommand()
         {
             FriendTag = friend.UserTag.Tag,
-            Id = Guid.NewGuid() // Non-existent user
+            TenantId = Guid.NewGuid() // Non-existent user
         };
 
         // Act
@@ -113,7 +113,7 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
         var command = new CreateFriendshipCommand()
         {
             FriendTag = "InvalidTag", // Non-existent friend
-            Id = user.Id
+            TenantId = user.Id
         };
 
         // Act

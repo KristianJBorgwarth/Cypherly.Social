@@ -24,24 +24,24 @@ public class GetBlockedUserProfilesQueryHandlerTest
     public async Task Handle_WhenUserProfileNotFound_ReturnsNotFound()
     {
         // Arrange
-        var query = new GetBlockedUserProfilesQuery { UserId = Guid.NewGuid() };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.UserId)).Returns((UserProfile?)null);
+        var query = new GetBlockedUserProfilesQuery { TenantId = Guid.NewGuid() };
+        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).Returns((UserProfile?)null);
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Should().BeEquivalentTo(Errors.General.NotFound(query.UserId));
+        result.Error.Should().BeEquivalentTo(Errors.General.NotFound(query.TenantId));
     }
 
     [Fact]
     public async Task Handle_Query_When_Exception_Occurs_Should_Return_ResultFail()
     {
         // Arrange
-        var query = new GetBlockedUserProfilesQuery() { UserId = Guid.NewGuid() };
+        var query = new GetBlockedUserProfilesQuery() { TenantId = Guid.NewGuid() };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.UserId)).Throws<Exception>();
+        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).Throws<Exception>();
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);

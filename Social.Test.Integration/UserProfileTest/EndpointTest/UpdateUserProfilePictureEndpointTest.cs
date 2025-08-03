@@ -25,7 +25,7 @@ public class UpdateUserProfilePictureEndpointTest(IntegrationTestFactory<Program
 
         var command = new UpdateUserProfilePictureCommand
         {
-            Id = user.Id,
+            TenantId = user.Id,
             NewProfilePicture = FormFileHelper.CreateFormFile(
                 Path.Combine(DirectoryHelper.GetProjectRootDirectory(),
                     "Social.Test.Integration/Setup/Resources/test_profile_picture.png"),
@@ -62,7 +62,7 @@ public class UpdateUserProfilePictureEndpointTest(IntegrationTestFactory<Program
 
         var command = new UpdateUserProfilePictureCommand
         {
-            Id = invalidUserId,
+            TenantId = invalidUserId,
             NewProfilePicture = FormFileHelper.CreateFormFile(
                 Path.Combine(DirectoryHelper.GetProjectRootDirectory(),
                     "Social.Test.Integration/Setup/Resources/test_profile_picture.png"),
@@ -85,7 +85,7 @@ public class UpdateUserProfilePictureEndpointTest(IntegrationTestFactory<Program
         var form = new MultipartFormDataContent();
 
         // Add the user ID
-        form.Add(new StringContent(command.Id.ToString()), nameof(UpdateUserProfilePictureCommand.Id));
+        form.Add(new StringContent(command.TenantId.ToString()), nameof(UpdateUserProfilePictureCommand.TenantId));
 
         // Add the file content
         var fileContent = new StreamContent(command.NewProfilePicture.OpenReadStream());

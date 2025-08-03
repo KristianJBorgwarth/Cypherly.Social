@@ -41,7 +41,7 @@ public class AcceptFriendshipCommandHandlerTest
         var command = new AcceptFriendshipCommand()
         {
             FriendTag = "friend",
-            Id = userProfile.Id
+            TenantId = userProfile.Id
         };
         A.CallTo(() => _fakeRepo.GetByIdAsync(userProfile.Id)).Returns(userProfile);
         A.CallTo(() => _fakeService.AcceptFriendship(userProfile, command.FriendTag)).Returns(Result.Ok());
@@ -72,17 +72,17 @@ public class AcceptFriendshipCommandHandlerTest
         var command = new AcceptFriendshipCommand()
         {
             FriendTag = "friend",
-            Id = Guid.NewGuid()
+            TenantId = Guid.NewGuid()
         };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns((UserProfile)null);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).Returns((UserProfile)null);
 
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Should().BeEquivalentTo(Errors.General.NotFound(command.Id));
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).MustHaveHappenedOnceExactly();
+        result.Error.Should().BeEquivalentTo(Errors.General.NotFound(command.TenantId));
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeService.AcceptFriendship(A<UserProfile>._, A<string>._)).MustNotHaveHappened();
         A.CallTo(() => _fakeRepo.UpdateAsync(A<UserProfile>._)).MustNotHaveHappened();
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>._)).MustNotHaveHappened();
@@ -96,7 +96,7 @@ public class AcceptFriendshipCommandHandlerTest
         var command = new AcceptFriendshipCommand()
         {
             FriendTag = "friend",
-            Id = userProfile.Id
+            TenantId = userProfile.Id
         };
         A.CallTo(() => _fakeRepo.GetByIdAsync(userProfile.Id)).Returns(userProfile);
         A.CallTo(() => _fakeService.AcceptFriendship(userProfile, command.FriendTag)).Returns(Result.Fail(Errors.General.UnspecifiedError("Friendship not found")));
@@ -121,7 +121,7 @@ public class AcceptFriendshipCommandHandlerTest
         var command = new AcceptFriendshipCommand()
         {
             FriendTag = "friend",
-            Id = userProfile.Id
+            TenantId = userProfile.Id
         };
         A.CallTo(() => _fakeRepo.GetByIdAsync(userProfile.Id)).Returns(userProfile);
         A.CallTo(() => _fakeService.AcceptFriendship(userProfile, command.FriendTag)).Throws<Exception>();

@@ -14,7 +14,7 @@ public class UnblockUserCommandValidatorTest
         // Arrange
         var command = new UnblockUserCommand
         {
-            Id = Guid.Empty,
+            TenantId = Guid.Empty,
             Tag = "tag"
         };
 
@@ -23,7 +23,7 @@ public class UnblockUserCommandValidatorTest
 
         // Assert
         result.IsValid.Should().BeFalse();
-        result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(UnblockUserCommand.Id));
+        result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(UnblockUserCommand.TenantId));
     }
 
     [Fact]
@@ -32,7 +32,7 @@ public class UnblockUserCommandValidatorTest
         // Arrange
         var command = new UnblockUserCommand
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             Tag = null
         };
 
@@ -49,7 +49,7 @@ public class UnblockUserCommandValidatorTest
         // Arrange
         var command = new UnblockUserCommand
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             Tag = string.Empty
         };
 
@@ -67,7 +67,7 @@ public class UnblockUserCommandValidatorTest
         // Arrange
         var command = new UnblockUserCommand
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             Tag = " "
         };
 
@@ -85,7 +85,7 @@ public class UnblockUserCommandValidatorTest
         // Arrange
         var command = new UnblockUserCommand
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             Tag = "tag"
         };
 

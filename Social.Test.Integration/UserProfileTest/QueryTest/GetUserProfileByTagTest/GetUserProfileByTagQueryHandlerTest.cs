@@ -37,7 +37,7 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
         await Db.AddRangeAsync(requestingUser, userProfile);
         await Db.SaveChangesAsync();
 
-        var query = new GetUserProfileByTagQuery() { Id = requestingUser.Id, Tag = userProfile.UserTag.Tag };
+        var query = new GetUserProfileByTagQuery() { TenantId = requestingUser.Id, Tag = userProfile.UserTag.Tag };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -56,7 +56,7 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
         await Db.AddAsync(userProfile);
         await Db.SaveChangesAsync();
 
-        var query = new GetUserProfileByTagQuery() { Id = Guid.NewGuid(), Tag = userProfile.UserTag.Tag };
+        var query = new GetUserProfileByTagQuery() { TenantId = Guid.NewGuid(), Tag = userProfile.UserTag.Tag };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -75,7 +75,7 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
         await Db.AddAsync(requestingUser);
         await Db.SaveChangesAsync();
 
-        var query = new GetUserProfileByTagQuery() { Id = requestingUser.Id, Tag = "userProfile" };
+        var query = new GetUserProfileByTagQuery() { TenantId = requestingUser.Id, Tag = "userProfile" };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -94,7 +94,7 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
         await Db.AddRangeAsync(requestingUser, userProfile);
         await Db.SaveChangesAsync();
 
-        var query = new GetUserProfileByTagQuery() { Id = requestingUser.Id, Tag = userProfile.UserTag.Tag };
+        var query = new GetUserProfileByTagQuery() { TenantId = requestingUser.Id, Tag = userProfile.UserTag.Tag };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -113,7 +113,7 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
         await Db.AddRangeAsync(requestingUser, userProfile);
         await Db.SaveChangesAsync();
 
-        var query = new GetUserProfileByTagQuery() { Id = requestingUser.Id, Tag = userProfile.UserTag.Tag };
+        var query = new GetUserProfileByTagQuery() { TenantId = requestingUser.Id, Tag = userProfile.UserTag.Tag };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);

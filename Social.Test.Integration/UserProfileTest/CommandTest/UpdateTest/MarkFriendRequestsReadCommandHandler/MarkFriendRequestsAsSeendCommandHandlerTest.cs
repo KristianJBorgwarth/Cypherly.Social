@@ -12,16 +12,16 @@ using Social.Test.Integration.Setup;
 
 namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.MarkFriendRequestsReadCommandHandler;
 
-public class MarkFriendRequestsReadCommandHandlerTest : IntegrationTestBase
+public class MarkFriendRequestsAsSeendCommandHandlerTest : IntegrationTestBase
 {
-    private readonly Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsReadCommandHandler _sut;
-    public MarkFriendRequestsReadCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
+    private readonly Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsAsSeendCommandHandler _sut;
+    public MarkFriendRequestsAsSeendCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var userProfileRepository = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         var friendshipService = scope.ServiceProvider.GetRequiredService<IFriendshipService>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsReadCommandHandler>>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsAsSeendCommandHandler>>();
 
         _sut = new(
             userProfileRepository,
@@ -35,9 +35,9 @@ public class MarkFriendRequestsReadCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var command = new MarkFriendRequestsReadCommand()
+        var command = new MarkFriendRequestsAsSeenCommand()
         {
-            Id = userId,
+            TenantId = userId,
             RequestTags = new List<string> { "tag1", "tag2" }
         };
 
@@ -62,9 +62,9 @@ public class MarkFriendRequestsReadCommandHandlerTest : IntegrationTestBase
         await Db.SaveChangesAsync();
 
         // Act
-        var result = await _sut.Handle(new MarkFriendRequestsReadCommand()
+        var result = await _sut.Handle(new MarkFriendRequestsAsSeenCommand()
         {
-            Id = userprofile.Id,
+            TenantId = userprofile.Id,
             RequestTags = new List<string> { friendProfile.UserTag.Tag }
         }, CancellationToken.None);
 
