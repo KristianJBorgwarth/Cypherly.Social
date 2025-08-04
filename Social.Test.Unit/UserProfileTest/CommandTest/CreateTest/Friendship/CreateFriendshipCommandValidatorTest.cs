@@ -15,7 +15,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship
             // Arrange
             var command = new CreateFriendshipCommand
             {
-                Id = Guid.Empty, // Invalid UserId
+                TenantId = Guid.Empty, // Invalid UserId
                 FriendTag = "ValidTag"
             };
 
@@ -23,8 +23,8 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship
             var result = _validator.TestValidate(command);
 
             // Assert
-            result.ShouldHaveValidationErrorFor(x => x.Id)
-                .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(CreateFriendshipCommand.Id)).Message);
+            result.ShouldHaveValidationErrorFor(x => x.TenantId)
+                .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(CreateFriendshipCommand.TenantId)).Message);
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship
             // Arrange
             var command = new CreateFriendshipCommand
             {
-                Id = Guid.NewGuid(),
+                TenantId = Guid.NewGuid(),
                 FriendTag = null // Null FriendTag
             };
 
@@ -51,7 +51,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship
             // Arrange
             var command = new CreateFriendshipCommand
             {
-                Id = Guid.NewGuid(),
+                TenantId = Guid.NewGuid(),
                 FriendTag = "" // Empty FriendTag
             };
 
@@ -69,7 +69,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship
             // Arrange
             var command = new CreateFriendshipCommand
             {
-                Id = Guid.NewGuid(), // Valid UserId
+                TenantId = Guid.NewGuid(), // Valid UserId
                 FriendTag = "ValidTag"   // Valid FriendTag
             };
 
@@ -77,7 +77,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship
             var result = _validator.TestValidate(command);
 
             // Assert
-            result.ShouldNotHaveValidationErrorFor(x => x.Id);
+            result.ShouldNotHaveValidationErrorFor(x => x.TenantId);
             result.ShouldNotHaveValidationErrorFor(x => x.FriendTag);
         }
     }

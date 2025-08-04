@@ -7,9 +7,9 @@ public sealed class DeleteFriendRequestCommandValidator : AbstractValidator<Dele
 {
     public DeleteFriendRequestCommandValidator()
     {
-        RuleFor(x => x.Id)
+        RuleFor(x => x.TenantId)
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsEmpty(nameof(DeleteFriendRequestCommand.Id)).Message);
+            .WithMessage(Errors.General.ValueIsEmpty(nameof(DeleteFriendRequestCommand.TenantId)).Message);
 
         RuleFor(x => x.FriendTag)
             .NotEmpty()

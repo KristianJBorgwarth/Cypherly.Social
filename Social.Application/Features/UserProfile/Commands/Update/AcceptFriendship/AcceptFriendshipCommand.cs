@@ -2,8 +2,8 @@
 
 namespace Social.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
 
-public sealed record AcceptFriendshipCommand : ICommandId<AcceptFriendshipDto>
+public sealed record AcceptFriendshipCommand : ICommand<AcceptFriendshipDto>
 {
-    public required Guid Id { get; init; }
+    public required Guid TenantId { get; init; }
     public required string FriendTag { get; init; }
 }

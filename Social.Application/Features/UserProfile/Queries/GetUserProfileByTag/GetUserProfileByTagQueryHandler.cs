@@ -21,11 +21,11 @@ public class GetUserProfileByTagQueryHandler(
     {
         try
         {
-            var requestingUser = await userProfileRepository.GetByIdAsync(request.Id);
+            var requestingUser = await userProfileRepository.GetByIdAsync(request.TenantId);
             if (requestingUser is null)
             {
-                logger.LogWarning("User with ID: {ID} attempted to get profile by tag: {Tag}, but no user with that ID Exists", request.Id, request.Tag);
-                return Result.Fail<GetUserProfileByTagDto>(Errors.General.NotFound(request.Id));
+                logger.LogWarning("User with ID: {ID} attempted to get profile by tag: {Tag}, but no user with that ID Exists", request.TenantId, request.Tag);
+                return Result.Fail<GetUserProfileByTagDto>(Errors.General.NotFound(request.TenantId));
             }
 
             var userProfile = await userProfileRepository.GetByUserTag(request.Tag);
@@ -56,7 +56,7 @@ public class GetUserProfileByTagQueryHandler(
         }
         catch (Exception e)
         {
-            logger.LogCritical(e, "Exception occured while user with ID: {ID} tried to get profile by tag: {Tag}", request.Id, request.Tag);
+            logger.LogCritical(e, "Exception occured while user with ID: {ID} tried to get profile by tag: {Tag}", request.TenantId, request.Tag);
             return Result.Fail<GetUserProfileByTagDto>(Errors.General.UnspecifiedError("An exception occured while attempting to get the user profile by tag."));
         }
     }

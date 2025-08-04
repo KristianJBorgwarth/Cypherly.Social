@@ -19,11 +19,11 @@ public class GetFriendRequestsQueryHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(query.UserId);
+            var userProfile = await userProfileRepository.GetByIdAsync(query.TenantId);
             if (userProfile is null)
             {
-                logger.LogCritical("UserProfile not found, UserProfileId: {UserProfileId}", query.UserId);
-                return Result.Fail<GetFriendRequestsDto[]>(Errors.General.NotFound(query.UserId));
+                logger.LogCritical("UserProfile not found, UserProfileId: {UserProfileId}", query.TenantId);
+                return Result.Fail<GetFriendRequestsDto[]>(Errors.General.NotFound(query.TenantId));
             }
 
             var friendRequests = userProfile.FriendshipsReceived
@@ -56,7 +56,7 @@ public class GetFriendRequestsQueryHandler(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error in GetFriendRequestsQueryHandler, UserProfileId: {UserProfileId}", query.UserId);
+            logger.LogError(ex, "Error in GetFriendRequestsQueryHandler, UserProfileId: {UserProfileId}", query.TenantId);
             return Result.Fail<GetFriendRequestsDto[]>(Errors.General.UnspecifiedError("Exception occured in GetFriendRequestsQueryHandler"));
         }
     }

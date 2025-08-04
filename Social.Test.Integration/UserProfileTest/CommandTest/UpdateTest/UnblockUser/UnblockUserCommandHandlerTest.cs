@@ -29,7 +29,7 @@ public class UnblockUserCommandHandlerTest : IntegrationTestBase
     public async void Handle_WhenUserNotFount_Returns_Fail_NotFound()
     {
         // Arrange
-        var command = new UnblockUserCommand { Id = Guid.NewGuid(), Tag = "tag" };
+        var command = new UnblockUserCommand { TenantId = Guid.NewGuid(), Tag = "tag" };
 
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
@@ -46,7 +46,7 @@ public class UnblockUserCommandHandlerTest : IntegrationTestBase
         await Db.AddAsync(userProfile);
         await Db.SaveChangesAsync();
 
-        var command = new UnblockUserCommand { Id = userProfile.Id, Tag = "tag" };
+        var command = new UnblockUserCommand { TenantId = userProfile.Id, Tag = "tag" };
 
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
@@ -68,7 +68,7 @@ public class UnblockUserCommandHandlerTest : IntegrationTestBase
         await Db.AddAsync(userToUnblock);
         await Db.SaveChangesAsync();
 
-        var command = new UnblockUserCommand { Id = userProfile.Id, Tag = userToUnblock.UserTag.Tag };
+        var command = new UnblockUserCommand { TenantId = userProfile.Id, Tag = userToUnblock.UserTag.Tag };
 
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);

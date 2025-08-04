@@ -43,7 +43,7 @@ public class GetFriendsQueryHandlerTest : IntegrationTestBase
         var connectionIds = new Dictionary<Guid, List<Guid>> { { friendProfile.Id, [Guid.NewGuid(), Guid.NewGuid()] } };
         A.CallTo(() => _connectionIdProvider.GetConnectionIdsByUsers(new[] { friendProfile.Id }, CancellationToken.None)).Returns(connectionIds);
 
-        var query = new GetFriendsQuery { UserProfileId = userProfile.Id };
+        var query = new GetFriendsQuery { TenantId = userProfile.Id };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -60,7 +60,7 @@ public class GetFriendsQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Invalid_Query_Should_Return_NotFound()
     {
         // Arrange
-        var query = new GetFriendsQuery { UserProfileId = Guid.NewGuid() };
+        var query = new GetFriendsQuery { TenantId = Guid.NewGuid() };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -78,7 +78,7 @@ public class GetFriendsQueryHandlerTest : IntegrationTestBase
         Db.Add(userProfile);
         await Db.SaveChangesAsync();
 
-        var query = new GetFriendsQuery { UserProfileId = userProfile.Id };
+        var query = new GetFriendsQuery { TenantId = userProfile.Id };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);

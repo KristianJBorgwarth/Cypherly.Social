@@ -42,7 +42,7 @@ public class DeleteFriendRequestCommandHandlerTest : IntegrationTestBase
 
         var command = new DeleteFriendRequestCommand
         {
-            Id = recievingUser.Id,
+            TenantId = recievingUser.Id,
             FriendTag = requestinUser.UserTag.Tag
         };
 
@@ -61,7 +61,7 @@ public class DeleteFriendRequestCommandHandlerTest : IntegrationTestBase
         // Arrange
         var command = new DeleteFriendRequestCommand
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             FriendTag = "NonExistentTag"
         };
 
@@ -83,7 +83,7 @@ public class DeleteFriendRequestCommandHandlerTest : IntegrationTestBase
 
         var command = new DeleteFriendRequestCommand
         {
-            Id = userProfile.Id,
+            TenantId = userProfile.Id,
             FriendTag = "NonExistentTag"
         };
 
@@ -114,7 +114,7 @@ public class DeleteFriendRequestCommandHandlerTest : IntegrationTestBase
 
         var command = new DeleteFriendRequestCommand
         {
-            Id = recievingUser.Id,
+            TenantId = recievingUser.Id,
             FriendTag = requestinUser.UserTag.Tag
         };
 

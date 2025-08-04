@@ -21,10 +21,10 @@ public class GetFriendsQueryHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.UserProfileId);
+            var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
             if (userProfile is null)
             {
-                return Result.Fail<List<GetFriendsDto>>(Errors.General.NotFound(request.UserProfileId));
+                return Result.Fail<List<GetFriendsDto>>(Errors.General.NotFound(request.TenantId));
             }
 
             var friends = userProfile.GetFriends();
@@ -61,7 +61,7 @@ public class GetFriendsQueryHandler(
         catch (Exception ex)
         {
             logger.LogError(ex, "An exception occurred in {Handler}, while attempting to retrieve friends for {UserProfileId}",
-                nameof(GetFriendsQueryHandler), request.UserProfileId);
+                nameof(GetFriendsQueryHandler), request.TenantId);
             return Result.Fail<List<GetFriendsDto>>(Errors.General.UnspecifiedError("An exception occurred while attempting to retrieve friends."));
         }
     }

@@ -3,8 +3,8 @@ using Social.Application.Abstractions;
 
 namespace Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 
-public sealed record UpdateUserProfilePictureCommand : ICommandId<UpdateUserProfilePictureDto>
+public sealed record UpdateUserProfilePictureCommand : ICommand<UpdateUserProfilePictureDto>
 {
-    public required Guid Id { get; init; }
+    public required Guid TenantId { get; init; }
     public required IFormFile NewProfilePicture { get; init; }
 }

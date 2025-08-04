@@ -20,11 +20,11 @@ public class GetUserProfileQueryHandler(
     {
         try
         {
-            var userprofile = await userProfileRepository.GetByIdAsync(request.UserProfileId);
+            var userprofile = await userProfileRepository.GetByIdAsync(request.TenantId);
             if (userprofile is null)
-                return Result.Fail<GetUserProfileDto>(Errors.General.NotFound(request.UserProfileId.ToString()));
+                return Result.Fail<GetUserProfileDto>(Errors.General.NotFound(request.TenantId.ToString()));
 
-            var connectionIds = await GetConnectionIdsAsync(request.UserProfileId, request.ExclusiveConnectionId, cancellationToken);
+            var connectionIds = await GetConnectionIdsAsync(request.TenantId, request.ExclusiveConnectionId, cancellationToken);
 
             var profilePictureUrl = "";
 
@@ -48,7 +48,7 @@ public class GetUserProfileQueryHandler(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Exception occured while handling request with id {Id}", request.UserProfileId);
+            logger.LogError(ex, "Exception occured while handling request with id {Id}", request.TenantId);
             return Result.Fail<GetUserProfileDto>(
                 Errors.General.UnspecifiedError("An exception occured while handling the request"));
         }

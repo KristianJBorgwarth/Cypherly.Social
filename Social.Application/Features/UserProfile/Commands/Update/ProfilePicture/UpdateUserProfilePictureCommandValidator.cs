@@ -7,11 +7,11 @@ public class UpdateUserProfilePictureCommandValidator : AbstractValidator<Update
 {
     public UpdateUserProfilePictureCommandValidator()
     {
-        RuleFor(cmd => cmd.Id)
-            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(UpdateUserProfilePictureCommand.Id))
+        RuleFor(cmd => cmd.TenantId)
+            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(UpdateUserProfilePictureCommand.TenantId))
                 .Message)
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsEmpty(nameof(UpdateUserProfilePictureCommand.Id)).Message);
+            .WithMessage(Errors.General.ValueIsEmpty(nameof(UpdateUserProfilePictureCommand.TenantId)).Message);
 
         RuleFor(cmd => cmd.NewProfilePicture)
             .NotNull().WithMessage(Errors.General

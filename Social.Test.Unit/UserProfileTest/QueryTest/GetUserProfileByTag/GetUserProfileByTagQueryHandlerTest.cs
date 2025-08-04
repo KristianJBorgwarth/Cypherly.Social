@@ -37,11 +37,11 @@ public class GetUserProfileByTagQueryHandlerTest
         // Arrange
         var request = new GetUserProfileByTagQuery
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             Tag = "TestTag"
         };
 
-        A.CallTo(() => _userProfileRepository.GetByIdAsync(request.Id))!.Returns<UserProfile>(null);
+        A.CallTo(() => _userProfileRepository.GetByIdAsync(request.TenantId))!.Returns<UserProfile>(null);
 
         // Act
         var result = await _sut.Handle(request, CancellationToken.None);
@@ -56,14 +56,14 @@ public class GetUserProfileByTagQueryHandlerTest
         // Arrange
         var request = new GetUserProfileByTagQuery
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             Tag = "TestTag"
         };
 
         var requestingUser = new UserProfile();
         var userProfile = new UserProfile();
 
-        A.CallTo(() => _userProfileRepository.GetByIdAsync(request.Id)).Returns(requestingUser);
+        A.CallTo(() => _userProfileRepository.GetByIdAsync(request.TenantId)).Returns(requestingUser);
         A.CallTo(() => _userProfileRepository.GetByUserTag(request.Tag)).Returns(userProfile);
         A.CallTo(() => _userBlockingService.IsUserBloccked(requestingUser, userProfile))!.Returns(true);
 
@@ -81,13 +81,13 @@ public class GetUserProfileByTagQueryHandlerTest
         // Arrange
         var request = new GetUserProfileByTagQuery
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             Tag = "TestTag"
         };
 
         var requestingUser = new UserProfile();
 
-        A.CallTo(() => _userProfileRepository.GetByIdAsync(request.Id)).Returns(requestingUser);
+        A.CallTo(() => _userProfileRepository.GetByIdAsync(request.TenantId)).Returns(requestingUser);
         A.CallTo(() => _userProfileRepository.GetByUserTag(request.Tag))!.Returns<UserProfile>(null);
 
         // Act
@@ -104,11 +104,11 @@ public class GetUserProfileByTagQueryHandlerTest
         // Arrange
         var request = new GetUserProfileByTagQuery
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             Tag = "TestTag"
         };
 
-        A.CallTo(() => _userProfileRepository.GetByIdAsync(request.Id)).Throws<Exception>();
+        A.CallTo(() => _userProfileRepository.GetByIdAsync(request.TenantId)).Throws<Exception>();
 
         // Act
         var result = await _sut.Handle(request, CancellationToken.None);

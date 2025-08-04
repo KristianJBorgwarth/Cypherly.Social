@@ -17,7 +17,7 @@ public class UpdateChatUserProfilePictureCommandValidatorTests
         // Arrange
         var command = new UpdateUserProfilePictureCommand
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             NewProfilePicture = A.Fake<IFormFile>()
         };
 
@@ -34,7 +34,7 @@ public class UpdateChatUserProfilePictureCommandValidatorTests
         // Arrange
         var command = new UpdateUserProfilePictureCommand()
         {
-            Id = Guid.Empty,
+            TenantId = Guid.Empty,
             NewProfilePicture = A.Fake<IFormFile>()
         };
 
@@ -42,8 +42,8 @@ public class UpdateChatUserProfilePictureCommandValidatorTests
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(cmd => cmd.Id)
-            .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(UpdateUserProfilePictureCommand.Id)).Message);
+        result.ShouldHaveValidationErrorFor(cmd => cmd.TenantId)
+            .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(UpdateUserProfilePictureCommand.TenantId)).Message);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class UpdateChatUserProfilePictureCommandValidatorTests
         // Arrange
         var command = new UpdateUserProfilePictureCommand
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             NewProfilePicture = null
         };
 
@@ -70,7 +70,7 @@ public class UpdateChatUserProfilePictureCommandValidatorTests
         // Arrange
         var command = new UpdateUserProfilePictureCommand
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             NewProfilePicture = null
         };
 

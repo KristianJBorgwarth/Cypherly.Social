@@ -15,7 +15,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.AcceptFriendsh
             // Arrange
             var command = new AcceptFriendshipCommand
             {
-                Id = Guid.NewGuid(),
+                TenantId = Guid.NewGuid(),
                 FriendTag = "ValidFriendTag"
             };
 
@@ -32,7 +32,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.AcceptFriendsh
             // Arrange
             var command = new AcceptFriendshipCommand
             {
-                Id = Guid.Empty, // Invalid UserId
+                TenantId = Guid.Empty, // Invalid UserId
                 FriendTag = "ValidFriendTag"
             };
 
@@ -41,7 +41,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.AcceptFriendsh
 
             // Assert
             result.IsValid.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(AcceptFriendshipCommand.Id) && e.ErrorMessage == Errors.General.ValueIsEmpty(nameof(AcceptFriendshipCommand.Id)).Message);
+            result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(AcceptFriendshipCommand.TenantId) && e.ErrorMessage == Errors.General.ValueIsEmpty(nameof(AcceptFriendshipCommand.TenantId)).Message);
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.AcceptFriendsh
             // Arrange
             var command = new AcceptFriendshipCommand
             {
-                Id = Guid.NewGuid(),
+                TenantId = Guid.NewGuid(),
                 FriendTag = null // Invalid FriendTag
             };
 
@@ -68,7 +68,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.AcceptFriendsh
             // Arrange
             var command = new AcceptFriendshipCommand
             {
-                Id = Guid.NewGuid(),
+                TenantId = Guid.NewGuid(),
                 FriendTag = "" // Invalid FriendTag
             };
 

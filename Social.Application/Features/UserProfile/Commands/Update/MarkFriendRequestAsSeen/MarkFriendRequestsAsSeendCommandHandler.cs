@@ -6,22 +6,22 @@ using Social.Application.Contracts.Repositories;
 
 namespace Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen;
 
-public class MarkFriendRequestsReadCommandHandler(
+public class MarkFriendRequestsAsSeendCommandHandler(
     IUserProfileRepository userProfileRepository,
     IFriendshipService friendshipService,
     IUnitOfWork unitOfWork,
-    ILogger<MarkFriendRequestsReadCommandHandler> logger)
-    : ICommandHandler<MarkFriendRequestsReadCommand>
+    ILogger<MarkFriendRequestsAsSeendCommandHandler> logger)
+    : ICommandHandler<MarkFriendRequestsAsSeenCommand>
 {
-    public async Task<Result> Handle(MarkFriendRequestsReadCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(MarkFriendRequestsAsSeenCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.Id);
+            var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
             if (userProfile is null)
             {
-                logger.LogError("User profile not found for ID: {Id}", request.Id);
-                return Result.Fail(Errors.General.NotFound(request.Id));
+                logger.LogError("User profile not found for ID: {Id}", request.TenantId);
+                return Result.Fail(Errors.General.NotFound(request.TenantId));
             }
 
             friendshipService.MarkeFriendshipAsSeen(userProfile, request.RequestTags.ToArray());
@@ -32,7 +32,7 @@ public class MarkFriendRequestsReadCommandHandler(
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Error marking friend requests as seen for user profile ID: {Id}", request.Id);
+            logger.LogError(exception, "Error marking friend requests as seen for user profile ID: {Id}", request.TenantId);
             return Result.Fail(Errors.General.UnspecifiedError("An error occurred while marking friend requests as seen"));
         }
     }

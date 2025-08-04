@@ -29,8 +29,8 @@ public class BlockUserCommandHandlerTest
     public async Task Handle_WhenUserProfileIsNull_ReturnsNotFound()
     {
         // Arrange
-        var request = new BlockUserCommand { Id = Guid.Empty, BlockedUserTag = "blockedUserTag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(request.Id)).Returns((UserProfile)null);
+        var request = new BlockUserCommand { TenantId = Guid.Empty, BlockedUserTag = "blockedUserTag" };
+        A.CallTo(() => _fakeRepo.GetByIdAsync(request.TenantId)).Returns((UserProfile)null);
 
         // Act
         var result = await _sut.Handle(request, CancellationToken.None);
@@ -44,8 +44,8 @@ public class BlockUserCommandHandlerTest
     public async Task Handle_WhenBlockedUserProfileIsNull_ReturnsNotFound()
     {
         // Arrange
-        var request = new BlockUserCommand { Id = Guid.NewGuid(), BlockedUserTag = "blockedUserTag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(request.Id)).Returns(new UserProfile());
+        var request = new BlockUserCommand { TenantId = Guid.NewGuid(), BlockedUserTag = "blockedUserTag" };
+        A.CallTo(() => _fakeRepo.GetByIdAsync(request.TenantId)).Returns(new UserProfile());
         A.CallTo(() => _fakeRepo.GetByUserTag(request.BlockedUserTag)).Returns((UserProfile)null);
 
         // Act
@@ -60,8 +60,8 @@ public class BlockUserCommandHandlerTest
     public async Task Handle_WhenExceptionOccurs_ReturnsUnspecifiedError()
     {
         // Arrange
-        var request = new BlockUserCommand { Id = Guid.NewGuid(), BlockedUserTag = "blockedUserTag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(request.Id)).Throws<Exception>();
+        var request = new BlockUserCommand { TenantId = Guid.NewGuid(), BlockedUserTag = "blockedUserTag" };
+        A.CallTo(() => _fakeRepo.GetByIdAsync(request.TenantId)).Throws<Exception>();
 
         // Act
         var result = await _sut.Handle(request, CancellationToken.None);
@@ -75,8 +75,8 @@ public class BlockUserCommandHandlerTest
     public async Task Handle_WhenAllIsWell_ReturnsOk()
     {
         // Arrange
-        var request = new BlockUserCommand { Id = Guid.NewGuid(), BlockedUserTag = "blockedUserTag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(request.Id)).Returns(new UserProfile());
+        var request = new BlockUserCommand { TenantId = Guid.NewGuid(), BlockedUserTag = "blockedUserTag" };
+        A.CallTo(() => _fakeRepo.GetByIdAsync(request.TenantId)).Returns(new UserProfile());
         A.CallTo(() => _fakeRepo.GetByUserTag(request.BlockedUserTag)).Returns(new UserProfile());
 
         // Act

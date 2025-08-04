@@ -16,11 +16,11 @@ public class TogglePrivacyCommandHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.Id);
+            var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
             if (userProfile is null)
             {
-                logger.LogCritical("User with {ID} not found", request.Id);
-                return Result.Fail(Errors.General.NotFound(request.Id));
+                logger.LogCritical("User with {ID} not found", request.TenantId);
+                return Result.Fail(Errors.General.NotFound(request.TenantId));
             }
 
             userProfile.TogglePrivacy(request.IsPrivate);
@@ -30,7 +30,7 @@ public class TogglePrivacyCommandHandler(
         }
         catch (Exception e)
         {
-            logger.LogCritical(e, "An exception occurred while toggling privacy for user with {ID}", request.Id);
+            logger.LogCritical(e, "An exception occurred while toggling privacy for user with {ID}", request.TenantId);
             return Result.Fail(Errors.General.UnspecifiedError("An exception occurred while attempting to toggle privacy"));
         }
     }

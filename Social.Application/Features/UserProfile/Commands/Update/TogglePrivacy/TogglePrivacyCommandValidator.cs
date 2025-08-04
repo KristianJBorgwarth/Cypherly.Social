@@ -7,7 +7,7 @@ public class TogglePrivacyCommandValidator : AbstractValidator<TogglePrivacyComm
 {
     public TogglePrivacyCommandValidator()
     {
-        RuleFor(x => x.Id)
-            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(TogglePrivacyCommand.Id)).Message);
+        RuleFor(x => x.TenantId)
+            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(TogglePrivacyCommand.TenantId)).Message);
     }
 }

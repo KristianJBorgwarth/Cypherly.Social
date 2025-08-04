@@ -31,7 +31,7 @@ public class TogglePrivacyCommandHandlerTest : IntegrationTestBase
         // Arrange
         var command = new TogglePrivacyCommand
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             IsPrivate = true
         };
 
@@ -51,7 +51,7 @@ public class TogglePrivacyCommandHandlerTest : IntegrationTestBase
 
         var command = new TogglePrivacyCommand
         {
-            Id = profile.Id,
+            TenantId = profile.Id,
             IsPrivate = true
         };
 
@@ -60,7 +60,7 @@ public class TogglePrivacyCommandHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeTrue();
-        Db.UserProfile.AsNoTracking().FirstOrDefault(x => x.Id == command.Id).IsPrivate.Should().BeTrue();
+        Db.UserProfile.AsNoTracking().FirstOrDefault(x => x.Id == command.TenantId).IsPrivate.Should().BeTrue();
     }
 }
 

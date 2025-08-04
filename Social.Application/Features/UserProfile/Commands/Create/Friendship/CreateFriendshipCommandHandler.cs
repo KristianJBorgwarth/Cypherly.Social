@@ -26,17 +26,17 @@ public class CreateFriendshipCommandHandler(
                 return Result.Fail(Errors.General.NotFound(request.FriendTag));
             }
 
-            var userProfile = await userProfileRepository.GetByIdAsync(request.Id);
+            var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
             if (userProfile is null)
             {
-                logger.LogWarning("User not found for {UserId}", request.Id);
-                return Result.Fail(Errors.General.NotFound(request.Id));
+                logger.LogWarning("User not found for {UserId}", request.TenantId);
+                return Result.Fail(Errors.General.NotFound(request.TenantId));
             }
 
             var result = friendshipService.CreateFriendship(userProfile, friend);
             if (result.Success is false)
             {
-                logger.LogWarning("Error creating friendship between {UserId} and {FriendId}", request.Id, friend.Id);
+                logger.LogWarning("Error creating friendship between {UserId} and {FriendId}", request.TenantId, friend.Id);
                 return Result.Fail(result.Error);
             }
 

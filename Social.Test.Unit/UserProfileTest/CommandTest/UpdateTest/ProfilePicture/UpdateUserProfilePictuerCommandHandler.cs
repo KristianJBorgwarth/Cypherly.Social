@@ -34,15 +34,15 @@ public class UpdateUserProfilePictuerCommandHandler
         // Arrange
         var command = new UpdateUserProfilePictureCommand
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             NewProfilePicture = A.Fake<IFormFile>()
         };
 
         var userProfile = new UserProfile(Guid.NewGuid(), "test", UserTag.Create("test"));
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns(userProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).Returns(userProfile);
 
-        A.CallTo(() => _fakeProfilePicService.UploadProfilePictureAsync(command.NewProfilePicture, command.Id))
+        A.CallTo(() => _fakeProfilePicService.UploadProfilePictureAsync(command.NewProfilePicture, command.TenantId))
             .Returns(Result.Ok("somestring"));
 
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<System.Threading.CancellationToken>._)).DoesNothing();
@@ -64,11 +64,11 @@ public class UpdateUserProfilePictuerCommandHandler
         // Arrange
         var command = new UpdateUserProfilePictureCommand()
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             NewProfilePicture = A.Fake<IFormFile>()
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id))!.Returns<UserProfile>(null!);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId))!.Returns<UserProfile>(null!);
 
         // Act
         var result = await _sut.Handle(command, new());
@@ -84,14 +84,14 @@ public class UpdateUserProfilePictuerCommandHandler
         // Arrange
         var command = new UpdateUserProfilePictureCommand()
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             NewProfilePicture = A.Fake<IFormFile>()
         };
 
         var userProfile = new UserProfile(Guid.NewGuid(), "test", UserTag.Create("test"));
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns(userProfile);
-        A.CallTo(() => _fakeProfilePicService.UploadProfilePictureAsync(command.NewProfilePicture, command.Id))
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).Returns(userProfile);
+        A.CallTo(() => _fakeProfilePicService.UploadProfilePictureAsync(command.NewProfilePicture, command.TenantId))
             .Returns(Result.Fail<string>(Errors.General.UnspecifiedError("Invalid profile picture")));
 
         // Act
@@ -109,15 +109,15 @@ public class UpdateUserProfilePictuerCommandHandler
         // Arrange
         var command = new UpdateUserProfilePictureCommand()
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             NewProfilePicture = A.Fake<IFormFile>()
         };
 
         var userProfile = new UserProfile(Guid.NewGuid(), "test", UserTag.Create("test"));
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns(userProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).Returns(userProfile);
 
-        A.CallTo(() => _fakeProfilePicService.UploadProfilePictureAsync(command.NewProfilePicture, command.Id))
+        A.CallTo(() => _fakeProfilePicService.UploadProfilePictureAsync(command.NewProfilePicture, command.TenantId))
             .Throws<Exception>();
 
         // Act

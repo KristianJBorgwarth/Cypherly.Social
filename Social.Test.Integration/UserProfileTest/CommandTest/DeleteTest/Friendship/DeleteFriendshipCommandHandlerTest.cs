@@ -40,7 +40,7 @@ public class DeleteFriendshipCommandHandlerTest : IntegrationTestBase
 
         var cmd = new DeleteFriendshipCommand()
         {
-            Id = userProfile.Id,
+            TenantId = userProfile.Id,
             FriendTag = friendProfile.UserTag.Tag
         };
 
@@ -60,7 +60,7 @@ public class DeleteFriendshipCommandHandlerTest : IntegrationTestBase
         // Arrange
         var cmd = new DeleteFriendshipCommand()
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             FriendTag = "FriendUser"
         };
 
@@ -87,7 +87,7 @@ public class DeleteFriendshipCommandHandlerTest : IntegrationTestBase
 
         var cmd = new DeleteFriendshipCommand()
         {
-            Id = userProfile.Id,
+            TenantId = userProfile.Id,
             FriendTag = friendProfile.UserTag.Tag
         };
 

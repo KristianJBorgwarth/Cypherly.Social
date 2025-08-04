@@ -2,8 +2,8 @@
 
 namespace Social.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
 
-public sealed record TogglePrivacyCommand : ICommandId
+public sealed record TogglePrivacyCommand : ICommand
 {
-    public Guid Id { get; init; } // The ID of the user whose privacy status is being toggled
+    public Guid TenantId { get; init; } 
     public bool IsPrivate { get; init; }
 }

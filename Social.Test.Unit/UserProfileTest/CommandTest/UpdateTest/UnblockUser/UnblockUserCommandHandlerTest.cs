@@ -30,8 +30,8 @@ public class UnblockUserCommandHandlerTest
     public async void Handle_WhenUserProfileIsNull_ReturnsNotFound()
     {
         // Arrange
-        var command = new UnblockUserCommand { Id = Guid.NewGuid(), Tag = "tag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id))!.Returns<UserProfile>(null);
+        var command = new UnblockUserCommand { TenantId = Guid.NewGuid(), Tag = "tag" };
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId))!.Returns<UserProfile>(null);
 
         // Act
         var result = await _sut.Handle(command, default);
@@ -39,7 +39,7 @@ public class UnblockUserCommandHandlerTest
         // Assert
         result.Success.Should().BeFalse();
         result.Error.Message.Should().BeEquivalentTo(
-            Errors.General.NotFound(command.Id).Message);
+            Errors.General.NotFound(command.TenantId).Message);
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustNotHaveHappened();
     }
 
@@ -47,8 +47,8 @@ public class UnblockUserCommandHandlerTest
     public async void Handle_When_UserToUnblockIsNull_ReturnsNotFound()
     {
         // Arrange
-        var command = new UnblockUserCommand { Id = Guid.NewGuid(), Tag = "tag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id))!.Returns(new UserProfile());
+        var command = new UnblockUserCommand { TenantId = Guid.NewGuid(), Tag = "tag" };
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId))!.Returns(new UserProfile());
         A.CallTo(() => _fakeRepo.GetByUserTag(command.Tag))!.Returns<UserProfile>(null);
 
         // Act
@@ -66,10 +66,10 @@ public class UnblockUserCommandHandlerTest
     public async void Handle_When_Command_IsValid_Should_Unblock_And_Return_ResultOK()
     {
         // Arrange
-        var command = new UnblockUserCommand { Id = Guid.NewGuid(), Tag = "tag" };
+        var command = new UnblockUserCommand { TenantId = Guid.NewGuid(), Tag = "tag" };
         var userProfile = new UserProfile();
         var userToUnblock = new UserProfile();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id))!.Returns(userProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId))!.Returns(userProfile);
         A.CallTo(() => _fakeRepo.GetByUserTag(command.Tag))!.Returns(userToUnblock);
         A.CallTo(() => _fakeProfileService.UnblockUser(userProfile, userToUnblock)).DoesNothing();
 
@@ -86,10 +86,10 @@ public class UnblockUserCommandHandlerTest
     public async void Handle_When_Command_IsValid_And_Exception_IsThrown_Should_Return_UnspecifiedError()
     {
         // Arrange
-        var command = new UnblockUserCommand { Id = Guid.NewGuid(), Tag = "tag" };
+        var command = new UnblockUserCommand { TenantId = Guid.NewGuid(), Tag = "tag" };
         var userProfile = new UserProfile();
         var userToUnblock = new UserProfile();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id))!.Returns(userProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId))!.Returns(userProfile);
         A.CallTo(() => _fakeRepo.GetByUserTag(command.Tag))!.Returns(userToUnblock);
         A.CallTo(() => _fakeProfileService.UnblockUser(userProfile, userToUnblock)).Throws<Exception>();
 

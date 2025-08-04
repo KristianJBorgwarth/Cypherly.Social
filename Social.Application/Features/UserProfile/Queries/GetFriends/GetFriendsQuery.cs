@@ -4,5 +4,5 @@ namespace Social.Application.Features.UserProfile.Queries.GetFriends;
 
 public sealed record GetFriendsQuery : IQueryLimited<List<GetFriendsDto>>
 {
-    public required Guid UserProfileId { get; init; }
+    public required Guid TenantId { get; init; }
 }

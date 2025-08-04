@@ -15,11 +15,11 @@ public sealed class GetBlockedUserProfilesQueryHandler(
     {
         try
         {
-            var userProfile = await repository.GetByIdAsync(query.UserId);
+            var userProfile = await repository.GetByIdAsync(query.TenantId);
             if (userProfile is null)
             {
-                logger.LogError("UserProfile with ID: {UserId} not found", query.UserId);
-                return Result.Fail<List<GetBlockedUserProfilesDto>>(Errors.General.NotFound(query.UserId));
+                logger.LogError("UserProfile with ID: {UserId} not found", query.TenantId);
+                return Result.Fail<List<GetBlockedUserProfilesDto>>(Errors.General.NotFound(query.TenantId));
             }
 
             var blockedUserProfiles = userProfile.BlockedUsers
@@ -30,7 +30,7 @@ public sealed class GetBlockedUserProfilesQueryHandler(
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Exception occurred in GetBlockedUserProfilesQueryHandler for UserProfile with ID: {UserId}", query.UserId);
+            logger.LogError(e, "Exception occurred in GetBlockedUserProfilesQueryHandler for UserProfile with ID: {UserId}", query.TenantId);
             return Result.Fail<List<GetBlockedUserProfilesDto>>(Errors.General.UnspecifiedError("An exception occured during the request"));
         }
     }

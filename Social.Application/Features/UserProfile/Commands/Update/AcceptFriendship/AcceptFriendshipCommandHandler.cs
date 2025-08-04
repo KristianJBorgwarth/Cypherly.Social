@@ -23,17 +23,17 @@ public class AcceptFriendshipCommandHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.Id);
+            var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
             if (userProfile is null)
             {
-                logger.LogError("User not found: {UserId}", request.Id);
-                return Result.Fail<AcceptFriendshipDto>(Errors.General.NotFound(request.Id));
+                logger.LogError("User not found: {UserId}", request.TenantId);
+                return Result.Fail<AcceptFriendshipDto>(Errors.General.NotFound(request.TenantId));
             }
 
             var result = friendshipService.AcceptFriendship(userProfile, request.FriendTag);
             if (result.Success is false)
             {
-                logger.LogError("Error accepting friendship: {Error} {UserId} {FriendTag}", result.Error, request.Id, request.FriendTag);
+                logger.LogError("Error accepting friendship: {Error} {UserId} {FriendTag}", result.Error, request.TenantId, request.FriendTag);
                 return Result.Fail<AcceptFriendshipDto>(result.Error);
             }
             var newFriend = await userProfileRepository.GetByUserTag(request.FriendTag);
@@ -57,7 +57,7 @@ public class AcceptFriendshipCommandHandler(
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Error accepting friendship: {UserId} {FriendTag}", request.Id, request.FriendTag);
+            logger.LogError(e, "Error accepting friendship: {UserId} {FriendTag}", request.TenantId, request.FriendTag);
             return Result.Fail<AcceptFriendshipDto>(Errors.General.UnspecifiedError("An exception occured while accepting friendship"));
         }
     }

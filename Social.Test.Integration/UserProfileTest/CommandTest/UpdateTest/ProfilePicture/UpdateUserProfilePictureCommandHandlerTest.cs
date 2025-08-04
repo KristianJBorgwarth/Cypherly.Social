@@ -38,7 +38,7 @@ public class UpdateUserProfilePictureCommandHandlerTest : IntegrationTestBase
 
         var command = new UpdateUserProfilePictureCommand()
         {
-            Id = user.Id,
+            TenantId = user.Id,
             NewProfilePicture = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png")
         };
 
@@ -62,7 +62,7 @@ public class UpdateUserProfilePictureCommandHandlerTest : IntegrationTestBase
 
         var command = new UpdateUserProfilePictureCommand()
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             NewProfilePicture = null
         };
 
@@ -72,7 +72,7 @@ public class UpdateUserProfilePictureCommandHandlerTest : IntegrationTestBase
         // Assert
         result.Should().NotBeNull();
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Be(Errors.General.NotFound(command.Id).Message);
+        result.Error.Message.Should().Be(Errors.General.NotFound(command.TenantId).Message);
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public class UpdateUserProfilePictureCommandHandlerTest : IntegrationTestBase
 
         var command = new UpdateUserProfilePictureCommand()
         {
-            Id = userProfile.Id,
+            TenantId = userProfile.Id,
             NewProfilePicture = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "Social.Test.Integration/Setup/Resources/confirm_style_2_002.wav"), "image/jpg")
         };
 

@@ -18,11 +18,11 @@ public sealed class DeleteFriendRequestCommandHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.Id);
+            var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
             if (userProfile is null)
             {
-                logger.LogWarning("User profile with ID {Id} not found.", request.Id);
-                return Result.Fail(Errors.General.NotFound(request.Id));
+                logger.LogWarning("User profile with ID {Id} not found.", request.TenantId);
+                return Result.Fail(Errors.General.NotFound(request.TenantId));
             }
 
             var delResult = friendshipService.DeleteFriendRequest(userProfile, request.FriendTag);
@@ -37,7 +37,7 @@ public sealed class DeleteFriendRequestCommandHandler(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while deleting friend request for user profile with ID {Id}.", request.Id);
+            logger.LogError(ex, "An error occurred while deleting friend request for user profile with ID {Id}.", request.TenantId);
             return Result.Fail(Errors.General.UnspecifiedError("An error occurred while processing your request."));
         }
     }

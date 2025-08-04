@@ -18,41 +18,41 @@ namespace Social.Test.Unit.UserProfileTest.QueryTest.GetUserProfile
         public void Should_Have_Error_When_UserProfileId_Is_Null()
         {
             // Arrange
-            var query = new GetUserProfileQuery { UserProfileId = Guid.Empty, ExclusiveConnectionId = Guid.NewGuid() };
+            var query = new GetUserProfileQuery { TenantId = Guid.Empty, ExclusiveConnectionId = Guid.NewGuid() };
 
             // Act
             var result = _validator.TestValidate(query);
 
             // Assert
-            result.ShouldHaveValidationErrorFor(x => x.UserProfileId)
-                .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(GetUserProfileQuery.UserProfileId)).Message);
+            result.ShouldHaveValidationErrorFor(x => x.TenantId)
+                .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(GetUserProfileQuery.TenantId)).Message);
         }
 
         [Fact]
         public void Should_Have_Error_When_UserProfileId_Is_Empty()
         {
             // Arrange
-            var query = new GetUserProfileQuery { UserProfileId = Guid.Empty, ExclusiveConnectionId = Guid.Empty}; // Empty Guid
+            var query = new GetUserProfileQuery { TenantId = Guid.Empty, ExclusiveConnectionId = Guid.Empty}; // Empty Guid
 
             // Act
             var result = _validator.TestValidate(query);
 
             // Assert
-            result.ShouldHaveValidationErrorFor(x => x.UserProfileId)
-                .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(GetUserProfileQuery.UserProfileId)).Message);
+            result.ShouldHaveValidationErrorFor(x => x.TenantId)
+                .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(GetUserProfileQuery.TenantId)).Message);
         }
 
         [Fact]
         public void Should_Not_Have_Error_When_UserProfileId_Is_Valid()
         {
             // Arrange
-            var query = new GetUserProfileQuery { UserProfileId = Guid.NewGuid(), ExclusiveConnectionId = Guid.NewGuid()};
+            var query = new GetUserProfileQuery { TenantId = Guid.NewGuid(), ExclusiveConnectionId = Guid.NewGuid()};
 
             // Act
             var result = _validator.TestValidate(query);
 
             // Assert
-            result.ShouldNotHaveValidationErrorFor(x => x.UserProfileId);
+            result.ShouldNotHaveValidationErrorFor(x => x.TenantId);
         }
     }
 }

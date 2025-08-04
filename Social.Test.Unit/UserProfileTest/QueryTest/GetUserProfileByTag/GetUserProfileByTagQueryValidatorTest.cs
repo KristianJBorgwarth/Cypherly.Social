@@ -14,7 +14,7 @@ public class GetUserProfileByTagQueryValidatorTest
         // Arrange
         var query = new GetUserProfileByTagQuery
         {
-            Id = Guid.Empty,
+            TenantId = Guid.Empty,
             Tag = "tag"
         };
 
@@ -31,7 +31,7 @@ public class GetUserProfileByTagQueryValidatorTest
         // Arrange
         var query = new GetUserProfileByTagQuery
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             Tag = ""
         };
 
@@ -48,7 +48,7 @@ public class GetUserProfileByTagQueryValidatorTest
         // Arrange
         var query = new GetUserProfileByTagQuery
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             Tag = null
         };
 
@@ -65,7 +65,7 @@ public class GetUserProfileByTagQueryValidatorTest
         // Arrange
         var query = new GetUserProfileByTagQuery
         {
-            Id = Guid.NewGuid(),
+            TenantId = Guid.NewGuid(),
             Tag = "tag"
         };
 

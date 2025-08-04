@@ -18,11 +18,11 @@ public class UnblockUserCommandHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.Id);
+            var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
             if (userProfile is null)
             {
-                logger.LogCritical("User with {ID} not found", request.Id);
-                return Result.Fail(Errors.General.NotFound(request.Id));
+                logger.LogCritical("User with {ID} not found", request.TenantId);
+                return Result.Fail(Errors.General.NotFound(request.TenantId));
             }
 
             var userToUnblock = await userProfileRepository.GetByUserTag(request.Tag);
@@ -39,7 +39,7 @@ public class UnblockUserCommandHandler(
         }
         catch (Exception e)
         {
-            logger.LogCritical(e, "An exception occured while user with {ID} tried to unblock user with tag {Tag}", request.Id, request.Tag);
+            logger.LogCritical(e, "An exception occured while user with {ID} tried to unblock user with tag {Tag}", request.TenantId, request.Tag);
             return Result.Fail(Errors.General.UnspecifiedError("An exception occured while attempting to unblock"));
         }
     }
