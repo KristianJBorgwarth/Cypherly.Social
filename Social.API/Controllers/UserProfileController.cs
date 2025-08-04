@@ -35,8 +35,7 @@ public class UserProfileController(ISender sender) : BaseController
     public async Task<IActionResult> GetUserProfile([FromQuery] GetUserProfileRequest request, CancellationToken cancellationToken = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new GetUserProfileQuery
-            { TenantId = tenantId, ExclusiveConnectionId = request.ExclusiveConnectionId }, cancellationToken);
+        var result = await sender.Send(new GetUserProfileQuery { TenantId = tenantId, ExclusiveConnectionId = request.ExclusiveConnectionId }, cancellationToken);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 

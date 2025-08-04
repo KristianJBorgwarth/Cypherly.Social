@@ -1,7 +1,6 @@
-﻿namespace Social.API.Requests;
+﻿namespace Social.API.Requests.Query;
 
 public sealed record GetUserProfileByTagRequest
 {
-    public required Guid TenantId { get; init; }
     public required string Tag { get; init; }
 }
