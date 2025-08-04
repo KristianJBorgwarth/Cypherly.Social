@@ -21,8 +21,7 @@ public class GetUserProfileQueryHandler(
         try
         {
             var userprofile = await userProfileRepository.GetByIdAsync(request.TenantId);
-            if (userprofile is null)
-                return Result.Fail<GetUserProfileDto>(Errors.General.NotFound(request.TenantId.ToString()));
+            if (userprofile is null) return Result.Fail<GetUserProfileDto>(Errors.General.NotFound(request.TenantId.ToString()));
 
             var connectionIds = await GetConnectionIdsAsync(request.TenantId, request.ExclusiveConnectionId, cancellationToken);
 
