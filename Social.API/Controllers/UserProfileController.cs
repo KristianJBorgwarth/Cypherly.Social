@@ -162,7 +162,7 @@ public class UserProfileController(ISender sender) : BaseController
     public async Task<IActionResult> GetFriendRequests(CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new GetFriendRequestsQuery() {TenantId = tenantId}, ct);
+        var result = await sender.Send(new GetFriendRequestsQuery {TenantId = tenantId}, ct);
 
         if (result.Success is false) return Error(result.Error);
 
@@ -197,7 +197,7 @@ public class UserProfileController(ISender sender) : BaseController
     public async Task<IActionResult> MarkFriendRequestsAsSeen([FromBody] MarkFriendRequestsAsSeenRequest friendRequest, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new MarkFriendRequestsAsSeenCommand() {TenantId = tenantId, RequestTags = friendRequest.RequestTags}, ct);
+        var result = await sender.Send(new MarkFriendRequestsAsSeenCommand {TenantId = tenantId, RequestTags = friendRequest.RequestTags}, ct);
         return result.Success ? Ok() : Error(result.Error);
     }
 
@@ -208,7 +208,7 @@ public class UserProfileController(ISender sender) : BaseController
     public async Task<IActionResult> TogglePrivacy([FromBody] TogglePrivacyRequest request, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new TogglePrivacyCommand(){TenantId = tenantId, IsPrivate = request.IsPrivate}, ct);
+        var result = await sender.Send(new TogglePrivacyCommand {TenantId = tenantId, IsPrivate = request.IsPrivate}, ct);
         return result.Success ? Ok() : Error(result.Error);
     }
 
@@ -219,7 +219,7 @@ public class UserProfileController(ISender sender) : BaseController
     public async Task<IActionResult> RejectFriendship([FromQuery] DeleteFriendRequest request, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new DeleteFriendshipCommand() {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
+        var result = await sender.Send(new DeleteFriendshipCommand {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
         return result.Success ? Ok() : Error(result.Error);
     }
 }
