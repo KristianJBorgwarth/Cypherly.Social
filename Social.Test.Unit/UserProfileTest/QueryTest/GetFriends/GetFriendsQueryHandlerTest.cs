@@ -14,20 +14,18 @@ namespace Social.Test.Unit.UserProfileTest.QueryTest.GetFriends;
 public class GetFriendsQueryHandlerTest
 {
     private readonly IUserProfileRepository _fakeRepo;
-    private readonly IConnectionIdProvider _fakeConnectionIdProvider;
     private readonly GetFriendsQueryHandler _sut;
 
     public GetFriendsQueryHandlerTest()
     {
         _fakeRepo = A.Fake<IUserProfileRepository>();
-        _fakeConnectionIdProvider = A.Fake<IConnectionIdProvider>();
         var fakeLogger = A.Fake<ILogger<GetFriendsQueryHandler>>();
         var fakeProfilePictureService = A.Fake<IProfilePictureService>();
-        _sut = new GetFriendsQueryHandler(_fakeRepo, _fakeConnectionIdProvider, fakeProfilePictureService, fakeLogger);
+        _sut = new GetFriendsQueryHandler(_fakeRepo, fakeProfilePictureService, fakeLogger);
     }
 
     [Fact]
-    public async void Handle_WhenUserProfileDoesNotExist_ReturnsNotFound()
+    public async Task Handle_WhenUserProfileDoesNotExist_ReturnsNotFound()
     {
         // Arrange
         var query = new GetFriendsQuery { TenantId = Guid.NewGuid() };
@@ -44,7 +42,7 @@ public class GetFriendsQueryHandlerTest
     }
 
     [Fact]
-    public async void Handle_WhenExceptionOccurs_ReturnsUnspecifiedError()
+    public async Task Handle_WhenExceptionOccurs_ReturnsUnspecifiedError()
     {
         // Arrange
         var query = new GetFriendsQuery { TenantId = Guid.NewGuid() };
@@ -60,7 +58,7 @@ public class GetFriendsQueryHandlerTest
     }
 
     [Fact]
-    public async void Handle_WhenUserProfileExists_ReturnsFriends()
+    public async Task Handle_WhenUserProfileExists_ReturnsFriends()
     {
         // Arrange
         var query = new GetFriendsQuery { TenantId = Guid.NewGuid() };

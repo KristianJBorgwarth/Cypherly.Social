@@ -17,14 +17,13 @@ namespace Social.Test.Integration.UserProfileTest.QueryTest.GetFriendsTest;
 public class GetFriendsQueryHandlerTest : IntegrationTestBase
 {
     private readonly GetFriendsQueryHandler _sut;
-    private readonly IConnectionIdProvider _connectionIdProvider = A.Fake<IConnectionIdProvider>();
     public GetFriendsQueryHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<GetFriendsQueryHandler>>();
         var profilePictureService = scope.ServiceProvider.GetRequiredService<IProfilePictureService>();
-        _sut = new(repo, _connectionIdProvider, profilePictureService, logger);
+        _sut = new(repo, profilePictureService, logger);
     }
 
     [Fact]
@@ -40,9 +39,6 @@ public class GetFriendsQueryHandlerTest : IntegrationTestBase
         Db.Add(friendship);
         await Db.SaveChangesAsync();
 
-        var connectionIds = new Dictionary<Guid, List<Guid>> { { friendProfile.Id, [Guid.NewGuid(), Guid.NewGuid()] } };
-        A.CallTo(() => _connectionIdProvider.GetConnectionIdsByUsers(new[] { friendProfile.Id }, CancellationToken.None)).Returns(connectionIds);
-
         var query = new GetFriendsQuery { TenantId = userProfile.Id };
 
         // Act
@@ -53,7 +49,6 @@ public class GetFriendsQueryHandlerTest : IntegrationTestBase
         result.Value.Should().NotBeNull();
         result.Value.Should().HaveCount(1);
         result.Value.First().Username.Should().Be("John");
-        result.Value.First().ConnectionIds.Should().HaveCount(2);
     }
 
     [Fact]
