@@ -1,25 +1,21 @@
 ﻿
+// ReSharper disable ConvertToPrimaryConstructor
 namespace Social.Application.Features.UserProfile.Queries.GetFriends;
 
 public sealed class GetFriendsDto
 {
-    public required string Username { get; init; }
-    public required string UserTag { get; init; }
-    public string? DisplayName { get; init; }
-    public string? ProfilePictureUrl { get; init; }
-    public List<Guid> ConnectionIds { get; init; } = [];
+    public Guid Id { get; set; }
+    public string Username { get; private init; }
+    public string UserTag { get; private init; }
+    public string? DisplayName { get; private init; }
+    public string? ProfilePictureUrl { get; private init; }
 
-    private GetFriendsDto() { }
-
-    public static GetFriendsDto MapFrom(Domain.Aggregates.UserProfile userProfile, List<Guid> connectionIds, string? presignedUrl)
+    public GetFriendsDto(Domain.Aggregates.UserProfile userProfile, string? presignedUrl)
     {
-        return new GetFriendsDto
-        {
-            Username = userProfile.Username,
-            UserTag = userProfile.UserTag.Tag,
-            DisplayName = userProfile.DisplayName,
-            ProfilePictureUrl = presignedUrl,
-            ConnectionIds = connectionIds
-        };
+        Id = userProfile.Id;
+        Username = userProfile.Username;
+        UserTag = userProfile.UserTag.Tag;
+        DisplayName = userProfile.DisplayName;
+        ProfilePictureUrl = presignedUrl;
     }
 }

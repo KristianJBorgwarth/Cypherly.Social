@@ -12,7 +12,6 @@ namespace Social.Application.Features.UserProfile.Queries.GetFriends;
 
 public class GetFriendsQueryHandler(
     IUserProfileRepository userProfileRepository,
-    IConnectionIdProvider connectionIdProvider,
     IProfilePictureService profilePictureService,
     ILogger<GetFriendsQueryHandler> logger)
     : ILimitedQueryHandler<GetFriendsQuery, List<GetFriendsDto>>
@@ -30,14 +29,11 @@ public class GetFriendsQueryHandler(
             var friends = userProfile.GetFriends();
 
             if (friends.Count is 0) return Result.Ok(new List<GetFriendsDto>());
-
-            var allConnectionIds = await connectionIdProvider.GetConnectionIdsByUsers(friends.Select(f => f.Id).ToArray());
-
+            
             var friendDtos = new List<GetFriendsDto>();
 
             foreach (var f in friends)
             {
-                var connectionIds = allConnectionIds[f.Id];
                 var presignedUrl = string.Empty;
 
                 if (f.ProfilePictureUrl is not null)
@@ -53,7 +49,7 @@ public class GetFriendsQueryHandler(
                     }
                 }
 
-                friendDtos.Add(GetFriendsDto.MapFrom(f, connectionIds, presignedUrl));
+                friendDtos.Add(new GetFriendsDto(userProfile: f, presignedUrl: presignedUrl));
             }
 
             return Result.Ok(friendDtos);
