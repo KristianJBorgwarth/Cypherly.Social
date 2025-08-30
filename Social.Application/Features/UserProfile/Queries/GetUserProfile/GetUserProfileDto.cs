@@ -7,12 +7,11 @@ public sealed record GetUserProfileDto
     public required string UserTag { get; init; }
     public string? ProfilePictureUrl { get; init; }
     public string? DisplayName { get; init; }
-    public Guid[] ConnectionIds { get; init; }
 
     // hide constructor to enforce use of map method
     private GetUserProfileDto() { }
 
-    public static GetUserProfileDto MapFrom(Domain.Aggregates.UserProfile userProfile, string? profilePictureUrl, Guid[] connectionIds)
+    public static GetUserProfileDto MapFrom(Domain.Aggregates.UserProfile userProfile, string? profilePictureUrl)
     {
         return new GetUserProfileDto()
         {
@@ -21,7 +20,6 @@ public sealed record GetUserProfileDto
             UserTag = userProfile.UserTag.Tag,
             DisplayName = userProfile.DisplayName,
             ProfilePictureUrl = profilePictureUrl,
-            ConnectionIds = connectionIds
         };
     }
 }

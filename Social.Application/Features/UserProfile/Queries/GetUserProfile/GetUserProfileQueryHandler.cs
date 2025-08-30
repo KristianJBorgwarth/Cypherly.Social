@@ -11,7 +11,6 @@ namespace Social.Application.Features.UserProfile.Queries.GetUserProfile;
 public class GetUserProfileQueryHandler(
     IUserProfileRepository userProfileRepository,
     IProfilePictureService profilePictureService,
-    IConnectionIdProvider connectionIdProvider,
     ILogger<GetUserProfileQueryHandler> logger)
     : IQueryHandler<GetUserProfileQuery, GetUserProfileDto>
 {
@@ -22,9 +21,7 @@ public class GetUserProfileQueryHandler(
         {
             var userprofile = await userProfileRepository.GetByIdAsync(request.TenantId);
             if (userprofile is null) return Result.Fail<GetUserProfileDto>(Errors.General.NotFound(request.TenantId.ToString()));
-
-            var connectionIds = await GetConnectionIdsAsync(request.TenantId, request.ExclusiveConnectionId, cancellationToken);
-
+            
             var profilePictureUrl = "";
 
             if (!string.IsNullOrEmpty(userprofile.ProfilePictureUrl))
@@ -42,7 +39,7 @@ public class GetUserProfileQueryHandler(
                 }
             }
 
-            var dto = GetUserProfileDto.MapFrom(userprofile, profilePictureUrl, connectionIds);
+            var dto = GetUserProfileDto.MapFrom(userprofile, profilePictureUrl);
             return Result.Ok(dto);
         }
         catch (Exception ex)
@@ -51,16 +48,5 @@ public class GetUserProfileQueryHandler(
             return Result.Fail<GetUserProfileDto>(
                 Errors.General.UnspecifiedError("An exception occured while handling the request"));
         }
-    }
-
-    private async Task<Guid[]> GetConnectionIdsAsync(Guid userProfileId, Guid exclusiveConnectionId, CancellationToken cancellationToken)
-    {
-        var connectionIds = await connectionIdProvider.GetConnectionIdsByUser(userProfileId, cancellationToken);
-
-        var filteredConnectionIds = connectionIds
-            .Where(id => id != exclusiveConnectionId)
-            .ToArray();
-
-        return filteredConnectionIds;
     }
 }

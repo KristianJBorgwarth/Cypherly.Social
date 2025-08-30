@@ -16,16 +16,14 @@ public class GetUserProfileQueryHandlerTest
 {
     private readonly IUserProfileRepository _fakeRepository;
     private readonly IProfilePictureService _fakeProfilePictureService;
-    private readonly IConnectionIdProvider _fakeConnectionIdProvider;
     private readonly GetUserProfileQueryHandler _sut;
 
     public GetUserProfileQueryHandlerTest()
     {
         _fakeRepository = A.Fake<IUserProfileRepository>();
         _fakeProfilePictureService = A.Fake<IProfilePictureService>();
-        _fakeConnectionIdProvider = A.Fake<IConnectionIdProvider>();
         var fakeLogger = A.Fake<ILogger<GetUserProfileQueryHandler>>();
-        _sut = new(_fakeRepository, _fakeProfilePictureService, _fakeConnectionIdProvider, fakeLogger);
+        _sut = new(_fakeRepository, _fakeProfilePictureService, fakeLogger);
     }
 
     [Fact]
@@ -44,7 +42,6 @@ public class GetUserProfileQueryHandlerTest
 
         A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(A<string>._)).MustNotHaveHappened();
-        A.CallTo(() => _fakeConnectionIdProvider.GetConnectionIdsByUser(A<Guid>._, A<CancellationToken>._)).MustNotHaveHappened();
     }
 
     [Fact]
@@ -62,7 +59,6 @@ public class GetUserProfileQueryHandlerTest
         result.Error.Message.Should().Contain("An exception occured while handling the request");
         A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(A<string>._)).MustNotHaveHappened();
-        A.CallTo(() => _fakeConnectionIdProvider.GetConnectionIdsByUser(A<Guid>._, A<CancellationToken>._)).MustNotHaveHappened();
     }
 
     [Fact]
@@ -75,10 +71,8 @@ public class GetUserProfileQueryHandlerTest
         var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
 
         A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).Returns(userProfile);
-        A.CallTo(() => _fakeConnectionIdProvider.GetConnectionIdsByUser(query.TenantId, A<CancellationToken>.Ignored))
-            .Returns([connectionId, query.ExclusiveConnectionId]);
 
-        var dto = GetUserProfileDto.MapFrom(userProfile, "", [connectionId]);
+        var dto = GetUserProfileDto.MapFrom(userProfile, "");
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -101,10 +95,9 @@ public class GetUserProfileQueryHandlerTest
 
         A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).Returns(userProfile);
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).Returns(Result.Ok("presignedUrl"));
-        A.CallTo(() => _fakeConnectionIdProvider.GetConnectionIdsByUser(query.TenantId ,A<CancellationToken>.Ignored))
-            .Returns([connectionId, query.ExclusiveConnectionId]);
 
-        var dto = GetUserProfileDto.MapFrom(userProfile, "presignedUrl", [connectionId]);
+
+        var dto = GetUserProfileDto.MapFrom(userProfile, "presignedUrl");
 
 
         // Act
@@ -115,8 +108,6 @@ public class GetUserProfileQueryHandlerTest
         result.Value.ProfilePictureUrl.Should().Be("presignedUrl");
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeConnectionIdProvider.GetConnectionIdsByUser(query.TenantId, A<CancellationToken>._))
-            .MustHaveHappenedOnceExactly();
     }
 
     [Fact]
@@ -133,9 +124,6 @@ public class GetUserProfileQueryHandlerTest
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl))
             .Returns(Result.Fail<string>(Errors.General.UnspecifiedError("Failed to get presigned url")));
 
-        A.CallTo(() => _fakeConnectionIdProvider.GetConnectionIdsByUser(userProfile.Id, A<CancellationToken>.Ignored))
-            .Returns([Guid.NewGuid(), query.ExclusiveConnectionId]);
-
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
 
@@ -144,7 +132,5 @@ public class GetUserProfileQueryHandlerTest
         result.Value.ProfilePictureUrl.Should().Be("");
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeConnectionIdProvider.GetConnectionIdsByUser(query.TenantId, A<CancellationToken>.Ignored))
-            .MustHaveHappenedOnceExactly();
     }
 }
