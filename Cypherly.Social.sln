@@ -3,7 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{BC0A5B45-2FCE-4981-BAC1-BA4561422808}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		nuget.config = nuget.config
 		.github\workflows\build-images.yml = .github\workflows\build-images.yml
 		.github\workflows\dotnet-test.yml = .github\workflows\dotnet-test.yml
 	EndProjectSection
