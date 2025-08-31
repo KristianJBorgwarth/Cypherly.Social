@@ -1,5 +1,4 @@
 ﻿using Social.Application.Features.UserProfile.Commands.Create.Friendship;
-using Social.Application.Features.UserProfile.Commands.Delete.FriendRequest;
 using Social.Application.Features.UserProfile.Commands.Delete.Friendship;
 using Social.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
 using Social.Application.Features.UserProfile.Commands.Update.BlockUser;
@@ -18,8 +17,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Social.API.Common;
-using Social.API.Filters;
-using Social.API.Requests;
 using Social.API.Requests.Command;
 using Social.API.Requests.Query;
 
@@ -65,7 +62,6 @@ public class UserProfileController(ISender sender) : BaseController
     }
 
     [HttpPut("profile-picture")]
-    [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(typeof(UpdateUserProfilePictureDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateProfilePicture([FromForm] UpdateUserProfilePictureRequest request, CancellationToken ct = default)
@@ -77,7 +73,6 @@ public class UserProfileController(ISender sender) : BaseController
     }
 
     [HttpPut("displayname")]
-    [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(typeof(UpdateUserProfileDisplayNameDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateDisplayName([FromBody] UpdateDisplayNameRequest request, CancellationToken ct = default)
@@ -90,7 +85,6 @@ public class UserProfileController(ISender sender) : BaseController
     }
 
     [HttpPut("block-user")]
-    [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> BlockUser([FromBody] BlockUserRequest request, CancellationToken ct = default)
@@ -103,7 +97,6 @@ public class UserProfileController(ISender sender) : BaseController
     }
 
     [HttpPut("unblock-user")]
-    [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UnblockUser([FromBody] UnblockUserRequest request, CancellationToken ct = default)
@@ -127,7 +120,6 @@ public class UserProfileController(ISender sender) : BaseController
     }
 
     [HttpPost("friendship")]
-    [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateFriendship([FromBody] CreateFriendshipRequest request,
@@ -140,7 +132,6 @@ public class UserProfileController(ISender sender) : BaseController
     }
 
     [HttpGet("friendships")]
-    [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(typeof(GetFriendsDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -179,7 +170,6 @@ public class UserProfileController(ISender sender) : BaseController
     }
 
     [HttpDelete("friendship/delete")]
-    [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RemoveFriendship([FromQuery] DeleteFriendshipRequest request, CancellationToken ct = default)
@@ -190,7 +180,6 @@ public class UserProfileController(ISender sender) : BaseController
     }
 
     [HttpPut("friendship/seen")]
-    [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> MarkFriendRequestsAsSeen([FromBody] MarkFriendRequestsAsSeenRequest friendRequest, CancellationToken ct = default)
@@ -201,7 +190,6 @@ public class UserProfileController(ISender sender) : BaseController
     }
 
     [HttpPut("toggle-privacy")]
-    [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> TogglePrivacy([FromBody] TogglePrivacyRequest request, CancellationToken ct = default)
@@ -212,7 +200,6 @@ public class UserProfileController(ISender sender) : BaseController
     }
 
     [HttpDelete("friendship/reject")]
-    [ServiceFilter(typeof(IValidateUserIdFilter))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RejectFriendship([FromQuery] DeleteFriendRequest request, CancellationToken ct = default)

@@ -6,7 +6,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Social.API.Extensions;
-using Social.API.Filters;
 using Social.Domain.Extensions;
 
 // ReSharper disable UseCollectionExpression
@@ -64,7 +63,7 @@ builder.Services.AddInfrastructure(configuration, Assembly.Load("Social.Infrastr
 builder.Services.AddAuthentication()
     .AddJwtBearer(options =>
     {
-        options.TokenValidationParameters = new()
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
@@ -78,8 +77,6 @@ builder.Services.AddAuthentication()
     });
 
 builder.Services.AddAuthorization();
-
-builder.Services.AddScoped<IValidateUserIdFilter, ValidateUserIdIdFilter>();
 
 #endregion
 
