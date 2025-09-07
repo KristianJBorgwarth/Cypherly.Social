@@ -15,7 +15,7 @@ public class FriendRequestRejectedEventHandler(
     ILogger<FriendRequestRejectedEvent> logger)
     : IDomainEventHandler<FriendRequestRejectedEvent>
 {
-    public async Task Handle(FriendRequestRejectedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(FriendRequestRejectedEvent notification, CancellationToken ct)
     {
         try
         {
@@ -26,7 +26,8 @@ public class FriendRequestRejectedEventHandler(
                 throw new Exception($"UserProfile with ID {notification.UserId} not found");
             }
 
-            var connectionIds = await connectionIdProvider.GetConnectionIdsByUser(notification.UserId, cancellationToken);
+            var connectionIds =
+                await connectionIdProvider.GetConnectionIdsSingleTenant(notification.UserId, ct);
 
             var message = new FriendRequestRejectedMessage()
             {
@@ -35,7 +36,7 @@ public class FriendRequestRejectedEventHandler(
                 RejectedUserProfileTag = userProfile.UserTag.Tag,
             };
             
-            await producer.PublishMessageAsync(message, cancellationToken);
+            await producer.PublishMessageAsync(message, ct);
             logger.LogInformation("FriendRequestRejectedMessage published for UserProfile {UserId}", notification.UserId);
         }
         catch (Exception ex)

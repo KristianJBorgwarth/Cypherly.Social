@@ -28,7 +28,7 @@ public class FriendshipCreatedEventHandler(
                 throw new InvalidOperationException("Could not find user with");
             }
 
-            var connectionIds = await connectionIdProvider.GetConnectionIdsByUser(user.Id, cancellationToken);
+            var connectionIds = await connectionIdProvider.GetConnectionIdsSingleTenant(user.Id, cancellationToken);
             if (connectionIds.Count <= 0) return;
 
             var friend = await userProfileRepository.GetByIdAsync(notification.InitiatorId);

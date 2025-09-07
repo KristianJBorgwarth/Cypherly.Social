@@ -34,6 +34,7 @@ internal static class MassTransitExtensions
                     e.Consumer<CreateUserProfileConsumer>(context);
                 });
             });
+        
         services.AddProducer<OperationSucceededMessage>();
         services.AddProducer<FriendshipAcceptedMessage>();
         services.AddProducer<ProfilePictureUpdatedMessage>();

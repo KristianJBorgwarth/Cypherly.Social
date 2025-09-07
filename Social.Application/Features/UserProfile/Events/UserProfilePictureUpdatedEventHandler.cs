@@ -64,7 +64,7 @@ public class UserProfilePictureUpdatedEventHandler(
         var ids = userProfile.GetFriends().Select(f => f.Id).ToList();
         ids.Add(userProfile.Id);
 
-        var connectionIdDictionary = await connectionIdProvider.GetConnectionIdsByUsers(ids.ToArray());
+        var connectionIdDictionary = await connectionIdProvider.GetConnectionIdsMultipleTenants(ids.ToArray());
 
         foreach (var id in ids)
         {
