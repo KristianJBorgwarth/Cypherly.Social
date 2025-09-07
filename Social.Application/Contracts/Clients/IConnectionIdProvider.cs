@@ -2,6 +2,6 @@
 
 public interface IConnectionIdProvider
 {
-    Task<IReadOnlyCollection<Guid>> GetConnectionIdsByUser(Guid userProfileId, CancellationToken cancellationToken = default);
-    Task<Dictionary<Guid, List<Guid>>> GetConnectionIdsByUsers(Guid[] userProfileIds, CancellationToken cancellationToken = default);
+    Task<IReadOnlyCollection<Guid>> GetConnectionIdsSingleTenant(Guid tenantId, CancellationToken cancellationToken = default);
+    Task<Dictionary<Guid, List<Guid>>> GetConnectionIdsMultipleTenants(Guid[] tenantIds, CancellationToken cancellationToken = default);
 }

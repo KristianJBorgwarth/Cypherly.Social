@@ -3,6 +3,7 @@
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Social.Application.Contracts.Clients;
 using Social.Infrastructure.Settings;
 
 namespace Social.Infrastructure.Extensions;

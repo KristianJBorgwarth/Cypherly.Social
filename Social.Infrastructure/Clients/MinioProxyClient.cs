@@ -1,7 +1,7 @@
-﻿using Social.Application.Contracts.Clients;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using Social.Application.Contracts.Clients;
 
-namespace Social.Infrastructure.HttpClients.Clients;
+namespace Social.Infrastructure.Clients;
 
 public class MinioProxyClient(
     HttpClient httpClient,

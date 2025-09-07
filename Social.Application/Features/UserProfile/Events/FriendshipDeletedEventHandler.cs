@@ -28,7 +28,7 @@ public sealed class FriendshipDeletedEventHandler(
                 throw new InvalidOperationException("User profile or friend profile not found");
             }
 
-            var connectionIds = await connectionIdProvider.GetConnectionIdsByUsers([userProfile.Id, deletedFriendProfile.Id], cancellationToken);
+            var connectionIds = await connectionIdProvider.GetConnectionIdsMultipleTenants([userProfile.Id, deletedFriendProfile.Id], cancellationToken);
 
             var message = new FriendshipDeletedMessage
             {

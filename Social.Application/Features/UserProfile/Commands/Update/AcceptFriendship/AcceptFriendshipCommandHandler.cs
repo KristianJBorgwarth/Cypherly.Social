@@ -44,7 +44,7 @@ public class AcceptFriendshipCommandHandler(
                 return Result.Fail<AcceptFriendshipDto>(Errors.General.NotFound(request.FriendTag));
             }
 
-            var connectionIds = await connectionIdProvider.GetConnectionIdsByUser(newFriend.Id, cancellationToken);
+            var connectionIds = await connectionIdProvider.GetConnectionIdsSingleTenant(newFriend.Id, cancellationToken);
 
             await userProfileRepository.UpdateAsync(userProfile);
             await unitOfWork.SaveChangesAsync(cancellationToken);

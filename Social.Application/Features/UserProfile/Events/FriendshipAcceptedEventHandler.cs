@@ -48,7 +48,7 @@ public sealed class FriendshipAcceptedEventHandler(
         Domain.Aggregates.UserProfile friend,
         CancellationToken cancellationToken)
     {
-        var connectionIds = await connectionIdProvider.GetConnectionIdsByUsers([receiver.Id, friend.Id], cancellationToken);
+        var connectionIds = await connectionIdProvider.GetConnectionIdsMultipleTenants([receiver.Id, friend.Id], cancellationToken);
 
         if (connectionIds[receiver.Id].Count == 0)
             return;

@@ -49,7 +49,7 @@ public class AcceptFriendshipCommandHandlerTest
         A.CallTo(() => _fakeRepo.UpdateAsync(userProfile)).Returns(Task.CompletedTask);
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>._)).Returns(Task.CompletedTask);
         A.CallTo(() => _fakeRepo.GetByUserTag(command.FriendTag)).Returns(friendProfile);
-        A.CallTo(() => _fakeProvider.GetConnectionIdsByUser(friendProfile.Id, CancellationToken.None)).Returns(new List<Guid> { Guid.NewGuid(), Guid.NewGuid() });
+        A.CallTo(() => _fakeProvider.GetConnectionIdsSingleTenant(friendProfile.Id, CancellationToken.None)).Returns(new List<Guid> { Guid.NewGuid(), Guid.NewGuid() });
 
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
