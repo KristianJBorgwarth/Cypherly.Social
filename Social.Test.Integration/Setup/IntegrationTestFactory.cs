@@ -22,7 +22,7 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
     where TProgram : class where TDbContext : DbContext
 {
     private readonly IContainer _minioBucketContainer = new ContainerBuilder()
-        .WithImage("bitnami/minio:latest")
+        .WithImage("bitnamilegacy/minio")
         .WithEnvironment("MINIO_ROOT_USER", "MinioRoot")
         .WithEnvironment("MINIO_ROOT_PASSWORD", "rootErinoTest?87")
         .WithExposedPort(9000)
