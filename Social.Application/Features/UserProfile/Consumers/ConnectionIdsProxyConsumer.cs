@@ -10,8 +10,8 @@ namespace Social.Application.Features.UserProfile.Consumers;
 public sealed class ConnectionIdsProxyConsumer(
         IUserProfileRepository userProfileRepository,
         IConnectionIdProvider connectionIdProvider,
-        ILogger<ConnectionIdsProxyConsumer> logger
-        ) : IConsumer<ConnectionIdsProxyMessage>
+        ILogger<ConnectionIdsProxyConsumer> logger)
+        : IConsumer<ConnectionIdsProxyMessage>
 {
     public async Task Consume(ConsumeContext<ConnectionIdsProxyMessage> context)
     {
@@ -25,17 +25,6 @@ public sealed class ConnectionIdsProxyConsumer(
             }
 
             var friends = userProfile.GetFriends();
-
-            if (friends.Count is 0)
-            {
-                await context.RespondAsync(new ConnectionIdsResponse
-                {
-                    CorrelationId = context.Message.CorrelationId,
-                    CausationId = context.Message.Id,
-                    ConnectionIds = [],
-                });
-                return;
-            }
 
             var response = await connectionIdProvider.GetConnectionIdsMultipleTenants([.. friends.Select(f => f.Id), userProfile.Id], context.CancellationToken);
 
@@ -52,6 +41,5 @@ public sealed class ConnectionIdsProxyConsumer(
             logger.LogError(ex, "An error occurred while processing ConnectionIdsProxyMessage for TenantId: {TenantId}", string.Join(", ", context.Message.TenantId));
             throw;
         }
-
     }
 }
