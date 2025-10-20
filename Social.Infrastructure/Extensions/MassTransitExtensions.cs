@@ -19,22 +19,17 @@ internal static class MassTransitExtensions
         services.ConfigureMasstransit(Assembly.Load("Social.Application"), null,
             (cfg, context) =>
             {
-                cfg.ReceiveEndpoint("user_management_fail_queue", e =>
+                cfg.ReceiveEndpoint("social.fail_queue", e =>
                 {
                     e.Consumer<RollbackUserProfileDeleteConsumer>(context);
                 });
-
-                cfg.ReceiveEndpoint("delete_user_profile", e =>
-                {
-                    e.Consumer<DeleteUserProfileConsumer>(context);
-                });
-
-                cfg.ReceiveEndpoint("create_user_profile", e =>
-                {
-                    e.Consumer<CreateUserProfileConsumer>(context);
-                });
             });
-        
+
+        services.AddProducers();
+    }
+
+    private static void AddProducers(this IServiceCollection services)
+    {
         services.AddProducer<OperationSucceededMessage>();
         services.AddProducer<FriendshipAcceptedMessage>();
         services.AddProducer<ProfilePictureUpdatedMessage>();
@@ -54,8 +49,10 @@ internal static class MassTransitExtensions
     /// <param name="rabbitMqConfig">Additional RabbitMq Extensions(Endpoints, consumers[...])</param>
     /// <returns>The ServiceCollection <see cref="ServiceCollection"/></returns>
     /// <exception cref="InvalidOperationException">Exception thrown if RabbitMq <see cref="RabbitMqSettings"/> settings aren't configured; resulting in missing values for connection</exception>
-    private static void ConfigureMasstransit(this IServiceCollection services,
-        Assembly consumerAssembly, Action<IBusRegistrationConfigurator>? masstransitConfig = null,
+    private static void ConfigureMasstransit(
+        this IServiceCollection services,
+        Assembly consumerAssembly,
+        Action<IBusRegistrationConfigurator>? masstransitConfig = null,
         Action<IRabbitMqBusFactoryConfigurator, IBusRegistrationContext>? rabbitMqConfig = null)
     {
         services.AddMassTransit(x =>
@@ -87,14 +84,9 @@ internal static class MassTransitExtensions
                     cb.ResetInterval = TimeSpan.FromMinutes(5);
                 });
 
-                if (rabbitMqConfig != null)
-                {
-                    rabbitMqConfig.Invoke(cfg, context);
-                }
-                else
-                {
-                    cfg.ConfigureEndpoints(context);
-                }
+                rabbitMqConfig?.Invoke(cfg, context);
+
+                cfg.ConfigureEndpoints(context);
             });
         });
     }
