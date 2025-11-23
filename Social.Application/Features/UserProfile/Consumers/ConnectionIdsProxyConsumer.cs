@@ -28,11 +28,12 @@ public sealed class ConnectionIdsProxyConsumer(
 
             var response = await connectionIdProvider.GetConnectionIdsMultipleTenants([.. friends.Select(f => f.Id), userProfile.Id], context.CancellationToken);
 
-            await context.RespondAsync(new ConnectionIdsResponse
+            await context.RespondAsync(new ConnectionIdsProxyResponse 
             {
                 CorrelationId = context.Message.CorrelationId,
                 CausationId = context.Message.Id,
                 ConnectionIds = response,
+                UserTag = userProfile.UserTag.Tag
             }); 
 
         }
