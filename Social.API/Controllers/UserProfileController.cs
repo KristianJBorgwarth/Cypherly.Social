@@ -29,10 +29,10 @@ public class UserProfileController(ISender sender) : BaseController
     [HttpGet("")]
     [ProducesResponseType(typeof(GetUserProfileDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetUserProfile([FromQuery] GetUserProfileRequest request, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetUserProfile(CancellationToken cancellationToken = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new GetUserProfileQuery { TenantId = tenantId, ExclusiveConnectionId = request.ExclusiveConnectionId }, cancellationToken);
+        var result = await sender.Send(new GetUserProfileQuery { TenantId = tenantId }, cancellationToken);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 
