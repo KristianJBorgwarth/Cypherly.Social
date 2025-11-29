@@ -30,7 +30,7 @@ public class GetUserProfileQueryHandlerTest
     public async Task Handle_WhenUserProfileDoesNotExist_ReturnsNotFound()
     {
         // Arrange
-        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid(), ExclusiveConnectionId = Guid.NewGuid() };
+        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() };
         A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).Returns((UserProfile)null!);
 
         // Act
@@ -48,7 +48,7 @@ public class GetUserProfileQueryHandlerTest
     public async Task Handle_WhenExceptionOccurs_ReturnsUnspecifiedError()
     {
         // Arrange
-        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid(), ExclusiveConnectionId = Guid.NewGuid()};
+        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() };
         A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).Throws<Exception>();
 
         // Act
@@ -66,7 +66,7 @@ public class GetUserProfileQueryHandlerTest
     {
         // Arrange
         var connectionId = Guid.NewGuid();
-        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid(), ExclusiveConnectionId = Guid.NewGuid() };
+        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() };
 
         var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
 
@@ -88,7 +88,7 @@ public class GetUserProfileQueryHandlerTest
     {
         // Arrange
         var connectionId = Guid.NewGuid();
-        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid(), ExclusiveConnectionId = Guid.NewGuid()};
+        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() }; 
 
         var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
         userProfile.SetProfilePictureUrl("profilePictureUrl");
@@ -114,7 +114,7 @@ public class GetUserProfileQueryHandlerTest
     public async void Handle_When_ProfilePictureServiceFails_Should_Return_UserProfile_With_EmptyUrl()
     {
         // Arrange
-        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid(), ExclusiveConnectionId = Guid.NewGuid()};
+        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() }; 
 
         var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
         userProfile.SetProfilePictureUrl("profilePictureUrl");

@@ -1,8 +1,6 @@
-﻿using Social.Application.Contracts;
-using Social.Domain.Common;
+﻿using Social.Domain.Common;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
-using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 

@@ -1,9 +1,7 @@
 ﻿using Social.Infrastructure.Persistence.Context;
-using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
@@ -37,7 +35,7 @@ public class GetUserProfileQueryHandlerTest : IntegrationTestBase
         await Db.SaveChangesAsync();
 
 
-        var query = new GetUserProfileQuery { TenantId = userProfile.Id, ExclusiveConnectionId = exclusiveConnectionId};
+        var query = new GetUserProfileQuery { TenantId = userProfile.Id }; 
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -51,7 +49,7 @@ public class GetUserProfileQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Query_With_Invalid_ID_Should_Return_NotFound()
     {
         // Arrange
-        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid(), ExclusiveConnectionId = Guid.NewGuid()};
+        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() }; 
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
