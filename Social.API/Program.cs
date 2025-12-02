@@ -24,6 +24,7 @@ if (env.IsDevelopment())
     configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 }
 
+builder.AddLogging();
 builder.Services.AddObservability(configuration);
 
 builder.Services.AddDomain();
