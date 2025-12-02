@@ -4,15 +4,12 @@ using Social.Application.Extensions;
 using Social.Infrastructure.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Serilog;
 using Social.API.Extensions;
 using Social.Domain.Extensions;
 
 // ReSharper disable UseCollectionExpression
 
 var builder = WebApplication.CreateBuilder(args);
-
-#region Extensions
 
 var env = builder.Environment;
 
@@ -27,38 +24,13 @@ if (env.IsDevelopment())
     configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 }
 
-#endregion
-
-#region Logger
-
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(configuration)
-    .CreateLogger();
-
-builder.Host.UseSerilog();
 builder.Services.AddObservability(configuration);
-
-#endregion
-
-#region Domain Layer
 
 builder.Services.AddDomain();
 
-#endregion
-
-#region Application Layer
-
 builder.Services.AddApplication(Assembly.Load("Social.Application"));
 
-#endregion
-
-#region Infrastructure Layer
-
 builder.Services.AddInfrastructure(configuration, Assembly.Load("Social.Infrastructure"));
-
-#endregion
-
-#region Authentication & Authorization
 
 builder.Services.AddAuthentication()
     .AddJwtBearer(options =>
@@ -78,10 +50,6 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddAuthorization();
 
-#endregion
-
-#region CORS
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowElectron", policy =>
@@ -93,9 +61,6 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
-
-#endregion
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -139,9 +104,6 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.MapPrometheusScrapingEndpoint();
-app.UseSerilogRequestLogging();
-
 if (env.IsProduction())
 {
     app.Services.ApplyPendingMigrations();
@@ -157,7 +119,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-Log.Information("Starting Cypherly.Social.API"); 
 app.Run();
 
 public partial class Program {}
