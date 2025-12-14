@@ -15,25 +15,17 @@ public class MarkFriendRequestsAsSeendCommandHandler(
 {
     public async Task<Result> Handle(MarkFriendRequestsAsSeenCommand request, CancellationToken cancellationToken)
     {
-        try
+        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
+        if (userProfile is null)
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
-            if (userProfile is null)
-            {
-                logger.LogError("User profile not found for ID: {Id}", request.TenantId);
-                return Result.Fail(Errors.General.NotFound(request.TenantId));
-            }
-
-            friendshipService.MarkeFriendshipAsSeen(userProfile, request.RequestTags.ToArray());
-
-            await unitOfWork.SaveChangesAsync(cancellationToken);
-
-            return Result.Ok();
+            logger.LogError("User profile not found for ID: {Id}", request.TenantId);
+            return Result.Fail(Errors.General.NotFound(request.TenantId));
         }
-        catch (Exception exception)
-        {
-            logger.LogError(exception, "Error marking friend requests as seen for user profile ID: {Id}", request.TenantId);
-            return Result.Fail(Errors.General.UnspecifiedError("An error occurred while marking friend requests as seen"));
-        }
+
+        friendshipService.MarkeFriendshipAsSeen(userProfile, [.. request.RequestTags]);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        return Result.Ok();
     }
 }

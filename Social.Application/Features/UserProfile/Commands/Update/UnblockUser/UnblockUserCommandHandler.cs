@@ -1,5 +1,4 @@
-﻿using Social.Application.Contracts;
-using Social.Domain.Common;
+﻿using Social.Domain.Common;
 using Social.Domain.Services;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
@@ -16,31 +15,23 @@ public class UnblockUserCommandHandler(
 {
     public async Task<Result> Handle(UnblockUserCommand request, CancellationToken cancellationToken)
     {
-        try
+        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
+        if (userProfile is null)
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
-            if (userProfile is null)
-            {
-                logger.LogCritical("User with {ID} not found", request.TenantId);
-                return Result.Fail(Errors.General.NotFound(request.TenantId));
-            }
-
-            var userToUnblock = await userProfileRepository.GetByUserTag(request.Tag);
-            if (userToUnblock is null)
-            {
-                logger.LogCritical("User with tag {Tag} not found", request.Tag);
-                return Result.Fail(Errors.General.NotFound(request.Tag));
-            }
-
-            userBlockingService.UnblockUser(userProfile, userToUnblock);
-            await unitOfWork.SaveChangesAsync(cancellationToken);
-
-            return Result.Ok();
+            logger.LogCritical("User with {ID} not found", request.TenantId);
+            return Result.Fail(Errors.General.NotFound(request.TenantId));
         }
-        catch (Exception e)
+
+        var userToUnblock = await userProfileRepository.GetByUserTag(request.Tag);
+        if (userToUnblock is null)
         {
-            logger.LogCritical(e, "An exception occured while user with {ID} tried to unblock user with tag {Tag}", request.TenantId, request.Tag);
-            return Result.Fail(Errors.General.UnspecifiedError("An exception occured while attempting to unblock"));
+            logger.LogCritical("User with tag {Tag} not found", request.Tag);
+            return Result.Fail(Errors.General.NotFound(request.Tag));
         }
+
+        userBlockingService.UnblockUser(userProfile, userToUnblock);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        return Result.Ok();
     }
 }
