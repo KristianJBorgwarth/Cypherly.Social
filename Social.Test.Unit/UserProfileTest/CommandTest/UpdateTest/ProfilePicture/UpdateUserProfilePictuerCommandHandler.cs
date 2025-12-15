@@ -102,30 +102,4 @@ public class UpdateUserProfilePictuerCommandHandler
         result.Error.Code.Should().Be("unspecified.error");
         result.Error.Message.Should().Be("Invalid profile picture");
     }
-
-    [Fact]
-    public async void Handle_When_Exception_Occurs_Should_Return_Error()
-    {
-        // Arrange
-        var command = new UpdateUserProfilePictureCommand()
-        {
-            TenantId = Guid.NewGuid(),
-            NewProfilePicture = A.Fake<IFormFile>()
-        };
-
-        var userProfile = new UserProfile(Guid.NewGuid(), "test", UserTag.Create("test"));
-
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).Returns(userProfile);
-
-        A.CallTo(() => _fakeProfilePicService.UploadProfilePictureAsync(command.NewProfilePicture, command.TenantId))
-            .Throws<Exception>();
-
-        // Act
-        var result = await _sut.Handle(command, new());
-
-        // Assert
-        result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("unspecified.error");
-        result.Error.Message.Should().Be("An exception was thrown during the update process");
-    }
 }

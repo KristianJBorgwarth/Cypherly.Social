@@ -19,45 +19,37 @@ public class GetUserProfileByTagQueryHandler(
 {
     public async Task<Result<GetUserProfileByTagDto>> Handle(GetUserProfileByTagQuery request, CancellationToken cancellationToken)
     {
-        try
+        var requestingUser = await userProfileRepository.GetByIdAsync(request.TenantId);
+        if (requestingUser is null)
         {
-            var requestingUser = await userProfileRepository.GetByIdAsync(request.TenantId);
-            if (requestingUser is null)
-            {
-                logger.LogWarning("User with ID: {ID} attempted to get profile by tag: {Tag}, but no user with that ID Exists", request.TenantId, request.Tag);
-                return Result.Fail<GetUserProfileByTagDto>(Errors.General.NotFound(request.TenantId));
-            }
-
-            var userProfile = await userProfileRepository.GetByUserTag(request.Tag);
-
-            if (userProfile is null || userBlockingService.IsUserBloccked(requestingUser, userProfile) || userProfile.IsPrivate)
-                return Result.Ok<GetUserProfileByTagDto>();
-
-            var friendShipStatusDto = friendshipService.GetFriendshipStatus(requestingUser, userProfile.UserTag.Tag);
-
-            var profilePictureUrl = "";
-
-            if (!string.IsNullOrEmpty(userProfile.ProfilePictureUrl))
-            {
-                var presignedUrlResult = await profilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl);
-                if (presignedUrlResult.Success is false)
-                {
-                    logger.LogWarning("Failed to get presigned url for profile picture with key {Key}", userProfile.ProfilePictureUrl);
-                }
-                else
-                {
-                    profilePictureUrl = presignedUrlResult.Value;
-                }
-            }
-
-            var dto = GetUserProfileByTagDto.MapFrom(userProfile, profilePictureUrl, friendShipStatusDto);
-
-            return Result.Ok(dto);
+            logger.LogWarning("User with ID: {ID} attempted to get profile by tag: {Tag}, but no user with that ID Exists", request.TenantId, request.Tag);
+            return Result.Fail<GetUserProfileByTagDto>(Errors.General.NotFound(request.TenantId));
         }
-        catch (Exception e)
+
+        var userProfile = await userProfileRepository.GetByUserTag(request.Tag);
+
+        if (userProfile is null || userBlockingService.IsUserBloccked(requestingUser, userProfile) || userProfile.IsPrivate)
+            return Result.Ok<GetUserProfileByTagDto>();
+
+        var friendShipStatusDto = friendshipService.GetFriendshipStatus(requestingUser, userProfile.UserTag.Tag);
+
+        var profilePictureUrl = "";
+
+        if (!string.IsNullOrEmpty(userProfile.ProfilePictureUrl))
         {
-            logger.LogCritical(e, "Exception occured while user with ID: {ID} tried to get profile by tag: {Tag}", request.TenantId, request.Tag);
-            return Result.Fail<GetUserProfileByTagDto>(Errors.General.UnspecifiedError("An exception occured while attempting to get the user profile by tag."));
+            var presignedUrlResult = await profilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl);
+            if (presignedUrlResult.Success is false)
+            {
+                logger.LogWarning("Failed to get presigned url for profile picture with key {Key}", userProfile.ProfilePictureUrl);
+            }
+            else
+            {
+                profilePictureUrl = presignedUrlResult.Value;
+            }
         }
+
+        var dto = GetUserProfileByTagDto.MapFrom(userProfile, profilePictureUrl, friendShipStatusDto);
+
+        return Result.Ok(dto);
     }
 }

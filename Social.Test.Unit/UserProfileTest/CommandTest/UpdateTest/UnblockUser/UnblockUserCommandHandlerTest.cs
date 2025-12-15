@@ -81,25 +81,4 @@ public class UnblockUserCommandHandlerTest
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustHaveHappened();
         A.CallTo(() => _fakeProfileService.UnblockUser(userProfile, userToUnblock)).MustHaveHappened();
     }
-
-    [Fact]
-    public async void Handle_When_Command_IsValid_And_Exception_IsThrown_Should_Return_UnspecifiedError()
-    {
-        // Arrange
-        var command = new UnblockUserCommand { TenantId = Guid.NewGuid(), Tag = "tag" };
-        var userProfile = new UserProfile();
-        var userToUnblock = new UserProfile();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId))!.Returns(userProfile);
-        A.CallTo(() => _fakeRepo.GetByUserTag(command.Tag))!.Returns(userToUnblock);
-        A.CallTo(() => _fakeProfileService.UnblockUser(userProfile, userToUnblock)).Throws<Exception>();
-
-        // Act
-        var result = await _sut.Handle(command, default);
-
-        // Assert
-        result.Success.Should().BeFalse();
-        result.Error.Message.Should().BeEquivalentTo(
-            Errors.General.UnspecifiedError("An exception occured while attempting to unblock").Message);
-        A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustNotHaveHappened();
-    }
 }

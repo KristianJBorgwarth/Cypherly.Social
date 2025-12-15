@@ -7,7 +7,6 @@ using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetFriendRequests;
 using Social.Domain.Aggregates;
 using Social.Domain.Common;
-using Social.Domain.Interfaces;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
 
@@ -16,7 +15,6 @@ namespace Social.Test.Integration.UserProfileTest.QueryTest.GetFriendRequestsTes
 public class GetFriendRequestsQueryHandlerTest : IntegrationTestBase
 {
     private readonly GetFriendRequestsQueryHandler _sut;
-    private readonly IFriendshipService _friendshipService;
 
     public GetFriendRequestsQueryHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
@@ -25,7 +23,6 @@ public class GetFriendRequestsQueryHandlerTest : IntegrationTestBase
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<GetFriendRequestsQueryHandler>>();
         var profilePictureService = scope.ServiceProvider.GetRequiredService<IProfilePictureService>();
 
-        _friendshipService = scope.ServiceProvider.GetRequiredService<IFriendshipService>();
         _sut = new GetFriendRequestsQueryHandler(repo, profilePictureService, logger);
     }
 

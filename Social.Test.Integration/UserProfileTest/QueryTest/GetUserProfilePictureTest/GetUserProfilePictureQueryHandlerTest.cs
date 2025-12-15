@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
@@ -20,8 +19,7 @@ public class GetUserProfilePictureQueryHandlerTest : IntegrationTestBase
     {
         var scope = factory.Services.CreateScope();
         var minoProxyClient = scope.ServiceProvider.GetRequiredService<IMinioProxyClient>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<GetUserProfilePictureQueryValidator>>();
-        _sut = new GetUserProfilePictureQueryHandler(minoProxyClient, logger);
+        _sut = new GetUserProfilePictureQueryHandler(minoProxyClient);
         _profilePictureService = scope.ServiceProvider.GetRequiredService<IProfilePictureService>();
     }
 

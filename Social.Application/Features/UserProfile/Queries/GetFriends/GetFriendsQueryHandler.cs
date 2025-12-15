@@ -1,8 +1,6 @@
-﻿using Social.Application.Contracts;
-using Social.Domain.Common;
+﻿using Social.Domain.Common;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
-using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 
@@ -18,47 +16,38 @@ public class GetFriendsQueryHandler(
 {
     public async Task<Result<List<GetFriendsDto>>> Handle(GetFriendsQuery request, CancellationToken cancellationToken)
     {
-        try
+        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
+        if (userProfile is null)
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
-            if (userProfile is null)
+            return Result.Fail<List<GetFriendsDto>>(Errors.General.NotFound(request.TenantId));
+        }
+
+        var friends = userProfile.GetFriends();
+
+        if (friends.Count is 0) return Result.Ok(new List<GetFriendsDto>());
+
+        var friendDtos = new List<GetFriendsDto>();
+
+        foreach (var f in friends)
+        {
+            var presignedUrl = string.Empty;
+
+            if (f.ProfilePictureUrl is not null)
             {
-                return Result.Fail<List<GetFriendsDto>>(Errors.General.NotFound(request.TenantId));
-            }
-
-            var friends = userProfile.GetFriends();
-
-            if (friends.Count is 0) return Result.Ok(new List<GetFriendsDto>());
-            
-            var friendDtos = new List<GetFriendsDto>();
-
-            foreach (var f in friends)
-            {
-                var presignedUrl = string.Empty;
-
-                if (f.ProfilePictureUrl is not null)
+                var presignedUrlResult = await profilePictureService.GetPresignedProfilePictureUrlAsync(f.ProfilePictureUrl);
+                if (presignedUrlResult.Success)
                 {
-                    var presignedUrlResult = await profilePictureService.GetPresignedProfilePictureUrlAsync(f.ProfilePictureUrl);
-                    if (presignedUrlResult.Success)
-                    {
-                        presignedUrl = presignedUrlResult.Value;
-                    }
-                    else
-                    {
-                        logger.LogWarning("Failed to get presigned URL for profile picture of user {UserId}", f.Id);
-                    }
+                    presignedUrl = presignedUrlResult.Value;
                 }
-
-                friendDtos.Add(new GetFriendsDto(userProfile: f, presignedUrl: presignedUrl));
+                else
+                {
+                    logger.LogWarning("Failed to get presigned URL for profile picture of user {UserId}", f.Id);
+                }
             }
 
-            return Result.Ok(friendDtos);
+            friendDtos.Add(new GetFriendsDto(userProfile: f, presignedUrl: presignedUrl));
         }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "An exception occurred in {Handler}, while attempting to retrieve friends for {UserProfileId}",
-                nameof(GetFriendsQueryHandler), request.TenantId);
-            return Result.Fail<List<GetFriendsDto>>(Errors.General.UnspecifiedError("An exception occurred while attempting to retrieve friends."));
-        }
+
+        return Result.Ok(friendDtos);
     }
 }
