@@ -97,23 +97,4 @@ public class GetUserProfileByTagQueryHandlerTest
         result.Success.Should().BeTrue();
         result.Value.Should().BeNull();
     }
-
-    [Fact]
-    public async Task Handle_When_Repo_Throws_Exception_Returns_Result_Fail()
-    {
-        // Arrange
-        var request = new GetUserProfileByTagQuery
-        {
-            TenantId = Guid.NewGuid(),
-            Tag = "TestTag"
-        };
-
-        A.CallTo(() => _userProfileRepository.GetByIdAsync(request.TenantId)).Throws<Exception>();
-
-        // Act
-        var result = await _sut.Handle(request, CancellationToken.None);
-
-        // Assert
-        result.Success.Should().BeFalse();
-    }
 }

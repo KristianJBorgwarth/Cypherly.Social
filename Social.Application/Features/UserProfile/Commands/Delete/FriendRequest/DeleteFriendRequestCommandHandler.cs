@@ -1,5 +1,4 @@
-﻿using Social.Application.Contracts;
-using Social.Domain.Common;
+﻿using Social.Domain.Common;
 using Social.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
@@ -16,29 +15,21 @@ public sealed class DeleteFriendRequestCommandHandler(
 {
     public async Task<Result> Handle(DeleteFriendRequestCommand request, CancellationToken cancellationToken)
     {
-        try
+        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
+        if (userProfile is null)
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
-            if (userProfile is null)
-            {
-                logger.LogWarning("User profile with ID {Id} not found.", request.TenantId);
-                return Result.Fail(Errors.General.NotFound(request.TenantId));
-            }
-
-            var delResult = friendshipService.DeleteFriendRequest(userProfile, request.FriendTag);
-
-            if (delResult.Success is false)
-            {
-                return delResult;
-            }
-
-            await unitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Ok();
+            logger.LogWarning("User profile with ID {Id} not found.", request.TenantId);
+            return Result.Fail(Errors.General.NotFound(request.TenantId));
         }
-        catch (Exception ex)
+
+        var delResult = friendshipService.DeleteFriendRequest(userProfile, request.FriendTag);
+
+        if (delResult.Success is false)
         {
-            logger.LogError(ex, "An error occurred while deleting friend request for user profile with ID {Id}.", request.TenantId);
-            return Result.Fail(Errors.General.UnspecifiedError("An error occurred while processing your request."));
+            return delResult;
         }
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+        return Result.Ok();
     }
 }

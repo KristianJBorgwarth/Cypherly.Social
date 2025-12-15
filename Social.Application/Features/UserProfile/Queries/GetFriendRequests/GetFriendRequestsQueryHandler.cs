@@ -1,6 +1,4 @@
-﻿using Social.Application.Contracts;
-using Social.Domain.Common;
-using Social.Domain.Entities;
+﻿using Social.Domain.Common;
 using Social.Domain.Enums;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
@@ -17,48 +15,40 @@ public class GetFriendRequestsQueryHandler(
 {
     public async Task<Result<GetFriendRequestsDto[]>> Handle(GetFriendRequestsQuery query, CancellationToken cancellationToken)
     {
-        try
+        var userProfile = await userProfileRepository.GetByIdAsync(query.TenantId);
+        if (userProfile is null)
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(query.TenantId);
-            if (userProfile is null)
-            {
-                logger.LogCritical("UserProfile not found, UserProfileId: {UserProfileId}", query.TenantId);
-                return Result.Fail<GetFriendRequestsDto[]>(Errors.General.NotFound(query.TenantId));
-            }
+            logger.LogCritical("UserProfile not found, UserProfileId: {UserProfileId}", query.TenantId);
+            return Result.Fail<GetFriendRequestsDto[]>(Errors.General.NotFound(query.TenantId));
+        }
 
-            var friendRequests = userProfile.FriendshipsReceived
-                .Where(f => f.Status == FriendshipStatus.Pending)
-                .ToList();
+        var friendRequests = userProfile.FriendshipsReceived
+            .Where(f => f.Status == FriendshipStatus.Pending)
+            .ToList();
 
-            var friendRequestDtos = friendRequests.Select(async f =>
-            {
+        var friendRequestDtos = friendRequests.Select(async f =>
+        {
 
-                if (f.UserProfile.ProfilePictureUrl is null)
-                    return GetFriendRequestsDto.MapFrom(
-                        f.UserProfile.Username,
-                        f.UserProfile.UserTag.Tag,
-                        f.UserProfile.DisplayName);
-
-                var profilePictureUrl = await GetProfilePictureUrl(f.UserProfile.ProfilePictureUrl);
-
+            if (f.UserProfile.ProfilePictureUrl is null)
                 return GetFriendRequestsDto.MapFrom(
                     f.UserProfile.Username,
                     f.UserProfile.UserTag.Tag,
-                    f.UserProfile.DisplayName,
-                    profilePictureUrl);
+                    f.UserProfile.DisplayName);
 
-            }).ToArray();
+            var profilePictureUrl = await GetProfilePictureUrl(f.UserProfile.ProfilePictureUrl);
 
-            var friendRequestDtosList = await Task.WhenAll(friendRequestDtos);
+            return GetFriendRequestsDto.MapFrom(
+                f.UserProfile.Username,
+                f.UserProfile.UserTag.Tag,
+                f.UserProfile.DisplayName,
+                profilePictureUrl);
 
-            return Result.Ok(friendRequestDtosList);
+        }).ToArray();
 
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Error in GetFriendRequestsQueryHandler, UserProfileId: {UserProfileId}", query.TenantId);
-            return Result.Fail<GetFriendRequestsDto[]>(Errors.General.UnspecifiedError("Exception occured in GetFriendRequestsQueryHandler"));
-        }
+        var friendRequestDtosList = await Task.WhenAll(friendRequestDtos);
+
+        return Result.Ok(friendRequestDtosList);
+
     }
 
     private async Task<string?> GetProfilePictureUrl(string? profilePictureUrl)

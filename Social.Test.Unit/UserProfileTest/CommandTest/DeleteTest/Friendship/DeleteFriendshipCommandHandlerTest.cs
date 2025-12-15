@@ -106,32 +106,4 @@ public class DeleteFriendshipCommandHandlerTest
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustNotHaveHappened();
     }
 
-    [Fact]
-    public async Task Handle_Given_Uow_Throws_Exception_Should_Return_Fail()
-    {
-        // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("testUser"));
-
-        var command = new DeleteFriendshipCommand()
-        {
-            FriendTag = "validTag",
-            TenantId = userProfile.Id
-        };
-
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).Returns(userProfile);
-        A.CallTo(() => _fakeService.DeleteFriendship(userProfile, command.FriendTag)).Returns(Result.Ok());
-        A.CallTo(() => _fakeUow.SaveChangesAsync(default)).Throws<Exception>();
-
-        // Act
-        var result = await _sut.Handle(command, default);
-
-        // Assert
-        result.Success.Should().BeFalse();
-        result.Error.Message.Should().Be("An exception occured while attempting to delete a friendship.");
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeService.DeleteFriendship(userProfile, command.FriendTag)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeRepo.UpdateAsync(userProfile)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustHaveHappenedOnceExactly();
-    }
-
 }

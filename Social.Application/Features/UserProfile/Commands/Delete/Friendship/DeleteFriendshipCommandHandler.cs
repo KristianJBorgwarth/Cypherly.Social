@@ -1,7 +1,5 @@
-﻿using Social.Application.Contracts;
-using Social.Domain.Common;
+﻿using Social.Domain.Common;
 using Social.Domain.Interfaces;
-using Social.Domain.Services;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
@@ -17,31 +15,23 @@ public sealed class DeleteFriendshipCommandHandler(
 {
     public async Task<Result> Handle(DeleteFriendshipCommand request, CancellationToken cancellationToken)
     {
-        try
+        logger.LogInformation("Handling DeleteFriendshipCommand for UserProfileId {UserProfileId} and FriendTag {FriendTag}", request.TenantId, request.FriendTag);
+        var userProfile = await profileRepository.GetByIdAsync(request.TenantId);
+        if (userProfile is null)
         {
-            logger.LogInformation("Handling DeleteFriendshipCommand for UserProfileId {UserProfileId} and FriendTag {FriendTag}", request.TenantId, request.FriendTag);
-            var userProfile = await profileRepository.GetByIdAsync(request.TenantId);
-            if (userProfile is null)
-            {
-                logger.LogError("UserProfile with id {UserProfileId} not found", request.TenantId);
-                return Result.Fail(Errors.General.NotFound(nameof(request.TenantId)));
-            }
-            var deleteResult = friendshipService.DeleteFriendship(userProfile, request.FriendTag);
-            if (!deleteResult.Success)
-            {
-                logger.LogError("Failed to delete friendship with FriendTag {FriendTag} for UserProfileId {UserProfileId}", request.FriendTag, request.TenantId);
-                return Result.Fail(deleteResult.Error);
-            }
-
-            await profileRepository.UpdateAsync(userProfile);
-            await unitOfWork.SaveChangesAsync(cancellationToken);
-
-            return Result.Ok();
+            logger.LogError("UserProfile with id {UserProfileId} not found", request.TenantId);
+            return Result.Fail(Errors.General.NotFound(nameof(request.TenantId)));
         }
-        catch (Exception e)
+        var deleteResult = friendshipService.DeleteFriendship(userProfile, request.FriendTag);
+        if (!deleteResult.Success)
         {
-            logger.LogError(e, "Exception occurred in DeleteFriendshipCommandHandler for command with UserProfileId {UserProfileId} and FriendTag {FriendTag}", request.TenantId, request.FriendTag);
-            return Result.Fail(Errors.General.UnspecifiedError("An exception occured while attempting to delete a friendship."));
+            logger.LogError("Failed to delete friendship with FriendTag {FriendTag} for UserProfileId {UserProfileId}", request.FriendTag, request.TenantId);
+            return Result.Fail(deleteResult.Error);
         }
+
+        await profileRepository.UpdateAsync(userProfile);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        return Result.Ok();
     }
 }

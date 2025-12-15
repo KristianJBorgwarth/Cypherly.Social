@@ -112,29 +112,4 @@ public class AcceptFriendshipCommandHandlerTest
         A.CallTo(() => _fakeRepo.UpdateAsync(A<UserProfile>._)).MustNotHaveHappened();
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>._)).MustNotHaveHappened();
     }
-
-    [Fact]
-    public async Task Handle_Given_Exception_Should_Return_ResultFail()
-    {
-        // Arrange
-        var userProfile = new UserProfile(Guid.NewGuid(), "dave", UserTag.Create("dave"));
-        var command = new AcceptFriendshipCommand()
-        {
-            FriendTag = "friend",
-            TenantId = userProfile.Id
-        };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(userProfile.Id)).Returns(userProfile);
-        A.CallTo(() => _fakeService.AcceptFriendship(userProfile, command.FriendTag)).Throws<Exception>();
-
-        // Act
-        var result = await _sut.Handle(command, CancellationToken.None);
-
-        // Assert
-        result.Success.Should().BeFalse();
-        result.Error.Should().BeEquivalentTo(Errors.General.UnspecifiedError("An exception occured while accepting friendship"));
-        A.CallTo(() => _fakeRepo.GetByIdAsync(userProfile.Id)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeService.AcceptFriendship(userProfile, command.FriendTag)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeRepo.UpdateAsync(A<UserProfile>._)).MustNotHaveHappened();
-        A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>._)).MustNotHaveHappened();
-    }
 }

@@ -42,22 +42,6 @@ public class GetFriendsQueryHandlerTest
     }
 
     [Fact]
-    public async Task Handle_WhenExceptionOccurs_ReturnsUnspecifiedError()
-    {
-        // Arrange
-        var query = new GetFriendsQuery { TenantId = Guid.NewGuid() };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).Throws<Exception>();
-
-        // Act
-        var result = await _sut.Handle(query, CancellationToken.None);
-
-        // Assert
-        result.Success.Should().BeFalse();
-        result.Error.Message.Should().Contain("An exception occurred while attempting to retrieve friends.");
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).MustHaveHappenedOnceExactly();
-    }
-
-    [Fact]
     public async Task Handle_WhenUserProfileExists_ReturnsFriends()
     {
         // Arrange

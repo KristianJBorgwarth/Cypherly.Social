@@ -45,23 +45,6 @@ public class GetUserProfileQueryHandlerTest
     }
 
     [Fact]
-    public async Task Handle_WhenExceptionOccurs_ReturnsUnspecifiedError()
-    {
-        // Arrange
-        var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() };
-        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).Throws<Exception>();
-
-        // Act
-        var result = await _sut.Handle(query, CancellationToken.None);
-
-        // Assert
-        result.Success.Should().BeFalse();
-        result.Error.Message.Should().Contain("An exception occured while handling the request");
-        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(A<string>._)).MustNotHaveHappened();
-    }
-
-    [Fact]
     public async Task Handle_WhenUserProfileExists_ReturnsUserProfile()
     {
         // Arrange

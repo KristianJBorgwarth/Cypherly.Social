@@ -2,7 +2,6 @@
 using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
 using FakeItEasy;
 using FluentAssertions;
-using Microsoft.Extensions.Logging;
 using Social.Domain.Common;
 using Xunit;
 
@@ -16,8 +15,7 @@ public class GetUserProfilePictureQueryHandlerTest
     public GetUserProfilePictureQueryHandlerTest()
     {
         _fakeMinioProxyClient = A.Fake<IMinioProxyClient>();
-        var logger = A.Fake<ILogger<GetUserProfilePictureQueryValidator>>();
-        _sut = new GetUserProfilePictureQueryHandler(_fakeMinioProxyClient, logger);
+        _sut = new GetUserProfilePictureQueryHandler(_fakeMinioProxyClient);
     }
 
     [Fact]
@@ -45,22 +43,6 @@ public class GetUserProfilePictureQueryHandlerTest
         A.CallTo(() => _fakeMinioProxyClient.GetImageFromMinioAsync(A<string>._, A<CancellationToken>._))
             .Returns(Task.FromResult<(byte[] image, string imageType)?>(null));
 
-
-        // Act
-        var result = await _sut.Handle(query, CancellationToken.None);
-
-        // Assert
-        result.Success.Should().BeFalse();
-    }
-
-    [Fact]
-    public async Task Handle_Exception_Should_Return_Fail_Result()
-    {
-        // Arrange
-        var query = new GetUserProfilePictureQuery { ProfilePictureUrl = "https://example.com/profile.jpg" };
-
-        A.CallTo(() => _fakeMinioProxyClient.GetImageFromMinioAsync(A<string>._, A<CancellationToken>._))
-            .Throws<Exception>();
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);

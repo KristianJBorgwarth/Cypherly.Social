@@ -103,30 +103,4 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
         A.CallTo(() => _fakeMapper.Map<UpdateUserProfileDisplayNameDto>(A<UserProfile>._)).MustNotHaveHappened();
     }
-
-    [Fact]
-    public async Task Handle_Given_Command_With_Exception_Should_Return_Result_Fail()
-    {
-        // Arrange
-        var testProfile = new UserProfile(Guid.NewGuid(), "dave", UserTag.Create("dave"));
-        var cmd = new UpdateUserProfileDisplayNameCommand
-        {
-            DisplayName = "validDisplayName",
-            TenantId = testProfile.Id
-        };
-
-        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId)).Returns(testProfile);
-        A.CallTo(() => _fakeRepo.UpdateAsync(testProfile)).Throws<Exception>();
-
-        // Act
-        var result = await _sut.Handle(cmd, default);
-
-        // Assert
-        result.Success.Should().BeFalse();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeRepo.UpdateAsync(testProfile)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
-        A.CallTo(() => _fakeMapper.Map<UpdateUserProfileDisplayNameDto>(A<UserProfile>._)).MustNotHaveHappened();
-    }
-
 }

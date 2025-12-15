@@ -62,23 +62,4 @@ public class GetFriendRequestsQuerHandlerTest
         result.Success.Should().BeFalse();
         result.Error.Should().NotBeNull();
     }
-
-    [Fact]
-    public async Task Handle_Given_Throws_Exception_Should_Return_Result_Fail()
-    {
-        // Arrange
-        var query = new GetFriendRequestsQuery()
-        {
-            TenantId = Guid.NewGuid(),
-        };
-
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).Throws<Exception>();
-
-        // Act
-        var result = await _sut.Handle(query, CancellationToken.None);
-
-        // Assert
-        result.Success.Should().BeFalse();
-        result.Error.Should().NotBeNull();
-    }
 }

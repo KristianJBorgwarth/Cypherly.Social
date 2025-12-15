@@ -55,36 +55,4 @@ public class BlockUserCommandHandlerTest
         result.Success.Should().BeFalse();
         result.Error.Code.Should().Be("entity.not.found");
     }
-
-    [Fact]
-    public async Task Handle_WhenExceptionOccurs_ReturnsUnspecifiedError()
-    {
-        // Arrange
-        var request = new BlockUserCommand { TenantId = Guid.NewGuid(), BlockedUserTag = "blockedUserTag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(request.TenantId)).Throws<Exception>();
-
-        // Act
-        var result = await _sut.Handle(request, CancellationToken.None);
-
-        // Assert
-        result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("unspecified.error");
-    }
-
-    [Fact]
-    public async Task Handle_WhenAllIsWell_ReturnsOk()
-    {
-        // Arrange
-        var request = new BlockUserCommand { TenantId = Guid.NewGuid(), BlockedUserTag = "blockedUserTag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(request.TenantId)).Returns(new UserProfile());
-        A.CallTo(() => _fakeRepo.GetByUserTag(request.BlockedUserTag)).Returns(new UserProfile());
-
-        // Act
-        var result = await _sut.Handle(request, CancellationToken.None);
-
-        // Assert
-        A.CallTo(() => _fakeService.BlockUser(A<UserProfile>._, A<UserProfile>._)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeUow.SaveChangesAsync(CancellationToken.None)).MustHaveHappenedOnceExactly();
-        result.Success.Should().BeTrue();
-    }
 }
