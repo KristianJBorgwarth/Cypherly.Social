@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Social.Infrastructure.Persistence.Context;
 using Social.Infrastructure.Persistence.Outbox;
-using Outbox_OutboxMessage = Social.Infrastructure.Persistence.Outbox.OutboxMessage;
-using OutboxMessage = Social.Infrastructure.Persistence.Outbox.OutboxMessage;
 
 namespace Social.Infrastructure.Persistence.Repositories;
 
@@ -13,7 +11,7 @@ public class OutboxRepository(SocialDbContext context) : IOutboxRepository
     /// </summary>
     /// <param name="batchSize">Amount of outbox messages retrieved</param>
     /// <returns>An Array of <see cref="OutboxMessage"/></returns>
-    public async Task<Outbox_OutboxMessage[]> GetUnprocessedAsync(int batchSize)
+    public async Task<OutboxMessage[]> GetUnprocessedAsync(int batchSize)
     {
         return await context.OutboxMessage
             .Where(m => m.ProcessedOn == null)
@@ -26,7 +24,7 @@ public class OutboxRepository(SocialDbContext context) : IOutboxRepository
     /// </summary>
     /// <param name="message">The <see cref="OutboxMessage"/> that will be marked as processed</param>
     /// <returns></returns>
-    public Task MarkAsProcessedAsync(Outbox_OutboxMessage message)
+    public Task MarkAsProcessedAsync(OutboxMessage message)
     {
         message.ProcessedOn = DateTime.UtcNow;
         return Task.CompletedTask;
