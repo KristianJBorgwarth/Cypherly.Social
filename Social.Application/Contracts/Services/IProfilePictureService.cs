@@ -1,5 +1,6 @@
-﻿using Social.Domain.Common;
+﻿
 using Microsoft.AspNetCore.Http;
+using Social.Domain.Common;
 
 namespace Social.Application.Contracts.Services;
 

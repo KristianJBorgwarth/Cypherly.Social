@@ -1,6 +1,6 @@
 namespace Social.Infrastructure.Store;
 
-internal interface IBlobStore 
+public interface IBlobStore
 {
     Task PutAsync(Guid Id, Stream content, CancellationToken ct = default);
     void Delete(Guid Id);

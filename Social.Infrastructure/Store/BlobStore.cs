@@ -1,7 +1,6 @@
 namespace Social.Infrastructure.Store;
 
-
-internal sealed class BlobStore(string root) : IBlobStore
+public sealed class BlobStore(string root) : IBlobStore
 {
     public async Task PutAsync(Guid Id, Stream content, CancellationToken ct = default)
     {
@@ -31,11 +30,11 @@ internal sealed class BlobStore(string root) : IBlobStore
     public Stream Open(Guid Id)
     {
         return new FileStream(
-            GeneratePath(Id), 
-            FileMode.Open, 
-            FileAccess.Read, 
-            FileShare.Read, 
-            bufferSize: 81920, 
+            GeneratePath(Id),
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            bufferSize: 81920,
             useAsync: true);
     }
 
