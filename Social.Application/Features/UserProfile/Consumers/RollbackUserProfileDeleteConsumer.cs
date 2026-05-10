@@ -21,7 +21,7 @@ public class RollbackUserProfileDeleteConsumer(
 
             if (!message.ContainsService(ServiceType.UserManagementService)) return;
 
-            var user = await userProfileRepository.GetByIdAsync(message.UserId);
+            var user = await userProfileRepository.GetByIdAsync(message.UserId, context.CancellationToken);
             if (user is null)
             {
                 logger.LogError("User with id {UserId} not found", message.UserId);

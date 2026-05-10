@@ -22,8 +22,8 @@ public sealed class FriendshipAcceptedEventHandler(
         logger.LogInformation("Handling friendship accepted event for user {UserProfileId} and friend {FriendTag}",
             notification.UserProfileId, notification.FriendTag);
 
-        var acceptor = await userProfileRepository.GetByIdAsync(notification.UserProfileId);
-        var instigator = await userProfileRepository.GetByUserTag(notification.FriendTag);
+        var acceptor = await userProfileRepository.GetByIdAsync(notification.UserProfileId, cancellationToken);
+        var instigator = await userProfileRepository.GetByUserTag(notification.FriendTag, cancellationToken);
 
         if (acceptor is null || instigator is null)
         {

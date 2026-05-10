@@ -15,7 +15,7 @@ public class MarkFriendRequestsAsSeendCommandHandler(
 {
     public async Task<Result> Handle(MarkFriendRequestsAsSeenCommand request, CancellationToken cancellationToken)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
+        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
         if (userProfile is null)
         {
             logger.LogError("User profile not found for ID: {Id}", request.TenantId);

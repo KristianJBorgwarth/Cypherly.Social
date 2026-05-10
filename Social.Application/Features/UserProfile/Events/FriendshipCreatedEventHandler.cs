@@ -21,7 +21,7 @@ public class FriendshipCreatedEventHandler(
     {
         try
         {
-            var user = await userProfileRepository.GetByIdAsync(notification.IntiateeId);
+            var user = await userProfileRepository.GetByIdAsync(notification.IntiateeId, cancellationToken);
             if (user is null)
             {
                 logger.LogCritical("User not found with {ID}", notification.IntiateeId);
@@ -31,7 +31,7 @@ public class FriendshipCreatedEventHandler(
             var connectionIds = await connectionIdProvider.GetConnectionIdsSingleTenant(user.Id, cancellationToken);
             if (connectionIds.Count <= 0) return;
 
-            var friend = await userProfileRepository.GetByIdAsync(notification.InitiatorId);
+            var friend = await userProfileRepository.GetByIdAsync(notification.InitiatorId, cancellationToken);
 
             if (friend is null)
             {

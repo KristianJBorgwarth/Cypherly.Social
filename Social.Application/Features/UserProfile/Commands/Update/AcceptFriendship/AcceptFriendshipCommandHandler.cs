@@ -19,7 +19,7 @@ public class AcceptFriendshipCommandHandler(
 {
     public async Task<Result<AcceptFriendshipDto>> Handle(AcceptFriendshipCommand request, CancellationToken cancellationToken)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
+        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
         if (userProfile is null)
         {
             logger.LogError("User not found: {UserId}", request.TenantId);
@@ -32,7 +32,7 @@ public class AcceptFriendshipCommandHandler(
             logger.LogError("Error accepting friendship: {Error} {UserId} {FriendTag}", result.Error, request.TenantId, request.FriendTag);
             return Result.Fail<AcceptFriendshipDto>(result.Error);
         }
-        var newFriend = await userProfileRepository.GetByUserTag(request.FriendTag);
+        var newFriend = await userProfileRepository.GetByUserTag(request.FriendTag, cancellationToken);
 
         if (newFriend is null)
         {

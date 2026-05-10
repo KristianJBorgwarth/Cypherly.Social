@@ -1,4 +1,4 @@
-﻿using Social.Application.Contracts.Repositories;
+using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetFriendRequests;
 using FakeItEasy;
@@ -34,7 +34,7 @@ public class GetFriendRequestsQuerHandlerTest
             TenantId = user.Id,
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(user.Id)).Returns(user);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(user.Id, A<CancellationToken>._)).Returns(user);
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -53,7 +53,7 @@ public class GetFriendRequestsQuerHandlerTest
             TenantId = Guid.NewGuid(),
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).Returns((UserProfile)null);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId, A<CancellationToken>._)).Returns((UserProfile)null);
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);

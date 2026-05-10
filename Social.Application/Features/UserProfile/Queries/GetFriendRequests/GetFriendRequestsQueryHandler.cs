@@ -15,7 +15,7 @@ public class GetFriendRequestsQueryHandler(
 {
     public async Task<Result<GetFriendRequestsDto[]>> Handle(GetFriendRequestsQuery query, CancellationToken cancellationToken)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(query.TenantId);
+        var userProfile = await userProfileRepository.GetByIdAsync(query.TenantId, cancellationToken);
         if (userProfile is null)
         {
             logger.LogCritical("UserProfile not found, UserProfileId: {UserProfileId}", query.TenantId);

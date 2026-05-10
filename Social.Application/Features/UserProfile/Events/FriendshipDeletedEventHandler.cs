@@ -19,8 +19,8 @@ public sealed class FriendshipDeletedEventHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(notification.UserProfileId);
-            var deletedFriendProfile = await userProfileRepository.GetByIdAsync(notification.FriendProfileId);
+            var userProfile = await userProfileRepository.GetByIdAsync(notification.UserProfileId, cancellationToken);
+            var deletedFriendProfile = await userProfileRepository.GetByIdAsync(notification.FriendProfileId, cancellationToken);
             if (userProfile is null || deletedFriendProfile is null)
             {
                 logger.LogWarning("User profile or friend profile not found for user {UserProfileId} and friend {FriendProfileId}", notification.UserProfileId, notification.FriendProfileId);

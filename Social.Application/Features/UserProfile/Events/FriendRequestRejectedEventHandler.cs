@@ -19,7 +19,7 @@ public class FriendRequestRejectedEventHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(notification.DeletedFriendId);
+            var userProfile = await userProfileRepository.GetByIdAsync(notification.DeletedFriendId, ct);
             if (userProfile is null)
             {
                 logger.LogWarning("UserProfile with ID {UserId} not found", notification.UserId);

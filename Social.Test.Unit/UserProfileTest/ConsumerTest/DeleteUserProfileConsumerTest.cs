@@ -1,4 +1,4 @@
-﻿using AutoFixture;
+using AutoFixture;
 using Cypherly.Message.Contracts.Abstractions;
 using Cypherly.Message.Contracts.Messages.Common;
 using Cypherly.Message.Contracts.Messages.User;
@@ -39,7 +39,7 @@ public class DeleteUserProfileConsumerTest
         // Arrange
         var message = _fixture.Create<UserDeleteMessage>();
         var user = new UserProfile();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserProfileId)).Returns(user);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserProfileId, A<CancellationToken>._)).Returns(user);
 
         var fakeConsumeContext = A.Fake<ConsumeContext<UserDeleteMessage>>();
         A.CallTo(() => fakeConsumeContext.Message).Returns(message);
@@ -58,7 +58,7 @@ public class DeleteUserProfileConsumerTest
     {
         // Arrange
         var message = _fixture.Create<UserDeleteMessage>();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserProfileId)).Returns<UserProfile?>(null);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserProfileId, A<CancellationToken>._)).Returns<UserProfile?>(null);
 
         var fakeConsumeContext = A.Fake<ConsumeContext<UserDeleteMessage>>();
         A.CallTo(() => fakeConsumeContext.Message).Returns(message);

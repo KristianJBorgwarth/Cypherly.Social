@@ -1,4 +1,4 @@
-﻿using Social.Application.Contracts.Repositories;
+using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Commands.Update.UnblockUser;
 using FakeItEasy;
 using FluentAssertions;
@@ -31,7 +31,7 @@ public class UnblockUserCommandHandlerTest
     {
         // Arrange
         var command = new UnblockUserCommand { TenantId = Guid.NewGuid(), Tag = "tag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId))!.Returns<UserProfile>(null);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._))!.Returns<UserProfile>(null);
 
         // Act
         var result = await _sut.Handle(command, default);
@@ -48,8 +48,8 @@ public class UnblockUserCommandHandlerTest
     {
         // Arrange
         var command = new UnblockUserCommand { TenantId = Guid.NewGuid(), Tag = "tag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId))!.Returns(new UserProfile());
-        A.CallTo(() => _fakeRepo.GetByUserTag(command.Tag))!.Returns<UserProfile>(null);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._))!.Returns(new UserProfile());
+        A.CallTo(() => _fakeRepo.GetByUserTag(command.Tag, A<CancellationToken>._))!.Returns<UserProfile>(null);
 
         // Act
         var result = await _sut.Handle(command, default);
@@ -69,8 +69,8 @@ public class UnblockUserCommandHandlerTest
         var command = new UnblockUserCommand { TenantId = Guid.NewGuid(), Tag = "tag" };
         var userProfile = new UserProfile();
         var userToUnblock = new UserProfile();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId))!.Returns(userProfile);
-        A.CallTo(() => _fakeRepo.GetByUserTag(command.Tag))!.Returns(userToUnblock);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._))!.Returns(userProfile);
+        A.CallTo(() => _fakeRepo.GetByUserTag(command.Tag, A<CancellationToken>._))!.Returns(userToUnblock);
         A.CallTo(() => _fakeProfileService.UnblockUser(userProfile, userToUnblock)).DoesNothing();
 
         // Act

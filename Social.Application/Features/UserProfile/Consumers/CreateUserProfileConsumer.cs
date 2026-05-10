@@ -21,7 +21,7 @@ public class CreateUserProfileConsumer(
         {
             var profile = userProfileLifecycleService.CreateUserProfile(message.UserId, message.Username);
 
-            await userProfileRepository.CreateAsync(profile);
+            await userProfileRepository.CreateAsync(profile, context.CancellationToken);
 
             await unitOfWork.SaveChangesAsync();
 

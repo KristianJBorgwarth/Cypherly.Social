@@ -19,14 +19,14 @@ public class GetUserProfileByTagQueryHandler(
 {
     public async Task<Result<GetUserProfileByTagDto>> Handle(GetUserProfileByTagQuery request, CancellationToken cancellationToken)
     {
-        var requestingUser = await userProfileRepository.GetByIdAsync(request.TenantId);
+        var requestingUser = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
         if (requestingUser is null)
         {
             logger.LogWarning("User with ID: {ID} attempted to get profile by tag: {Tag}, but no user with that ID Exists", request.TenantId, request.Tag);
             return Result.Fail<GetUserProfileByTagDto>(Errors.General.NotFound(request.TenantId));
         }
 
-        var userProfile = await userProfileRepository.GetByUserTag(request.Tag);
+        var userProfile = await userProfileRepository.GetByUserTag(request.Tag, cancellationToken);
 
         if (userProfile is null || userBlockingService.IsUserBloccked(requestingUser, userProfile) || userProfile.IsPrivate)
             return Result.Ok<GetUserProfileByTagDto>();

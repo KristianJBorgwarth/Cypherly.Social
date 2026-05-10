@@ -16,7 +16,7 @@ public sealed class DeleteFriendshipCommandHandler(
     public async Task<Result> Handle(DeleteFriendshipCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("Handling DeleteFriendshipCommand for UserProfileId {UserProfileId} and FriendTag {FriendTag}", request.TenantId, request.FriendTag);
-        var userProfile = await profileRepository.GetByIdAsync(request.TenantId);
+        var userProfile = await profileRepository.GetByIdAsync(request.TenantId, cancellationToken);
         if (userProfile is null)
         {
             logger.LogError("UserProfile with id {UserProfileId} not found", request.TenantId);

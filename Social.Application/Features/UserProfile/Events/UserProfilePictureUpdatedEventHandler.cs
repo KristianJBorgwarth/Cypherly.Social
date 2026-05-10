@@ -21,7 +21,7 @@ public class UserProfilePictureUpdatedEventHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(notification.UserProfileId);
+            var userProfile = await userProfileRepository.GetByIdAsync(notification.UserProfileId, cancellationToken);
 
             if (userProfile is null)
             {

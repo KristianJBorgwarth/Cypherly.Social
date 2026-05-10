@@ -1,4 +1,4 @@
-﻿using Social.Application.Contracts.Clients;
+using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetFriends;
@@ -29,7 +29,7 @@ public class GetFriendsQueryHandlerTest
     {
         // Arrange
         var query = new GetFriendsQuery { TenantId = Guid.NewGuid() };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).Returns((UserProfile)null!);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId, A<CancellationToken>._)).Returns((UserProfile)null!);
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -38,7 +38,7 @@ public class GetFriendsQueryHandlerTest
         result.Success.Should().BeFalse();
         result.Error.Code.Should().Be("entity.not.found");
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class GetFriendsQueryHandlerTest
         // Arrange
         var query = new GetFriendsQuery { TenantId = Guid.NewGuid() };
         var userProfile = new UserProfile(Guid.NewGuid(), "Eric", UserTag.Create("Eric"));
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).Returns(userProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId, A<CancellationToken>._)).Returns(userProfile);
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -55,6 +55,6 @@ public class GetFriendsQueryHandlerTest
         // Assert
         result.Success.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 }

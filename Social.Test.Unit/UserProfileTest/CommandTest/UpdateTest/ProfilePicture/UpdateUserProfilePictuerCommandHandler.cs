@@ -1,4 +1,4 @@
-﻿using Social.Application.Contracts.Repositories;
+using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using FakeItEasy;
@@ -40,7 +40,7 @@ public class UpdateUserProfilePictuerCommandHandler
 
         var userProfile = new UserProfile(Guid.NewGuid(), "test", UserTag.Create("test"));
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).Returns(userProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._)).Returns(userProfile);
 
         A.CallTo(() => _fakeProfilePicService.UploadProfilePictureAsync(command.NewProfilePicture, command.TenantId))
             .Returns(Result.Ok("somestring"));
@@ -68,7 +68,7 @@ public class UpdateUserProfilePictuerCommandHandler
             NewProfilePicture = A.Fake<IFormFile>()
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId))!.Returns<UserProfile>(null!);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._))!.Returns<UserProfile>(null!);
 
         // Act
         var result = await _sut.Handle(command, new());
@@ -90,7 +90,7 @@ public class UpdateUserProfilePictuerCommandHandler
 
         var userProfile = new UserProfile(Guid.NewGuid(), "test", UserTag.Create("test"));
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId)).Returns(userProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._)).Returns(userProfile);
         A.CallTo(() => _fakeProfilePicService.UploadProfilePictureAsync(command.NewProfilePicture, command.TenantId))
             .Returns(Result.Fail<string>(Errors.General.UnspecifiedError("Invalid profile picture")));
 

@@ -12,7 +12,7 @@ public sealed class GetBlockedUserProfilesQueryHandler(
 {
     public async Task<Result<List<GetBlockedUserProfilesDto>>> Handle(GetBlockedUserProfilesQuery query, CancellationToken cancellationToken)
     {
-        var userProfile = await repository.GetByIdAsync(query.TenantId);
+        var userProfile = await repository.GetByIdAsync(query.TenantId, cancellationToken);
         if (userProfile is null)
         {
             logger.LogError("UserProfile with ID: {UserId} not found", query.TenantId);

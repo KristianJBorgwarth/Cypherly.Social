@@ -1,4 +1,4 @@
-﻿using AutoFixture;
+using AutoFixture;
 using Cypherly.Message.Contracts.Messages.Profile;
 using Cypherly.Message.Contracts.Responses.Profile;
 using Social.Application.Contracts.Repositories;
@@ -42,7 +42,7 @@ namespace Social.Test.Unit.UserProfileTest.ConsumerTest
 
             A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username)).Returns(profile);
 
-            A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile)).Returns(Task.CompletedTask);
+            A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile, A<CancellationToken>._)).Returns(Task.CompletedTask);
 
             A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).Returns(Task.CompletedTask);
 
@@ -54,7 +54,7 @@ namespace Social.Test.Unit.UserProfileTest.ConsumerTest
 
             // Assert
             A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username)).MustHaveHappenedOnceExactly();
-            A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
             A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).MustHaveHappenedOnceExactly();
         }
 
@@ -93,7 +93,7 @@ namespace Social.Test.Unit.UserProfileTest.ConsumerTest
             A.CallTo(() => fakeConsumeContext.Message).Returns(message);
 
             A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username)).Returns(profile);
-            A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile)).Throws(new Exception("Repository exception"));
+            A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile, A<CancellationToken>._)).Throws(new Exception("Repository exception"));
 
             // Act
             await Assert.ThrowsAsync<Exception>(() => _sut.Consume(fakeConsumeContext));
@@ -116,7 +116,7 @@ namespace Social.Test.Unit.UserProfileTest.ConsumerTest
             A.CallTo(() => fakeConsumeContext.Message).Returns(message);
 
             A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username)).Returns(profile);
-            A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile)).Returns(Task.CompletedTask);
+            A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile, A<CancellationToken>._)).Returns(Task.CompletedTask);
             A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).Throws(new Exception("UnitOfWork exception"));
 
             // Act
