@@ -25,7 +25,7 @@ public class GetBlockedUserProfilesQueryHandlerTest
     {
         // Arrange
         var query = new GetBlockedUserProfilesQuery { TenantId = Guid.NewGuid() };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId)).Returns((UserProfile?)null);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId, A<CancellationToken>._)).Returns((UserProfile?)null);
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);

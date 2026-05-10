@@ -17,7 +17,7 @@ public sealed class ConnectionIdsProxyConsumer(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(context.Message.TenantId);
+            var userProfile = await userProfileRepository.GetByIdAsync(context.Message.TenantId, context.CancellationToken);
             if (userProfile is null)
             {
                 logger.LogWarning("UserProfile with ID {UserId} not found", context.Message.TenantId);

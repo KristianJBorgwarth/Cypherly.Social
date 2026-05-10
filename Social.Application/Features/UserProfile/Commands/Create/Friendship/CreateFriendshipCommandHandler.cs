@@ -15,14 +15,14 @@ public class CreateFriendshipCommandHandler(
 {
     public async Task<Result> Handle(CreateFriendshipCommand request, CancellationToken cancellationToken)
     {
-        var friend = await userProfileRepository.GetByUserTag(request.FriendTag);
+        var friend = await userProfileRepository.GetByUserTag(request.FriendTag, cancellationToken);
         if (friend is null)
         {
             logger.LogWarning("Friend not found for {FriendTag}", request.FriendTag);
             return Result.Fail(Errors.General.NotFound(request.FriendTag));
         }
 
-        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
+        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
         if (userProfile is null)
         {
             logger.LogWarning("User not found for {UserId}", request.TenantId);

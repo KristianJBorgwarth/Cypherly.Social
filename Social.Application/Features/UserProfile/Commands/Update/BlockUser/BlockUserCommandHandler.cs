@@ -15,14 +15,14 @@ public class BlockUserCommandHandler(
 {
     public async Task<Result> Handle(BlockUserCommand request, CancellationToken cancellationToken)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
+        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
         if (userProfile is null)
         {
             logger.LogError("User profile not found for user id {UserId}", request.TenantId);
             return Result.Fail(Errors.General.NotFound(request.TenantId));
         }
 
-        var blockedUserProfile = await userProfileRepository.GetByUserTag(request.BlockedUserTag);
+        var blockedUserProfile = await userProfileRepository.GetByUserTag(request.BlockedUserTag, cancellationToken);
         if (blockedUserProfile is null)
         {
             logger.LogError("User profile not found for user id {UserId}", request.BlockedUserTag);

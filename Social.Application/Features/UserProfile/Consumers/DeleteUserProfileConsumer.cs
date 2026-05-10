@@ -22,7 +22,7 @@ public class DeleteUserProfileConsumer(
         try
         {
             var message = context.Message;
-            var user = await userProfileRepository.GetByIdAsync(message.UserProfileId);
+            var user = await userProfileRepository.GetByIdAsync(message.UserProfileId, context.CancellationToken);
 
             if (user is null)
             {

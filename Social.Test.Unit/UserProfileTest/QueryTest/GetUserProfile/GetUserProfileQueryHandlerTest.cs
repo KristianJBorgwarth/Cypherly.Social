@@ -1,4 +1,4 @@
-﻿using Social.Application.Contracts.Clients;
+using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
@@ -31,7 +31,7 @@ public class GetUserProfileQueryHandlerTest
     {
         // Arrange
         var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() };
-        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).Returns((UserProfile)null!);
+        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId, A<CancellationToken>._)).Returns((UserProfile)null!);
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -40,7 +40,7 @@ public class GetUserProfileQueryHandlerTest
         result.Success.Should().BeFalse();
         result.Error.Code.Should().Be("entity.not.found");
 
-        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(A<string>._)).MustNotHaveHappened();
     }
 
@@ -53,7 +53,7 @@ public class GetUserProfileQueryHandlerTest
 
         var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
 
-        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).Returns(userProfile);
+        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId, A<CancellationToken>._)).Returns(userProfile);
 
         var dto = GetUserProfileDto.MapFrom(userProfile, "");
 
@@ -63,7 +63,7 @@ public class GetUserProfileQueryHandlerTest
         // Assert
         result.Success.Should().BeTrue();
         result.Value.Should().BeEquivalentTo(dto);
-        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class GetUserProfileQueryHandlerTest
         var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
         userProfile.SetProfilePictureUrl("profilePictureUrl");
 
-        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).Returns(userProfile);
+        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId, A<CancellationToken>._)).Returns(userProfile);
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).Returns(Result.Ok("presignedUrl"));
 
 
@@ -90,7 +90,7 @@ public class GetUserProfileQueryHandlerTest
         result.Success.Should().BeTrue();
         result.Value.ProfilePictureUrl.Should().Be("presignedUrl");
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 
     [Fact]
@@ -102,7 +102,7 @@ public class GetUserProfileQueryHandlerTest
         var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
         userProfile.SetProfilePictureUrl("profilePictureUrl");
 
-        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).Returns(userProfile);
+        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId, A<CancellationToken>._)).Returns(userProfile);
 
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl))
             .Returns(Result.Fail<string>(Errors.General.UnspecifiedError("Failed to get presigned url")));
@@ -114,6 +114,6 @@ public class GetUserProfileQueryHandlerTest
         result.Success.Should().BeTrue();
         result.Value.ProfilePictureUrl.Should().Be("");
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepository.GetByIdAsync(query.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 }

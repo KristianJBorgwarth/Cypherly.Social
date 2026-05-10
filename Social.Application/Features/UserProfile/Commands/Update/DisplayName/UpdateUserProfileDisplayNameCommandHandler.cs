@@ -15,7 +15,7 @@ public class UpdateUserProfileDisplayNameCommandHandler(
 {
     public async Task<Result<UpdateUserProfileDisplayNameDto>> Handle(UpdateUserProfileDisplayNameCommand request, CancellationToken cancellationToken)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
+        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
         if (userProfile is null)
         {
             logger.LogWarning("User profile with id: {Id} not found.", request.TenantId);

@@ -13,7 +13,7 @@ public class TogglePrivacyCommandHandler(
 {
     public async Task<Result> Handle(TogglePrivacyCommand request, CancellationToken cancellationToken)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
+        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
         if (userProfile is null)
         {
             logger.LogCritical("User with {ID} not found", request.TenantId);

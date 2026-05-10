@@ -8,30 +8,30 @@ namespace Social.Infrastructure.Persistence.Repositories;
 
 public class UserProfileRepository(SocialDbContext context) : IUserProfileRepository
 {
-    public async Task CreateAsync(UserProfile entity)
+    public async Task CreateAsync(UserProfile entity, CancellationToken cancellationToken = default)
     {
-        await context.UserProfile.AddAsync(entity);
+        await context.UserProfile.AddAsync(entity, cancellationToken);
     }
 
-    public Task DeleteAsync(UserProfile entity)
+    public Task DeleteAsync(UserProfile entity, CancellationToken cancellationToken = default)
     {
         context.UserProfile.Remove(entity);
         return Task.CompletedTask;
     }
 
-    public async Task<UserProfile?> GetByIdAsync(Guid id)
+    public async Task<UserProfile?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await context.UserProfile.FindAsync(id);
+        return await context.UserProfile.FindAsync([id], cancellationToken);
     }
 
-    public Task UpdateAsync(UserProfile entity)
+    public Task UpdateAsync(UserProfile entity, CancellationToken cancellationToken = default)
     {
         context.UserProfile.Update(entity);
         return Task.CompletedTask;
     }
 
-    public async Task<UserProfile?> GetByUserTag(string userTag)
+    public async Task<UserProfile?> GetByUserTag(string userTag, CancellationToken cancellationToken = default)
     {
-        return await context.UserProfile.FirstOrDefaultAsync(x => x.UserTag.Tag == userTag);
+        return await context.UserProfile.FirstOrDefaultAsync(x => x.UserTag.Tag == userTag, cancellationToken);
     }
 }

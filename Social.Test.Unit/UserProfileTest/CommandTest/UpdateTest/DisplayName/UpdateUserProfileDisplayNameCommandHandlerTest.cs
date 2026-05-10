@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
 using FakeItEasy;
@@ -37,8 +37,8 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
             TenantId = testProfile.Id
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId)).Returns(testProfile);
-        A.CallTo(() => _fakeRepo.UpdateAsync(testProfile)).DoesNothing();
+        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId, A<CancellationToken>._)).Returns(testProfile);
+        A.CallTo(() => _fakeRepo.UpdateAsync(testProfile, A<CancellationToken>._)).DoesNothing();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(default)).DoesNothing();
         A.CallTo(() => _fakeMapper.Map<UpdateUserProfileDisplayNameDto>(testProfile)).Returns(new()
         {
@@ -51,8 +51,8 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
         // Assert
         result.Success.Should().BeTrue();
         result.Value.DisplayName.Should().Be(cmd.DisplayName);
-        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeRepo.UpdateAsync(testProfile)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.UpdateAsync(testProfile, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeMapper.Map<UpdateUserProfileDisplayNameDto>(testProfile)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(default)).MustHaveHappenedOnceExactly();
     }
@@ -67,15 +67,15 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
             TenantId = Guid.NewGuid()
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId)).Returns((UserProfile)null);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId, A<CancellationToken>._)).Returns((UserProfile)null);
 
         // Act
         var result = await _sut.Handle(cmd, default);
 
         // Assert
         result.Success.Should().BeFalse();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeRepo.UpdateAsync(A<UserProfile>._)).MustNotHaveHappened();
+        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.UpdateAsync(A<UserProfile>._, A<CancellationToken>._)).MustNotHaveHappened();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
         A.CallTo(() => _fakeMapper.Map<UpdateUserProfileDisplayNameDto>(A<UserProfile>._)).MustNotHaveHappened();
     }
@@ -91,15 +91,15 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
             TenantId = testProfile.Id
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId)).Returns(testProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId, A<CancellationToken>._)).Returns(testProfile);
 
         // Act
         var result = await _sut.Handle(cmd, default);
 
         // Assert
         result.Success.Should().BeFalse();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeRepo.UpdateAsync(A<UserProfile>._)).MustNotHaveHappened();
+        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.UpdateAsync(A<UserProfile>._, A<CancellationToken>._)).MustNotHaveHappened();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
         A.CallTo(() => _fakeMapper.Map<UpdateUserProfileDisplayNameDto>(A<UserProfile>._)).MustNotHaveHappened();
     }

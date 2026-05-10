@@ -15,7 +15,7 @@ public class UpdateUserProfilePictureCommandHandler(
 {
     public async Task<Result<UpdateUserProfilePictureDto>> Handle(UpdateUserProfilePictureCommand request, CancellationToken cancellationToken)
     {
-        var user = await userProfileRepository.GetByIdAsync(request.TenantId);
+        var user = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
         if (user is null) return Result.Fail<UpdateUserProfilePictureDto>(Errors.General.NotFound(request.TenantId));
 
         var result = await profilePictureService.UploadProfilePictureAsync(request.NewProfilePicture, request.TenantId);

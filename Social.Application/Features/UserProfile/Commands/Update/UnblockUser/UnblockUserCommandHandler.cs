@@ -15,14 +15,14 @@ public class UnblockUserCommandHandler(
 {
     public async Task<Result> Handle(UnblockUserCommand request, CancellationToken cancellationToken)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId);
+        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
         if (userProfile is null)
         {
             logger.LogCritical("User with {ID} not found", request.TenantId);
             return Result.Fail(Errors.General.NotFound(request.TenantId));
         }
 
-        var userToUnblock = await userProfileRepository.GetByUserTag(request.Tag);
+        var userToUnblock = await userProfileRepository.GetByUserTag(request.Tag, cancellationToken);
         if (userToUnblock is null)
         {
             logger.LogCritical("User with tag {Tag} not found", request.Tag);

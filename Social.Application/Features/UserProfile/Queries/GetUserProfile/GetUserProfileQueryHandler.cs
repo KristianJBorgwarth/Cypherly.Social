@@ -15,7 +15,7 @@ public class GetUserProfileQueryHandler(
     public async Task<Result<GetUserProfileDto>> Handle(GetUserProfileQuery request,
         CancellationToken cancellationToken)
     {
-        var userprofile = await userProfileRepository.GetByIdAsync(request.TenantId);
+        var userprofile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
         if (userprofile is null) return Result.Fail<GetUserProfileDto>(Errors.General.NotFound(request.TenantId.ToString()));
 
         var profilePictureUrl = "";
