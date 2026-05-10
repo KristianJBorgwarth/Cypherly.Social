@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using Amazon.S3;
 using Amazon.S3.Model;
-using Social.Application.Contracts;
 using Social.Application.Contracts.Services;
 using Social.Domain.Common;
 using Microsoft.AspNetCore.Http;
