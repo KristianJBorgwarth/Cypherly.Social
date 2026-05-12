@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Social.Application.Contracts;
 using Social.Application.Contracts.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,8 +21,7 @@ internal static class PersistenceExtensions
                 {
                     sqlOptions.MigrationsAssembly(assembly.FullName);
                     sqlOptions.EnableRetryOnFailure();
-                })
-                .UseLazyLoadingProxies();
+                });
         });
 
         services.AddRepositories();

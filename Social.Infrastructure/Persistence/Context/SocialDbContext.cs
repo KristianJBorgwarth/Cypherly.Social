@@ -2,7 +2,6 @@
 using Social.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Outbox_OutboxMessage = Social.Infrastructure.Persistence.Outbox.OutboxMessage;
-using OutboxMessage = Social.Infrastructure.Persistence.Outbox.OutboxMessage;
 
 namespace Social.Infrastructure.Persistence.Context;
 
