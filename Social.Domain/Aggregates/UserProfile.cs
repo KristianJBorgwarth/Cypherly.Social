@@ -14,6 +14,7 @@ public partial class UserProfile : AggregateRoot
     public string? DisplayName { get; private set; }
     public string? ProfilePictureUrl { get; private set; }
     public bool IsPrivate { get; private set; }
+    public Avatar? Avatar { get; private set; }
 
     private readonly List<BlockedUser> _blockedUsers = [];
     public virtual IReadOnlyCollection<BlockedUser> BlockedUsers => _blockedUsers;
@@ -36,6 +37,12 @@ public partial class UserProfile : AggregateRoot
     public void SetProfilePictureUrl(string profilePictureUrl)
     {
         ProfilePictureUrl = profilePictureUrl;
+        AddDomainEvent(new UserProfilePictureUpdatedEvent(Id));
+    }
+
+    public void SetAvatar(Avatar avatar)
+    {
+        Avatar = avatar;
         AddDomainEvent(new UserProfilePictureUpdatedEvent(Id));
     }
 

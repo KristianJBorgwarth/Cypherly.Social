@@ -1,10 +1,9 @@
-﻿
-
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Social.Application.Contracts.Clients;
+using Social.Application.Contracts.Services;
 using Social.Infrastructure.Settings;
+using Social.Infrastructure.Store;
 
 namespace Social.Infrastructure.Extensions;
 
@@ -17,7 +16,9 @@ public static class InfrastructureExtensions
         services.AddPersistence(configuration, assembly);
         services.AddProviders();
         services.AddOutboxProcessingJob(assembly);
+        services.AddBlobStore();
         services.AddStorage();
+        services.AddServices();
     }
 
     private static void AddSettings(this IServiceCollection services, IConfiguration configuration)
@@ -25,5 +26,15 @@ public static class InfrastructureExtensions
         services.Configure<MinioSettings>(configuration.GetSection("Bucket"));
         services.Configure<HttpClientSettings>(configuration.GetSection("ApiBaseUrls"));
         services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
+    }
+
+    private static void AddBlobStore(this IServiceCollection services)
+    {
+        services.AddSingleton<IBlobStore, BlobStore>();
+    }
+
+    private static void AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IAvatarService, AvatarService>();
     }
 }
