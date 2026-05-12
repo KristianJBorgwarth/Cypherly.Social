@@ -10,8 +10,8 @@ public class Friendship : Entity
     public Guid FriendProfileId { get; private set; }
     public FriendshipStatus Status { get; private set; }
     public bool IsSeen { get; private set; }
-    public virtual UserProfile UserProfile { get; private set; } = null!;
-    public virtual UserProfile FriendProfile { get; private set; } = null!;
+    public UserProfile UserProfile { get; private set; } = null!;
+    public UserProfile FriendProfile { get; private set; } = null!;
 
     public Friendship() { } // Required for EF Core
 
