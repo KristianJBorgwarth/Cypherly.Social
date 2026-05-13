@@ -58,7 +58,7 @@ public class FriendshipService : IFriendshipService
         userProfile.DeleteFriendship(friendTag);
 
         userProfile.AddDomainEvent(new FriendRequestRejectedEvent(userProfile.Id, friendship.UserProfileId));
-
+        
         return Result.Ok();
     }
 

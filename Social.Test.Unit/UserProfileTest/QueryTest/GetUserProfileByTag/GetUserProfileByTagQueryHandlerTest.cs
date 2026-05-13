@@ -1,3 +1,4 @@
+using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
@@ -41,7 +42,8 @@ public class GetUserProfileByTagQueryHandlerTest
             Tag = "TestTag"
         };
 
-        A.CallTo(() => _userProfileRepository.GetByIdAsync(request.TenantId, A<CancellationToken>._))!.Returns<UserProfile>(null);
+        A.CallTo(() => _userProfileRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
+            .Returns((UserProfile)null);
 
         // Act
         var result = await _sut.Handle(request, CancellationToken.None);
@@ -63,9 +65,9 @@ public class GetUserProfileByTagQueryHandlerTest
         var requestingUser = new UserProfile();
         var userProfile = new UserProfile();
 
-        A.CallTo(() => _userProfileRepository.GetByIdAsync(request.TenantId, A<CancellationToken>._)).Returns(requestingUser);
-        A.CallTo(() => _userProfileRepository.GetByUserTag(request.Tag, A<CancellationToken>._)).Returns(userProfile);
-        A.CallTo(() => _userBlockingService.IsUserBloccked(requestingUser, userProfile))!.Returns(true);
+        A.CallTo(() => _userProfileRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
+            .ReturnsNextFromSequence<UserProfile?>(requestingUser, userProfile);
+        A.CallTo(() => _userBlockingService.IsUserBlocked(requestingUser, userProfile)).Returns(true);
 
         // Act
         var result = await _sut.Handle(request, CancellationToken.None);
@@ -87,8 +89,8 @@ public class GetUserProfileByTagQueryHandlerTest
 
         var requestingUser = new UserProfile();
 
-        A.CallTo(() => _userProfileRepository.GetByIdAsync(request.TenantId, A<CancellationToken>._)).Returns(requestingUser);
-        A.CallTo(() => _userProfileRepository.GetByUserTag(request.Tag, A<CancellationToken>._))!.Returns<UserProfile>(null);
+        A.CallTo(() => _userProfileRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
+            .ReturnsNextFromSequence<UserProfile?>(requestingUser, null);
 
         // Act
         var result = await _sut.Handle(request, CancellationToken.None);

@@ -49,8 +49,8 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
         builder.ConfigureServices(services =>
         {
             #region Database Extensions
-            var descriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<TDbContext>));
+
+            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<TDbContext>));
 
             if (descriptor != null)
             {
@@ -61,16 +61,12 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
             {
                 options.UseNpgsql(_dbContainer.GetConnectionString(),
                     b => b.MigrationsAssembly(typeof(TDbContext).Assembly.FullName));
-
-                if (ShouldTestWithLazyLoadingProxies)
-                {
-                    options.UseLazyLoadingProxies();
-                }
             });
 
             #endregion
 
             #region Auth Extensions
+
             // Mock out authentication and authorization for testing
             services.AddAuthentication("Test")
                 .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
@@ -78,7 +74,7 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
             services.AddAuthorizationBuilder()
                 .AddPolicy("AdminOnly", policy => policy.RequireAssertion(_ => true))
                 .AddPolicy("User", policy => policy.RequireAssertion(_ => true));
-            
+
             #endregion
 
             #region RabbitMq Extensions
@@ -88,25 +84,21 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
             if (rmgDescriptor is not null)
                 services.Remove(rmgDescriptor);
 
-            services.AddMassTransitTestHarness(cfg =>
-            {
-                cfg.AddConsumers(typeof(TProgram).Assembly);
-            });
+            services.AddMassTransitTestHarness(cfg => { cfg.AddConsumers(typeof(TProgram).Assembly); });
 
             #endregion
 
             #region Minio Extensions
-
 
             services.RemoveAll(typeof(IConfigureOptions<MinioSettings>));
 
             // Add in-memory configuration
             var inMemorySettings = new Dictionary<string, string>
             {
-                {"S3:Host", "http://localhost:9023"},
-                {"S3:ProfilePictureBucket", "bucket-name"},
-                {"S3:User", "MinioRoot"},
-                {"S3:Password", "rootErinoTest?87"}
+                { "S3:Host", "http://localhost:9023" },
+                { "S3:ProfilePictureBucket", "bucket-name" },
+                { "S3:User", "MinioRoot" },
+                { "S3:Password", "rootErinoTest?87" }
             };
 
             var configuration = new ConfigurationBuilder()

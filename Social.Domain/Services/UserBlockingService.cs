@@ -5,7 +5,7 @@ namespace Social.Domain.Services;
 
 public interface IUserBlockingService
 {
-    bool IsUserBloccked(UserProfile userProfile, UserProfile checkUserProfile);
+    bool IsUserBlocked(UserProfile userProfile, UserProfile checkUserProfile);
     void BlockUser(UserProfile userProfile, UserProfile blockedUserProfile);
     void UnblockUser(UserProfile userProfile, UserProfile unblockedUserProfile);
 
@@ -18,7 +18,7 @@ public class UserBlockingService : IUserBlockingService
     /// <param name="userProfile"></param>
     /// <param name="checkUserProfile"></param>
     /// <returns></returns>
-    public bool IsUserBloccked(UserProfile userProfile, UserProfile checkUserProfile)
+    public bool IsUserBlocked(UserProfile userProfile, UserProfile checkUserProfile)
     {
         return userProfile.BlockedUsers.Any(b => b.BlockedUserProfileId == checkUserProfile.Id)
                || checkUserProfile.BlockedUsers.Any(b => b.BlockedUserProfileId == userProfile.Id);

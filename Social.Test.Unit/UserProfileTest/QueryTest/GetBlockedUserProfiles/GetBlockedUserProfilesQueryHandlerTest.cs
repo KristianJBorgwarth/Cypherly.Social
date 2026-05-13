@@ -1,3 +1,4 @@
+using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Queries.GetBlockedUserProfiles;
 using FakeItEasy;
@@ -25,7 +26,7 @@ public class GetBlockedUserProfilesQueryHandlerTest
     {
         // Arrange
         var query = new GetBlockedUserProfilesQuery { TenantId = Guid.NewGuid() };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(query.TenantId, A<CancellationToken>._)).Returns((UserProfile?)null);
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).Returns((UserProfile?)null);
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);

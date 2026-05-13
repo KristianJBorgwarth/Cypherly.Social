@@ -1,3 +1,4 @@
+using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Commands.Update.BlockUser;
 using FakeItEasy;
@@ -30,7 +31,7 @@ public class BlockUserCommandHandlerTest
     {
         // Arrange
         var request = new BlockUserCommand { TenantId = Guid.Empty, BlockedUserTag = "blockedUserTag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(request.TenantId, A<CancellationToken>._)).Returns((UserProfile)null);
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).Returns((UserProfile)null);
 
         // Act
         var result = await _sut.Handle(request, CancellationToken.None);
@@ -45,8 +46,8 @@ public class BlockUserCommandHandlerTest
     {
         // Arrange
         var request = new BlockUserCommand { TenantId = Guid.NewGuid(), BlockedUserTag = "blockedUserTag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(request.TenantId, A<CancellationToken>._)).Returns(new UserProfile());
-        A.CallTo(() => _fakeRepo.GetByUserTag(request.BlockedUserTag, A<CancellationToken>._)).Returns((UserProfile)null);
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
+            .ReturnsNextFromSequence<UserProfile?>(new UserProfile(), null);
 
         // Act
         var result = await _sut.Handle(request, CancellationToken.None);

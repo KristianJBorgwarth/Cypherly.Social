@@ -13,24 +13,24 @@ public class UnblockUserCommandHandler(
     ILogger<UnblockUserCommandHandler> logger)
     : ICommandHandler<UnblockUserCommand>
 {
-    public async Task<Result> Handle(UnblockUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UnblockUserCommand cmd, CancellationToken ct)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
+        var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithBlockedUsersSpec(cmd.TenantId), ct);
         if (userProfile is null)
         {
-            logger.LogCritical("User with {ID} not found", request.TenantId);
-            return Result.Fail(Errors.General.NotFound(request.TenantId));
+            logger.LogCritical("User with {ID} not found", cmd.TenantId);
+            return Result.Fail(Errors.General.NotFound(cmd.TenantId));
         }
 
-        var userToUnblock = await userProfileRepository.GetByUserTag(request.Tag, cancellationToken);
+        var userToUnblock = await userProfileRepository.GetSingleAsync(new UserProfileByTagWithBlockedUsersSpec(cmd.Tag), ct);
         if (userToUnblock is null)
         {
-            logger.LogCritical("User with tag {Tag} not found", request.Tag);
-            return Result.Fail(Errors.General.NotFound(request.Tag));
+            logger.LogCritical("User with tag {Tag} not found", cmd.Tag);
+            return Result.Fail(Errors.General.NotFound(cmd.Tag));
         }
 
         userBlockingService.UnblockUser(userProfile, userToUnblock);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(ct);
 
         return Result.Ok();
     }

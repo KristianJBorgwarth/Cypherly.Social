@@ -5,6 +5,7 @@ using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
+using Social.Application.Features.UserProfile.Specifications;
 
 namespace Social.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
 
@@ -17,33 +18,33 @@ public class AcceptFriendshipCommandHandler(
     ILogger<AcceptFriendshipCommandHandler> logger)
     : ICommandHandler<AcceptFriendshipCommand, AcceptFriendshipDto>
 {
-    public async Task<Result<AcceptFriendshipDto>> Handle(AcceptFriendshipCommand request, CancellationToken cancellationToken)
+    public async Task<Result<AcceptFriendshipDto>> Handle(AcceptFriendshipCommand cmd, CancellationToken ct)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
+        var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendshipsSpec(cmd.TenantId), ct);
         if (userProfile is null)
         {
-            logger.LogError("User not found: {UserId}", request.TenantId);
-            return Result.Fail<AcceptFriendshipDto>(Errors.General.NotFound(request.TenantId));
+            logger.LogError("User not found: {UserId}", cmd.TenantId);
+            return Result.Fail<AcceptFriendshipDto>(Errors.General.NotFound(cmd.TenantId));
         }
 
-        var result = friendshipService.AcceptFriendship(userProfile, request.FriendTag);
-        if (result.Success is false)
+        var result = friendshipService.AcceptFriendship(userProfile, cmd.FriendTag);
+        if (!result.Success)
         {
-            logger.LogError("Error accepting friendship: {Error} {UserId} {FriendTag}", result.Error, request.TenantId, request.FriendTag);
+            logger.LogError("Error accepting friendship: {Error} {UserId} {FriendTag}", result.Error, cmd.TenantId, cmd.FriendTag);
             return Result.Fail<AcceptFriendshipDto>(result.Error);
         }
-        var newFriend = await userProfileRepository.GetByUserTag(request.FriendTag, cancellationToken);
+        var newFriend = await userProfileRepository.GetSingleAsync(new UserProfileByTagWithFriendshipsSpec(cmd.FriendTag), ct);
 
         if (newFriend is null)
         {
-            logger.LogError("Friend not found: {FriendTag}", request.FriendTag);
-            return Result.Fail<AcceptFriendshipDto>(Errors.General.NotFound(request.FriendTag));
+            logger.LogError("Friend not found: {FriendTag}", cmd.FriendTag);
+            return Result.Fail<AcceptFriendshipDto>(Errors.General.NotFound(cmd.FriendTag));
         }
 
-        var connectionIds = await connectionIdProvider.GetConnectionIdsSingleTenant(newFriend.Id, cancellationToken);
+        var connectionIds = await connectionIdProvider.GetConnectionIdsSingleTenant(newFriend.Id, ct);
 
-        await userProfileRepository.UpdateAsync(userProfile);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await userProfileRepository.UpdateAsync(userProfile, ct);
+        await unitOfWork.SaveChangesAsync(ct);
 
         var presignedUrl = await FetchPresignedUrl(newFriend.ProfilePictureUrl);
 

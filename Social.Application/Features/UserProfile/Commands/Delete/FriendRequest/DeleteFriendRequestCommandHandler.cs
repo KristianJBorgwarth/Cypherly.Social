@@ -3,6 +3,7 @@ using Social.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
+using Social.Application.Features.UserProfile.Specifications;
 
 namespace Social.Application.Features.UserProfile.Commands.Delete.FriendRequest;
 
@@ -13,9 +14,9 @@ public sealed class DeleteFriendRequestCommandHandler(
     ILogger<DeleteFriendRequestCommandHandler> logger
     ) : ICommandHandler<DeleteFriendRequestCommand>
 {
-    public async Task<Result> Handle(DeleteFriendRequestCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteFriendRequestCommand request, CancellationToken ct)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
+        var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendRequestsSpec(request.TenantId), ct);
         if (userProfile is null)
         {
             logger.LogWarning("User profile with ID {Id} not found.", request.TenantId);
@@ -29,7 +30,7 @@ public sealed class DeleteFriendRequestCommandHandler(
             return delResult;
         }
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(ct);
         return Result.Ok();
     }
 }

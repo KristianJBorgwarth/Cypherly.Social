@@ -16,13 +16,13 @@ public partial class UserProfile : AggregateRoot
     public bool IsPrivate { get; private set; }
 
     private readonly List<BlockedUser> _blockedUsers = [];
-    public virtual IReadOnlyCollection<BlockedUser> BlockedUsers => _blockedUsers;
+    public IReadOnlyCollection<BlockedUser> BlockedUsers => _blockedUsers;
 
     private readonly List<Friendship> _friendshipsReceived = [];
-    public virtual IReadOnlyCollection<Friendship> FriendshipsReceived => _friendshipsReceived;
+    public IReadOnlyCollection<Friendship> FriendshipsReceived => _friendshipsReceived;
 
     private readonly List<Friendship> _friendshipsInitiated = [];
-    public virtual IReadOnlyCollection<Friendship> FriendshipsInitiated => _friendshipsInitiated;
+    public IReadOnlyCollection<Friendship> FriendshipsInitiated => _friendshipsInitiated;
 
     public UserProfile() : base(Guid.Empty) { } // For EF Core
 
@@ -121,7 +121,7 @@ public partial class UserProfile : AggregateRoot
         if (_blockedUsers.Any(c => c.BlockedUserProfileId == blockedUserId))
             throw new InvalidOperationException("User already blocked");
 
-        _blockedUsers.Add(new(blockingUserProfileId: Id, blockedUserProfileId: blockedUserId));
+        _blockedUsers.Add(new BlockedUser(blockingUserProfileId: Id, blockedUserProfileId: blockedUserId));
         AddDomainEvent(new UserBlockedEvent(Id, blockedUserId));
     }
 
