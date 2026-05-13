@@ -1,5 +1,5 @@
-﻿using Social.Application.Features.UserProfile.Commands.Create.Friendship;
-using FluentValidation.TestHelper;
+﻿using FluentValidation.TestHelper;
+using Social.Application.Features.Friendships.Commands.Create;
 using Social.Domain.Common;
 using Xunit;
 

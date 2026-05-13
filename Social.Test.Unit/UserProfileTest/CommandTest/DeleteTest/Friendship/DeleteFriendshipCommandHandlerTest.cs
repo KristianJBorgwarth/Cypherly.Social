@@ -1,9 +1,9 @@
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Features.UserProfile.Commands.Delete.Friendship;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Social.Application.Features.Friendships.Commands.Delete.Friendship;
 using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Interfaces;

@@ -1,6 +1,6 @@
-using Social.Application.Features.UserProfile.Queries.GetBlockedUserProfiles;
 using FluentAssertions;
 using FluentValidation.TestHelper;
+using Social.Application.Features.Friendships.Queries.GetBlockedUserProfiles;
 using Xunit;
 
 namespace Social.Test.Unit.UserProfileTest.QueryTest.GetBlockedUserProfiles;

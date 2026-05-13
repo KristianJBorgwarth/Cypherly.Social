@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Features.UserProfile.Commands.Update.BlockUser;
+using Social.Application.Features.Friendships.Commands.Update.BlockUser;
 using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Services;

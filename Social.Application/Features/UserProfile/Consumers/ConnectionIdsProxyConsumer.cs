@@ -4,7 +4,7 @@ using MassTransit;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Features.UserProfile.Specifications;
+using Social.Application.Specifications;
 
 namespace Social.Application.Features.UserProfile.Consumers;
 

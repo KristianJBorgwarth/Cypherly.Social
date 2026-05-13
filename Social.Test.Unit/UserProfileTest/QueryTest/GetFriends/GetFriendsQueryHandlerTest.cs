@@ -1,10 +1,10 @@
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
-using Social.Application.Features.UserProfile.Queries.GetFriends;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Social.Application.Features.Friendships.Queries.GetFriends;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
 using Xunit;

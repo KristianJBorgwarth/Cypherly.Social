@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
-using Social.Application.Features.UserProfile.Queries.GetFriendRequests;
+using Social.Application.Features.Friendships.Queries.GetFriendRequests;
 using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.ValueObjects;

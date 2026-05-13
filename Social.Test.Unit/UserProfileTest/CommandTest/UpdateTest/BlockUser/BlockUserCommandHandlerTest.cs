@@ -1,9 +1,9 @@
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Features.UserProfile.Commands.Update.BlockUser;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Social.Application.Features.Friendships.Commands.Update.BlockUser;
 using Social.Domain.Aggregates;
 using Social.Domain.Services;
 using Xunit;
