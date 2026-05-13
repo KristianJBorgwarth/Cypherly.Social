@@ -5,7 +5,7 @@ using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
-using Social.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
+using Social.Application.Features.Friendships.Commands.Update.AcceptFriendship;
 using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Interfaces;

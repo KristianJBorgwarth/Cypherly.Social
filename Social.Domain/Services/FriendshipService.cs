@@ -2,6 +2,7 @@
 using Social.Domain.Common;
 using Social.Domain.Dtos;
 using Social.Domain.Enums;
+using Social.Domain.Events.Friendships;
 using Social.Domain.Events.UserProfile;
 using Social.Domain.Interfaces;
 

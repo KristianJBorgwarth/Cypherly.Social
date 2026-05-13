@@ -3,7 +3,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Features.UserProfile.Queries.GetBlockedUserProfiles;
+using Social.Application.Features.Friendships.Queries.GetBlockedUserProfiles;
 using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.ValueObjects;

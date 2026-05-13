@@ -1,5 +1,5 @@
-﻿using Social.Application.Features.UserProfile.Queries.GetFriendRequests;
-using FluentValidation.TestHelper;
+﻿using FluentValidation.TestHelper;
+using Social.Application.Features.Friendships.Queries.GetFriendRequests;
 using Xunit;
 
 namespace Social.Test.Unit.UserProfileTest.QueryTest.GetFriendRequestsTest

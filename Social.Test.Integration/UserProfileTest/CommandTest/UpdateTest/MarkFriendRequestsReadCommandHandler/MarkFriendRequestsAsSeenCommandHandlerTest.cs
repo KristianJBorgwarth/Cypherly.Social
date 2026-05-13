@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen;
+using Social.Application.Features.Friendships.Commands.Update.MarkFriendRequestAsSeen;
 using Social.Domain.Aggregates;
 using Social.Domain.Interfaces;
 using Social.Domain.ValueObjects;
@@ -14,14 +14,14 @@ namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.MarkFri
 
 public class MarkFriendRequestsAsSeenCommandHandlerTest : IntegrationTestBase
 {
-    private readonly Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsAsSeenCommandHandler _sut;
+    private readonly MarkFriendRequestsAsSeenCommandHandler _sut;
     public MarkFriendRequestsAsSeenCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var userProfileRepository = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         var friendshipService = scope.ServiceProvider.GetRequiredService<IFriendshipService>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsAsSeenCommandHandler>>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<MarkFriendRequestsAsSeenCommandHandler>>();
 
         _sut = new(
             userProfileRepository,

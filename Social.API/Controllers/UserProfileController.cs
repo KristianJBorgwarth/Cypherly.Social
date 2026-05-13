@@ -1,15 +1,6 @@
-﻿using Social.Application.Features.UserProfile.Commands.Create.Friendship;
-using Social.Application.Features.UserProfile.Commands.Delete.Friendship;
-using Social.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
-using Social.Application.Features.UserProfile.Commands.Update.BlockUser;
-using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
-using Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen;
+﻿using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Social.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
-using Social.Application.Features.UserProfile.Commands.Update.UnblockUser;
-using Social.Application.Features.UserProfile.Queries.GetBlockedUserProfiles;
-using Social.Application.Features.UserProfile.Queries.GetFriendRequests;
-using Social.Application.Features.UserProfile.Queries.GetFriends;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
 using Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
 using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
@@ -19,6 +10,15 @@ using Microsoft.AspNetCore.Mvc;
 using Social.API.Common;
 using Social.API.Requests.Command;
 using Social.API.Requests.Query;
+using Social.Application.Features.Friendships.Commands.Create;
+using Social.Application.Features.Friendships.Commands.Delete.Friendship;
+using Social.Application.Features.Friendships.Commands.Update.AcceptFriendship;
+using Social.Application.Features.Friendships.Commands.Update.BlockUser;
+using Social.Application.Features.Friendships.Commands.Update.MarkFriendRequestAsSeen;
+using Social.Application.Features.Friendships.Commands.Update.UnblockUser;
+using Social.Application.Features.Friendships.Queries.GetBlockedUserProfiles;
+using Social.Application.Features.Friendships.Queries.GetFriendRequests;
+using Social.Application.Features.Friendships.Queries.GetFriends;
 
 namespace Social.API.Controllers;
 

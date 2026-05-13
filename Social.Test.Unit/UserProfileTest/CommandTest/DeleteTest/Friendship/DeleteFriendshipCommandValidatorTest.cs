@@ -1,5 +1,5 @@
-﻿using Social.Application.Features.UserProfile.Commands.Delete.Friendship;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Social.Application.Features.Friendships.Commands.Delete.Friendship;
 using Xunit;
 
 namespace Social.Test.Unit.UserProfileTest.CommandTest.DeleteTest.Friendship

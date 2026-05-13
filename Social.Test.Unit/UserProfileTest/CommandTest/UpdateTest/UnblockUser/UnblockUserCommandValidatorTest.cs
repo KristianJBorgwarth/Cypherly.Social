@@ -1,5 +1,5 @@
-﻿using Social.Application.Features.UserProfile.Commands.Update.UnblockUser;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Social.Application.Features.Friendships.Commands.Update.UnblockUser;
 using Xunit;
 
 namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.UnblockUser;
