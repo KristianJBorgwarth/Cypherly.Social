@@ -121,7 +121,7 @@ public partial class UserProfile : AggregateRoot
         if (_blockedUsers.Any(c => c.BlockedUserProfileId == blockedUserId))
             throw new InvalidOperationException("User already blocked");
 
-        _blockedUsers.Add(new(blockingUserProfileId: Id, blockedUserProfileId: blockedUserId));
+        _blockedUsers.Add(new BlockedUser(blockingUserProfileId: Id, blockedUserProfileId: blockedUserId));
         AddDomainEvent(new UserBlockedEvent(Id, blockedUserId));
     }
 

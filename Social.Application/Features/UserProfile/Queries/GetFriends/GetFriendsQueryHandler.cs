@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
+using Social.Application.Features.UserProfile.Specifications;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 
@@ -14,12 +15,12 @@ public class GetFriendsQueryHandler(
     ILogger<GetFriendsQueryHandler> logger)
     : ILimitedQueryHandler<GetFriendsQuery, List<GetFriendsDto>>
 {
-    public async Task<Result<List<GetFriendsDto>>> Handle(GetFriendsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<GetFriendsDto>>> Handle(GetFriendsQuery q, CancellationToken ct)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
+        var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendshipsSpec(q.TenantId), ct);
         if (userProfile is null)
         {
-            return Result.Fail<List<GetFriendsDto>>(Errors.General.NotFound(request.TenantId));
+            return Result.Fail<List<GetFriendsDto>>(Errors.General.NotFound(q.TenantId));
         }
 
         var friends = userProfile.GetFriends();

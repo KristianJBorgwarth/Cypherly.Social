@@ -96,7 +96,7 @@ public class BlockUserCommandHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeTrue();
-        Db.UserProfile.AsNoTracking().FirstOrDefault(u => u.Id == user.Id)!.BlockedUsers.Should().HaveCount(1);
+        Db.UserProfile.AsNoTracking().Include(u => u.BlockedUsers).FirstOrDefault(u => u.Id == user.Id)!.BlockedUsers.Should().HaveCount(1);
         Db.Friendship.AsNoTracking().Should().HaveCount(0);
     }
 }

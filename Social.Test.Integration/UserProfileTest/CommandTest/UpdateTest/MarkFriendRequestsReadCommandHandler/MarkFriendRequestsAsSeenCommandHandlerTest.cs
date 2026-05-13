@@ -12,16 +12,16 @@ using Social.Test.Integration.Setup;
 
 namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.MarkFriendRequestsReadCommandHandler;
 
-public class MarkFriendRequestsAsSeendCommandHandlerTest : IntegrationTestBase
+public class MarkFriendRequestsAsSeenCommandHandlerTest : IntegrationTestBase
 {
-    private readonly Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsAsSeendCommandHandler _sut;
-    public MarkFriendRequestsAsSeendCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
+    private readonly Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsAsSeenCommandHandler _sut;
+    public MarkFriendRequestsAsSeenCommandHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var userProfileRepository = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         var friendshipService = scope.ServiceProvider.GetRequiredService<IFriendshipService>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsAsSeendCommandHandler>>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Social.Application.Features.UserProfile.Commands.Update.MarkFriendRequestAsSeen.MarkFriendRequestsAsSeenCommandHandler>>();
 
         _sut = new(
             userProfileRepository,

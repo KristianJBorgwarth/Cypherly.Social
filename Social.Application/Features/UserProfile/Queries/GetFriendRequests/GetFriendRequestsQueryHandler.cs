@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
+using Social.Application.Features.UserProfile.Specifications;
 
 namespace Social.Application.Features.UserProfile.Queries.GetFriendRequests;
 
@@ -13,13 +14,13 @@ public class GetFriendRequestsQueryHandler(
     ILogger<GetFriendRequestsQueryHandler> logger)
     : IQueryHandler<GetFriendRequestsQuery, GetFriendRequestsDto[]>
 {
-    public async Task<Result<GetFriendRequestsDto[]>> Handle(GetFriendRequestsQuery query, CancellationToken cancellationToken)
+    public async Task<Result<GetFriendRequestsDto[]>> Handle(GetFriendRequestsQuery q, CancellationToken ct)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(query.TenantId, cancellationToken);
+        var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendRequestsSpec(q.TenantId), ct);
         if (userProfile is null)
         {
-            logger.LogCritical("UserProfile not found, UserProfileId: {UserProfileId}", query.TenantId);
-            return Result.Fail<GetFriendRequestsDto[]>(Errors.General.NotFound(query.TenantId));
+            logger.LogCritical("UserProfile not found, UserProfileId: {UserProfileId}", q.TenantId);
+            return Result.Fail<GetFriendRequestsDto[]>(Errors.General.NotFound(q.TenantId));
         }
 
         var friendRequests = userProfile.FriendshipsReceived
