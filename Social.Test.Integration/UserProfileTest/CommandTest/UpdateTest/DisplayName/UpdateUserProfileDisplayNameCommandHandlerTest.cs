@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Social.Infrastructure.Persistence.Context;
+﻿using Social.Infrastructure.Persistence.Context;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,11 +18,10 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest : IntegrationTestBas
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
-        var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<UpdateUserProfileDisplayNameCommandHandler>>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 
-        _sut = new(repo, mapper, logger, unitOfWork);
+        _sut = new(repo, logger, unitOfWork);
     }
 
     [Fact]

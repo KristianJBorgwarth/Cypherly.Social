@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Social.Domain.Common;
+﻿using Social.Domain.Common;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
@@ -8,27 +7,25 @@ namespace Social.Application.Features.UserProfile.Commands.Update.DisplayName;
 
 public class UpdateUserProfileDisplayNameCommandHandler(
     IUserProfileRepository userProfileRepository,
-    IMapper mapper,
     ILogger<UpdateUserProfileDisplayNameCommandHandler> logger,
     IUnitOfWork unitOfWork)
     : ICommandHandler<UpdateUserProfileDisplayNameCommand, UpdateUserProfileDisplayNameDto>
 {
-    public async Task<Result<UpdateUserProfileDisplayNameDto>> Handle(UpdateUserProfileDisplayNameCommand request, CancellationToken cancellationToken)
+    public async Task<Result<UpdateUserProfileDisplayNameDto>> Handle(UpdateUserProfileDisplayNameCommand cmd, CancellationToken ct)
     {
-        var userProfile = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
+        var userProfile = await userProfileRepository.GetByIdAsync(cmd.TenantId, ct);
         if (userProfile is null)
         {
-            logger.LogWarning("User profile with id: {Id} not found.", request.TenantId);
+            logger.LogWarning("User profile with id: {Id} not found.", cmd.TenantId);
             return Result.Fail<UpdateUserProfileDisplayNameDto>(Errors.General.NotFound("User profile not found."));
         }
 
-        var result = userProfile.SetDisplayName(request.DisplayName);
-        if (result.Success is false) return Result.Fail<UpdateUserProfileDisplayNameDto>(result.Error);
+        var result = userProfile.SetDisplayName(cmd.DisplayName);
+        if (!result.Success) return Result.Fail<UpdateUserProfileDisplayNameDto>(result.Error);
 
-        await userProfileRepository.UpdateAsync(userProfile);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await userProfileRepository.UpdateAsync(userProfile, ct);
+        await unitOfWork.SaveChangesAsync(ct);
 
-        var dto = mapper.Map<UpdateUserProfileDisplayNameDto>(userProfile);
-        return Result.Ok(dto);
+        return Result.Ok(new UpdateUserProfileDisplayNameDto(){DisplayName = userProfile.DisplayName!});
     }
 }
