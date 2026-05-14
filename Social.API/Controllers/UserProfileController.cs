@@ -22,6 +22,7 @@ using Social.Application.Features.Friendships.Queries.GetFriends;
 
 namespace Social.API.Controllers;
 
+[ApiController]
 [Authorize]
 [Route("api/[controller]")]
 public class UserProfileController(ISender sender) : BaseController
