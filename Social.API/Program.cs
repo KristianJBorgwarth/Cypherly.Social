@@ -3,7 +3,7 @@ using System.Text;
 using Social.Application.Extensions;
 using Social.Infrastructure.Extensions;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Scalar.AspNetCore;
 using Social.API.Extensions;
 using Social.Domain.Extensions;
 
@@ -66,45 +66,18 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new()
-    {
-        Title = "Cypherly.Social.API",
-        Version = "v1",
-    });
-
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-    });
-
-    c.AddSecurityRequirement(new()
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new()
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer",
-                },
-            },
-            Array.Empty<string>()
-        },
-    });
-});
 
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.MapOpenApi();
+app.MapScalarApiReference(options =>
+{
+    options.WithTitle("Social.API V1")
+        .WithTheme(ScalarTheme.Purple)
+        .HideDarkModeToggle()
+        .WithDefaultHttpClient(ScalarTarget.JavaScript, ScalarClient.Axios);
+});
 
 if (env.IsProduction())
 {
