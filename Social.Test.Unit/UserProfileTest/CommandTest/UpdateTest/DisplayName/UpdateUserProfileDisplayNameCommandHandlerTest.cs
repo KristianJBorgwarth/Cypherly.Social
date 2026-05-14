@@ -36,22 +36,22 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
 
         A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId, A<CancellationToken>._)).Returns(testProfile);
         A.CallTo(() => _fakeRepo.UpdateAsync(testProfile, A<CancellationToken>._)).DoesNothing();
-        A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(default)).DoesNothing();
+        A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).DoesNothing();
         // Act
-        var result = await _sut.Handle(cmd, default);
+        var result = await _sut.Handle(cmd, CancellationToken.None);
 
         // Assert
         result.Success.Should().BeTrue();
         result.Value!.DisplayName.Should().Be(cmd.DisplayName);
         A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeRepo.UpdateAsync(testProfile, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(default)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).MustHaveHappenedOnceExactly();
     }
 
     [Fact]
     public async Task Handle_Given_Command_With_Invalid_UserProfileId_Should_Return_Result_Fail()
     {
-        // Arrrange
+        // Arrange
         var cmd = new UpdateUserProfileDisplayNameCommand
         {
             DisplayName = "validDisplayName",
@@ -61,13 +61,13 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
         A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId, A<CancellationToken>._)).Returns((UserProfile)null);
 
         // Act
-        var result = await _sut.Handle(cmd, default);
+        var result = await _sut.Handle(cmd, CancellationToken.None);
 
         // Assert
         result.Success.Should().BeFalse();
         A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeRepo.UpdateAsync(A<UserProfile>._, A<CancellationToken>._)).MustNotHaveHappened();
-        A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
+        A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).MustNotHaveHappened();
     }
 
     [Fact]
