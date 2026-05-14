@@ -9,6 +9,7 @@ using Social.Domain.Extensions;
 
 // ReSharper disable UseCollectionExpression
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 var env = builder.Environment;
