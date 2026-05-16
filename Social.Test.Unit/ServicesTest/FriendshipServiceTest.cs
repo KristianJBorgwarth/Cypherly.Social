@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Social.Domain.Enums;
+using Social.Domain.Events.Friendships;
 using Social.Domain.Events.UserProfile;
 using Social.Domain.Interfaces;
 using Social.Domain.Services;

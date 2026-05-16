@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
-using Social.Application.Features.UserProfile.Queries.GetFriends;
+using Social.Application.Features.Friendships.Queries.GetFriends;
 using Social.Domain.Aggregates;
 using Social.Domain.Entities;
 using Social.Domain.ValueObjects;

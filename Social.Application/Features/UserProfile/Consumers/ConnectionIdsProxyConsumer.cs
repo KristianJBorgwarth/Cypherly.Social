@@ -4,6 +4,7 @@ using MassTransit;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
+using Social.Application.Specifications;
 
 namespace Social.Application.Features.UserProfile.Consumers;
 
@@ -13,25 +14,25 @@ public sealed class ConnectionIdsProxyConsumer(
         ILogger<ConnectionIdsProxyConsumer> logger)
         : IConsumer<ConnectionIdsProxyMessage>
 {
-    public async Task Consume(ConsumeContext<ConnectionIdsProxyMessage> context)
+    public async Task Consume(ConsumeContext<ConnectionIdsProxyMessage> ctx)
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(context.Message.TenantId, context.CancellationToken);
+            var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendshipsSpec(ctx.Message.TenantId), ctx.CancellationToken);
             if (userProfile is null)
             {
-                logger.LogWarning("UserProfile with ID {UserId} not found", context.Message.TenantId);
-                throw new Exception($"UserProfile with ID {context.Message.TenantId} not found");
+                logger.LogWarning("UserProfile with ID {UserId} not found", ctx.Message.TenantId);
+                throw new Exception($"UserProfile with ID {ctx.Message.TenantId} not found");
             }
 
             var friends = userProfile.GetFriends();
 
-            var response = await connectionIdProvider.GetConnectionIdsMultipleTenants([.. friends.Select(f => f.Id), userProfile.Id], context.CancellationToken);
+            var response = await connectionIdProvider.GetConnectionIdsMultipleTenants([.. friends.Select(f => f.Id), userProfile.Id], ctx.CancellationToken);
 
-            await context.RespondAsync(new ConnectionIdsProxyResponse 
+            await ctx.RespondAsync(new ConnectionIdsProxyResponse 
             {
-                CorrelationId = context.Message.CorrelationId,
-                CausationId = context.Message.Id,
+                CorrelationId = ctx.Message.CorrelationId,
+                CausationId = ctx.Message.Id,
                 ConnectionIds = response,
                 UserTag = userProfile.UserTag.Tag
             }); 
@@ -39,7 +40,7 @@ public sealed class ConnectionIdsProxyConsumer(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while processing ConnectionIdsProxyMessage for TenantId: {TenantId}", string.Join(", ", context.Message.TenantId));
+            logger.LogError(ex, "An error occurred while processing ConnectionIdsProxyMessage for TenantId: {TenantId}", string.Join(", ", ctx.Message.TenantId));
             throw;
         }
     }

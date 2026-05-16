@@ -15,10 +15,10 @@ public class BlockedUserModelConfiguration : BaseModelConfiguration<BlockedUser>
 
         builder.HasKey(e => new { UserId = e.BlockingUserProfileId, BlockedUserId = e.BlockedUserProfileId });
 
-        builder.Property(e => e.BlockingUserProfileId)
+        builder.Property(e => e.BlockedUserProfileId)
             .HasColumnName("blocked_user_profile_id")
             .IsRequired();
-        
+
         builder.Property(e => e.BlockingUserProfileId)
             .HasColumnName("blocking_user_profile_id")
             .IsRequired();

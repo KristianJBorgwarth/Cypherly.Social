@@ -1,5 +1,5 @@
-﻿using Social.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Social.Application.Features.Friendships.Commands.Update.AcceptFriendship;
 using Social.Domain.Common;
 using Xunit;
 

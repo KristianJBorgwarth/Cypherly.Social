@@ -2,6 +2,7 @@
 using Social.Domain.Common;
 using Social.Domain.Dtos;
 using Social.Domain.Enums;
+using Social.Domain.Events.Friendships;
 using Social.Domain.Events.UserProfile;
 using Social.Domain.Interfaces;
 
@@ -58,7 +59,7 @@ public class FriendshipService : IFriendshipService
         userProfile.DeleteFriendship(friendTag);
 
         userProfile.AddDomainEvent(new FriendRequestRejectedEvent(userProfile.Id, friendship.UserProfileId));
-
+        
         return Result.Ok();
     }
 

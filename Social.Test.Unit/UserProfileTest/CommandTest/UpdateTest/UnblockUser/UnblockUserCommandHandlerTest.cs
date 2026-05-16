@@ -1,8 +1,9 @@
+using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Features.UserProfile.Commands.Update.UnblockUser;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Social.Application.Features.Friendships.Commands.Update.UnblockUser;
 using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Services;
@@ -31,15 +32,14 @@ public class UnblockUserCommandHandlerTest
     {
         // Arrange
         var command = new UnblockUserCommand { TenantId = Guid.NewGuid(), Tag = "tag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._))!.Returns<UserProfile>(null);
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).Returns((UserProfile)null);
 
         // Act
         var result = await _sut.Handle(command, default);
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().BeEquivalentTo(
-            Errors.General.NotFound(command.TenantId).Message);
+        result.Error.Message.Should().BeEquivalentTo(Errors.General.NotFound(command.TenantId).Message);
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustNotHaveHappened();
     }
 
@@ -48,16 +48,15 @@ public class UnblockUserCommandHandlerTest
     {
         // Arrange
         var command = new UnblockUserCommand { TenantId = Guid.NewGuid(), Tag = "tag" };
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._))!.Returns(new UserProfile());
-        A.CallTo(() => _fakeRepo.GetByUserTag(command.Tag, A<CancellationToken>._))!.Returns<UserProfile>(null);
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
+            .ReturnsNextFromSequence<UserProfile?>(new UserProfile(), null);
 
         // Act
         var result = await _sut.Handle(command, default);
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().BeEquivalentTo(
-            Errors.General.NotFound(command.Tag).Message);
+        result.Error.Message.Should().BeEquivalentTo(Errors.General.NotFound(command.Tag).Message);
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustNotHaveHappened();
         A.CallTo(() => _fakeProfileService.UnblockUser(A<UserProfile>._, A<UserProfile>._)).MustNotHaveHappened();
     }
@@ -69,8 +68,8 @@ public class UnblockUserCommandHandlerTest
         var command = new UnblockUserCommand { TenantId = Guid.NewGuid(), Tag = "tag" };
         var userProfile = new UserProfile();
         var userToUnblock = new UserProfile();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._))!.Returns(userProfile);
-        A.CallTo(() => _fakeRepo.GetByUserTag(command.Tag, A<CancellationToken>._))!.Returns(userToUnblock);
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
+            .ReturnsNextFromSequence<UserProfile?>(userProfile, userToUnblock);
         A.CallTo(() => _fakeProfileService.UnblockUser(userProfile, userToUnblock)).DoesNothing();
 
         // Act

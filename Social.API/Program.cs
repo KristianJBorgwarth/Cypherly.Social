@@ -1,13 +1,12 @@
 using System.Reflection;
-using System.Text;
 using Social.Application.Extensions;
 using Social.Infrastructure.Extensions;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Scalar.AspNetCore;
 using Social.API.Extensions;
 using Social.Domain.Extensions;
 
 // ReSharper disable UseCollectionExpression
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,24 +31,7 @@ builder.Services.AddDomain();
 builder.Services.AddApplication(Assembly.Load("Social.Application"));
 
 builder.Services.AddInfrastructure(configuration, Assembly.Load("Social.Infrastructure"));
-
-builder.Services.AddAuthentication()
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = configuration["Jwt:Issuer"] ?? throw new NotImplementedException($"MISSING VALUE IN JWT SETTINGS {configuration["Jwt:Issuer"]}"),
-            ValidAudience = configuration["Jwt:Audience"] ?? throw new NotImplementedException($"MISSING VALUE IN JWT SETTINGS {configuration["Jwt:Audience"]}"),
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"] ??
-                                                                               throw new NotImplementedException("MISSING VALUE IN JWT SETTINGS Jwt:Secret")))
-        };
-    });
-
-builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(configuration);
 
 builder.Services.AddCors(options =>
 {
@@ -64,46 +46,19 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new()
-    {
-        Title = "Cypherly.Social.API",
-        Version = "v1",
-    });
-
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-    });
-
-    c.AddSecurityRequirement(new()
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new()
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer",
-                },
-            },
-            Array.Empty<string>()
-        },
-    });
-});
+builder.Services.AddOpenApi();
 
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.MapOpenApi();
+app.MapScalarApiReference(options =>
+{
+    options.WithTitle("Social.API V1")
+        .WithTheme(ScalarTheme.Purple)
+        .HideDarkModeToggle()
+        .WithDefaultHttpClient(ScalarTarget.JavaScript, ScalarClient.Axios);
+});
 
 if (env.IsProduction())
 {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Features.UserProfile.Commands.Update.BlockUser;
+using Social.Application.Features.Friendships.Commands.Update.BlockUser;
 using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Services;
@@ -96,7 +96,7 @@ public class BlockUserCommandHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeTrue();
-        Db.UserProfile.AsNoTracking().FirstOrDefault(u => u.Id == user.Id)!.BlockedUsers.Should().HaveCount(1);
+        Db.UserProfile.AsNoTracking().Include(u => u.BlockedUsers).FirstOrDefault(u => u.Id == user.Id)!.BlockedUsers.Should().HaveCount(1);
         Db.Friendship.AsNoTracking().Should().HaveCount(0);
     }
 }

@@ -1,5 +1,5 @@
-﻿using Social.Application.Features.UserProfile.Commands.Update.BlockUser;
-using FluentValidation.TestHelper;
+﻿using FluentValidation.TestHelper;
+using Social.Application.Features.Friendships.Commands.Update.BlockUser;
 using Xunit;
 
 namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.BlockUser;

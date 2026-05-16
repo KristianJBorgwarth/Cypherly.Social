@@ -1,5 +1,5 @@
-﻿using Social.Application.Features.UserProfile.Queries.GetFriends;
-using FluentValidation.TestHelper;
+﻿using FluentValidation.TestHelper;
+using Social.Application.Features.Friendships.Queries.GetFriends;
 using Social.Domain.Common;
 using Xunit;
 
