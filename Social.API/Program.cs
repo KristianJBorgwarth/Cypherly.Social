@@ -31,6 +31,7 @@ builder.Services.AddDomain();
 builder.Services.AddApplication(Assembly.Load("Social.Application"));
 
 builder.Services.AddInfrastructure(configuration, Assembly.Load("Social.Infrastructure"));
+builder.Services.AddAuthentication(configuration);
 
 builder.Services.AddCors(options =>
 {
