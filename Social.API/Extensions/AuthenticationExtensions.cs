@@ -1,5 +1,4 @@
 using Microsoft.IdentityModel.Tokens;
-using Social.API.Extensions;
 
 namespace Social.API.Extensions;
 
@@ -9,7 +8,7 @@ internal static class AuthenticationExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var authority = configuration["Jwt:Authority"]
+        var authority = configuration["Jwt:Issuer"]
             ?? throw new NotImplementedException($"MISSING VALUE IN JWT SETTINGS {configuration["Jwt:Authority"]}");
 
         var audience = configuration["Jwt:Audience"]
