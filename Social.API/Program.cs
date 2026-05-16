@@ -1,8 +1,6 @@
 using System.Reflection;
-using System.Text;
 using Social.Application.Extensions;
 using Social.Infrastructure.Extensions;
-using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Social.API.Extensions;
 using Social.Domain.Extensions;
@@ -33,24 +31,6 @@ builder.Services.AddDomain();
 builder.Services.AddApplication(Assembly.Load("Social.Application"));
 
 builder.Services.AddInfrastructure(configuration, Assembly.Load("Social.Infrastructure"));
-
-builder.Services.AddAuthentication()
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = configuration["Jwt:Issuer"] ?? throw new NotImplementedException($"MISSING VALUE IN JWT SETTINGS {configuration["Jwt:Issuer"]}"),
-            ValidAudience = configuration["Jwt:Audience"] ?? throw new NotImplementedException($"MISSING VALUE IN JWT SETTINGS {configuration["Jwt:Audience"]}"),
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"] ??
-                                                                               throw new NotImplementedException("MISSING VALUE IN JWT SETTINGS Jwt:Secret")))
-        };
-    });
-
-builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
