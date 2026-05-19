@@ -9,9 +9,9 @@ using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Social.Domain.Common;
-using Social.Test.Integration.Setup.Helpers;
+using Xunit;
+using Social.Test.Unit.Setup.Helpers;
 
-namespace Social.Test.Integration.BucketTest;
 
 public class ProfilePictureServiceTests
 {

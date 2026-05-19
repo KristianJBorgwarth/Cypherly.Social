@@ -16,11 +16,14 @@ public sealed class AvatarModelConfiguration : BaseModelConfiguration<Avatar>
             .HasColumnName("id")
             .IsRequired();
 
-        builder.Property(e=> e.Etag)
-            .HasColumnName("e_tag")
-            .IsRequired();
+        builder.OwnsOne(a => a.Etag, etag =>
+        {
+            etag.Property(e => e.Value)
+                .HasColumnName("e_tag")
+                .IsRequired();
+        });
 
-        builder.Property(e => e.UserId)
+        builder.Property(e => e.UserProfileId)
             .HasColumnName("user_profile_id")
             .IsRequired();
     }

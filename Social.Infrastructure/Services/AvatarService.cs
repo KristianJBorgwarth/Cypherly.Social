@@ -2,23 +2,42 @@ using Microsoft.AspNetCore.Http;
 using Social.Application.Contracts.Services;
 using Social.Application.Dtos;
 using Social.Domain.Common;
-using Social.Infrastructure.Persistence.Context;
+using Social.Domain.Entities;
+using Social.Domain.ValueObjects;
+using Social.Infrastructure.S3.Validation;
 using Social.Infrastructure.Store;
 
-internal sealed class AvatarService(SocialDbContext dbContext, IBlobStore blobStore) : IAvatarService
+namespace Social.Infrastructure.Services;
+
+internal sealed class AvatarService(
+    IBlobStore blobStore,
+    IFileValidator fileValidator)
+    : IAvatarService
 {
-    public Task<Result> DeleteAsync(Guid userId, CancellationToken ct = default)
+    public AvatarStream Get(Guid avatarId, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var stream = blobStore.Open(avatarId);
+        return new AvatarStream() { Content = stream };
     }
 
-    public Task<Result<AvatarStream>> GetAsync(Guid blobId, CancellationToken ct = default)
+    public async Task<Result<Avatar>> UploadAsync(IFormFile file, Guid userId, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        if (!fileValidator.IsValidImageFile(file, out var errorMessage))
+            return Result.Fail<Avatar>(Errors.General.UnexpectedValue(errorMessage));
+
+        var avatarId = Guid.NewGuid();
+
+        await using var stream = file.OpenReadStream();
+        await blobStore.PutAsync(avatarId, stream, ct);
+
+        return Result.Ok(new Avatar(
+            userProfileId: userId,
+            avatarId: avatarId,
+            etag: ETag.Generate()));
     }
 
-    public Task<Result> Upload(IFormFile file, Guid userId, CancellationToken ct = default)
+    public void Delete(Guid avatarId, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        blobStore.Delete(avatarId);
     }
 }

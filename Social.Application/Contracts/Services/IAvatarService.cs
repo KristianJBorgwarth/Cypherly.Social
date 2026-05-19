@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Http;
 using Social.Application.Dtos;
 using Social.Domain.Common;
+using Social.Domain.Entities;
 
 namespace Social.Application.Contracts.Services;
 
 public interface IAvatarService
 {
-    Task<Result> Upload(IFormFile file, Guid userId, CancellationToken ct = default);
-    Task<Result<AvatarStream>> GetAsync(Guid userId, CancellationToken ct = default);
-    Task<Result> DeleteAsync(Guid userId, CancellationToken ct = default);
+    Task<Result<Avatar>> UploadAsync(IFormFile file, Guid userId, CancellationToken ct = default);
+    AvatarStream Get(Guid avatarId, CancellationToken ct = default);
+    void Delete(Guid avatarId, CancellationToken ct = default);
 }

@@ -21,6 +21,8 @@ namespace Social.Test.Integration.Setup;
 public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicationFactory<TProgram>, IAsyncLifetime
     where TProgram : class where TDbContext : DbContext
 {
+    private readonly string StorageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "TestBlobStore");
+
     private readonly IContainer _minioBucketContainer = new ContainerBuilder()
         .WithImage("bitnamilegacy/minio")
         .WithEnvironment("MINIO_ROOT_USER", "MinioRoot")
@@ -32,7 +34,6 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
         .WithCleanUp(true)
         .Build();
 
-    private bool ShouldTestWithLazyLoadingProxies { get; set; } = true;
 
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:latest")
@@ -48,7 +49,6 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
 
         builder.ConfigureServices(services =>
         {
-            #region Database Extensions
 
             var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<TDbContext>));
 
@@ -63,10 +63,6 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
                     b => b.MigrationsAssembly(typeof(TDbContext).Assembly.FullName));
             });
 
-            #endregion
-
-            #region Auth Extensions
-
             // Mock out authentication and authorization for testing
             services.AddAuthentication("Test")
                 .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
@@ -75,10 +71,6 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
                 .AddPolicy("AdminOnly", policy => policy.RequireAssertion(_ => true))
                 .AddPolicy("User", policy => policy.RequireAssertion(_ => true));
 
-            #endregion
-
-            #region RabbitMq Extensions
-
             var rmgDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IBusControl));
 
             if (rmgDescriptor is not null)
@@ -86,29 +78,47 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
 
             services.AddMassTransitTestHarness(cfg => { cfg.AddConsumers(typeof(TProgram).Assembly); });
 
-            #endregion
-
-            #region Minio Extensions
-
-            services.RemoveAll(typeof(IConfigureOptions<MinioSettings>));
-
-            // Add in-memory configuration
-            var inMemorySettings = new Dictionary<string, string>
-            {
-                { "S3:Host", "http://localhost:9023" },
-                { "S3:ProfilePictureBucket", "bucket-name" },
-                { "S3:User", "MinioRoot" },
-                { "S3:Password", "rootErinoTest?87" }
-            };
-
-            var configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(inMemorySettings!)
-                .Build();
-
-            services.Configure<MinioSettings>(configuration.GetSection("S3"));
-
-            #endregion
+            StubMinioSettings(services);
+            SetupBlobstore(services);
         });
+    }
+
+    private void SetupBlobstore(IServiceCollection services)
+    {
+        Directory.CreateDirectory(StorageDirectory);
+
+        services.RemoveAll(typeof(IConfigureOptions<BlobStoreSettings>));
+
+        var inMemorySettings = new Dictionary<string, string>
+        {
+            { "BlobStore:Root",  StorageDirectory }
+        };
+
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(inMemorySettings!)
+            .Build();
+
+        services.Configure<BlobStoreSettings>(configuration.GetSection("BlobStore"));
+    }
+
+    private void StubMinioSettings(IServiceCollection services)
+    {
+        services.RemoveAll(typeof(IConfigureOptions<MinioSettings>));
+
+        // Add in-memory configuration
+        var inMemorySettings = new Dictionary<string, string>
+        {
+            { "S3:Host", "http://localhost:9023" },
+            { "S3:ProfilePictureBucket", "bucket-name" },
+            { "S3:User", "MinioRoot" },
+            { "S3:Password", "rootErinoTest?87" }
+        };
+
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(inMemorySettings!)
+            .Build();
+
+        services.Configure<MinioSettings>(configuration.GetSection("S3"));
     }
 
     public async Task InitializeAsync()
@@ -125,5 +135,6 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
     {
         await _dbContainer.DisposeAsync();
         await _minioBucketContainer.StopAsync();
+        Directory.Delete(StorageDirectory, true);
     }
 }

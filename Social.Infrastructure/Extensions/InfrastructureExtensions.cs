@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Social.Application.Contracts.Services;
+using Social.Infrastructure.Services;
 using Social.Infrastructure.Settings;
 using Social.Infrastructure.Store;
 
@@ -26,6 +27,7 @@ public static class InfrastructureExtensions
         services.Configure<MinioSettings>(configuration.GetSection("Bucket"));
         services.Configure<HttpClientSettings>(configuration.GetSection("ApiBaseUrls"));
         services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
+        services.Configure<BlobStoreSettings>(configuration.GetSection("BlobStore"));
     }
 
     private static void AddBlobStore(this IServiceCollection services)

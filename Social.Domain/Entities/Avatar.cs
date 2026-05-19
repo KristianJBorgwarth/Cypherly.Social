@@ -11,9 +11,9 @@ public sealed class Avatar : Entity
 
     public Avatar() { } // For EF Core
 
-    public Avatar(Guid userId, Guid avatarId, ETag etag) : base(avatarId)
+    public Avatar(Guid userProfileId, Guid avatarId, ETag etag) : base(avatarId)
     {
-        UserProfileId = userId;
+        UserProfileId = userProfileId;
         Etag = etag;
     }
 }

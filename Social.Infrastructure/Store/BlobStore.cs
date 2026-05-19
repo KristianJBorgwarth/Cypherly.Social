@@ -1,10 +1,13 @@
+using Microsoft.Extensions.Options;
+using Social.Infrastructure.Settings;
+
 namespace Social.Infrastructure.Store;
 
-public sealed class BlobStore(string root) : IBlobStore
+internal sealed class BlobStore(IOptions<BlobStoreSettings> options) : IBlobStore
 {
-    public async Task PutAsync(Guid Id, Stream content, CancellationToken ct = default)
+    public async Task PutAsync(Guid id, Stream content, CancellationToken ct = default)
     {
-        var path = GeneratePath(Id);
+        var path = GeneratePath(id);
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
 
         var tmpPath = path + ".tmp-" + Guid.NewGuid().ToString("N");
@@ -27,10 +30,10 @@ public sealed class BlobStore(string root) : IBlobStore
         }
     }
 
-    public Stream Open(Guid Id)
+    public Stream Open(Guid id)
     {
         return new FileStream(
-            GeneratePath(Id),
+            GeneratePath(id),
             FileMode.Open,
             FileAccess.Read,
             FileShare.Read,
@@ -38,9 +41,9 @@ public sealed class BlobStore(string root) : IBlobStore
             useAsync: true);
     }
 
-    public void Delete(Guid Id)
+    public void Delete(Guid id)
     {
-        var path = GeneratePath(Id);
+        var path = GeneratePath(id);
         if (File.Exists(path))
         {
             File.Delete(path);
@@ -50,6 +53,6 @@ public sealed class BlobStore(string root) : IBlobStore
     private string GeneratePath(Guid id)
     {
         var str = id.ToString("N");
-        return Path.Combine(root, str.Substring(0, 2), str);
+        return Path.Combine(options.Value.Root, str.Substring(0, 2), str);
     }
 }
