@@ -17,7 +17,6 @@ public static class InfrastructureExtensions
         services.AddPersistence(configuration, assembly);
         services.AddProviders();
         services.AddOutboxProcessingJob(assembly);
-        services.AddBlobStore();
         services.AddStorage();
         services.AddServices();
     }
@@ -30,13 +29,9 @@ public static class InfrastructureExtensions
         services.Configure<BlobStoreSettings>(configuration.GetSection("BlobStore"));
     }
 
-    private static void AddBlobStore(this IServiceCollection services)
-    {
-        services.AddSingleton<IBlobStore, BlobStore>();
-    }
-
     private static void AddServices(this IServiceCollection services)
     {
         services.AddScoped<IAvatarService, AvatarService>();
+        services.AddSingleton<IBlobStore, BlobStore>();
     }
 }

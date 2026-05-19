@@ -30,6 +30,5 @@ internal static class StorageExtensions
     {
         services.AddScoped<IProfilePictureService, ProfilePictureService>();
         services.AddScoped<IFileValidator, FileValidator>();
-        services.AddScoped<IBlobStore, BlobStore>();
     }
 }
