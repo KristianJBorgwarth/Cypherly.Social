@@ -3,7 +3,6 @@ using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Social.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
 using Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
-using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +18,7 @@ using Social.Application.Features.Friendships.Commands.Update.UnblockUser;
 using Social.Application.Features.Friendships.Queries.GetBlockedUserProfiles;
 using Social.Application.Features.Friendships.Queries.GetFriendRequests;
 using Social.Application.Features.Friendships.Queries.GetFriends;
+using Social.Application.Features.UserProfile.Queries.GetAvatar;
 
 namespace Social.API.Controllers;
 
@@ -51,15 +51,21 @@ public class UserProfileController(ISender sender) : BaseController
         return result.Value is not null ? Ok(result.Value) : NoContent();
     }
 
-    [HttpGet("profile-picture")]
-    [ProducesResponseType(typeof(GetUserProfilePictureDto), StatusCodes.Status200OK)]
+    [HttpGet("avatar")]
+    [ProducesResponseType(typeof(GetAvatarDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status304NotModified)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetProfilePicture([FromQuery] GetUserProfilePictureRequest request,
-        CancellationToken ct = default)
+    [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+    public async Task<IActionResult> GetAvatar([FromQuery] GetAvatarRequest req, CancellationToken ct = default)
     {
-        var query = new GetUserProfilePictureQuery { ProfilePictureUrl = request.ProfilePictureUrl };
+        var query = new GetAvatarQuery { AvatarId = req.AvatarId };
         var result = await sender.Send(query, ct);
-        return result.Success ? Ok(result.Value) : Error(result.Error);
+        if (result.Success is false) return Error(result.Error);
+        var tag = Request.GetETag();
+        if (tag is not null && tag == result.Value.ETag.Value)        {
+            return StatusCode(StatusCodes.Status304NotModified);
+
     }
 
     [HttpPut("profile-picture")]

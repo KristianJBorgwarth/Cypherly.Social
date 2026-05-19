@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Services;
-using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
+using Social.Application.Features.UserProfile.Queries.GetAvatar;
 using Social.Infrastructure.Persistence.Context;
 using Social.Test.Integration.Setup;
 using Social.Test.Integration.Setup.Helpers;
@@ -11,7 +11,7 @@ namespace Social.Test.Integration.UserProfileTest.QueryTest.GetUserProfilePictur
 
 public class GetUserProfilePictureQueryHandlerTest : IntegrationTestBase
 {
-    private readonly GetUserProfilePictureQueryHandler _sut;
+    private readonly GetAvatarQueryHandler _sut;
     private readonly IProfilePictureService _profilePictureService;
 
     public GetUserProfilePictureQueryHandlerTest(IntegrationTestFactory<Program, SocialDbContext> factory) :
@@ -19,7 +19,7 @@ public class GetUserProfilePictureQueryHandlerTest : IntegrationTestBase
     {
         var scope = factory.Services.CreateScope();
         var minoProxyClient = scope.ServiceProvider.GetRequiredService<IMinioProxyClient>();
-        _sut = new GetUserProfilePictureQueryHandler(minoProxyClient);
+        _sut = new GetAvatarQueryHandler(minoProxyClient);
         _profilePictureService = scope.ServiceProvider.GetRequiredService<IProfilePictureService>();
     }
 
@@ -35,7 +35,7 @@ public class GetUserProfilePictureQueryHandlerTest : IntegrationTestBase
 
         var presignedUrl = await _profilePictureService.GetPresignedProfilePictureUrlAsync(url);
 
-        var query = new GetUserProfilePictureQuery { ProfilePictureUrl = presignedUrl.Value! };
+        var query = new GetAvatarQuery { AvatarId = presignedUrl.Value! };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -48,7 +48,7 @@ public class GetUserProfilePictureQueryHandlerTest : IntegrationTestBase
     public async Task Handle_Invalid_Query_Should_Return_Fail_Result()
     {
         // Arrange
-        var query = new GetUserProfilePictureQuery { ProfilePictureUrl = "invalid_url" };
+        var query = new GetAvatarQuery { AvatarId = "invalid_url" };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);

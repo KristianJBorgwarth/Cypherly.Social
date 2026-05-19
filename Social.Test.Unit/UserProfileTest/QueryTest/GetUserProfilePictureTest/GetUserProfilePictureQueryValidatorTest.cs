@@ -1,36 +1,36 @@
-﻿using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
-using FluentValidation.TestHelper;
+﻿using FluentValidation.TestHelper;
 using Xunit;
+using Social.Application.Features.UserProfile.Queries.GetAvatar;
 
 namespace Social.Test.Unit.UserProfileTest.QueryTest.GetUserProfilePictureTest;
 
 public class GetUserProfilePictureQueryValidatorTest
 {
-    private readonly GetUserProfilePictureQueryValidator _validator = new GetUserProfilePictureQueryValidator();
+    private readonly GetAvatarQueryValidator _validator = new GetAvatarQueryValidator();
 
     [Fact]
     public void Should_Have_Error_When_ProfilePictureUrl_Is_Empty()
     {
         // Arrange
-        var query = new GetUserProfilePictureQuery { ProfilePictureUrl = string.Empty };
+        var query = new GetAvatarQuery { AvatarId = string.Empty };
 
         // Act
         var result = _validator.TestValidate(query);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.ProfilePictureUrl);
+        result.ShouldHaveValidationErrorFor(x => x.AvatarId);
     }
 
     [Fact]
     public void Should_Not_Have_Error_When_ProfilePictureUrl_Is_Valid()
     {
         // Arrange
-        var query = new GetUserProfilePictureQuery { ProfilePictureUrl = "https://example.com/profile.jpg" };
+        var query = new GetAvatarQuery { AvatarId = "https://example.com/profile.jpg" };
 
         // Act
         var result = _validator.TestValidate(query);
 
         // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.ProfilePictureUrl);
+        result.ShouldNotHaveValidationErrorFor(x => x.AvatarId);
     }
 }
