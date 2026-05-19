@@ -1,6 +1,7 @@
 ﻿using Social.Domain.Aggregates;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Social.Domain.Entities;
 
 namespace Social.Infrastructure.Persistence.ModelConfigurations;
 
@@ -35,6 +36,11 @@ public class UserProfileModelConfiguration : BaseModelConfiguration<UserProfile>
 
         builder.Property(x => x.ProfilePictureUrl)
             .HasColumnName("profile_picture_url");
+
+        builder.HasOne(x => x.Avatar)
+            .WithOne()
+            .HasForeignKey<Avatar>(x => x.UserProfileId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(x => x.FriendshipsInitiated)
             .WithOne(x => x.UserProfile)

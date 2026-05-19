@@ -2,5 +2,5 @@
 
 public sealed class HttpClientSettings
 {
-    public string IdentityServiceUrl { get; init; } = null!;
+    public required string IdentityServiceUrl { get; init; } 
 }
