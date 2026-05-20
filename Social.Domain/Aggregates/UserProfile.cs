@@ -51,12 +51,12 @@ public partial class UserProfile : AggregateRoot
         switch (displayName.Length)
         {
             case < 3:
-                return Result.Fail(Errors.General.ValueTooSmall(nameof(displayName), 3));
+                return Result.Fail(Error.Validation($"Value '{nameof(displayName)}' should be at least 3."));
             case > 20:
-                return Result.Fail(Errors.General.ValueTooLarge(nameof(displayName), 20));
+                return Result.Fail(Error.Validation($"Value '{nameof(displayName)}' should not exceed 20."));
         }
         if (!DisplayNameRegex().IsMatch(displayName))
-            return Result.Fail(Errors.General.UnexpectedValue(nameof(displayName)));
+            return Result.Fail(Error.Validation($"Value '{nameof(displayName)}' is not valid in this context"));
 
         DisplayName = displayName;
         AddDomainEvent(new UserProfileDisplayNameUpdatedEvent(Id));
@@ -68,16 +68,16 @@ public partial class UserProfile : AggregateRoot
     public Result AddFriendship(UserProfile userProfile)
     {
         if (Id == userProfile.Id)
-            return Result.Fail(Errors.General.UnspecifiedError("Cannot add self as friend"));
+            return Result.Fail(Error.BadRequest("friendship.self", "Cannot add self as friend"));
 
         if (FriendshipsInitiated.Any(f => f.FriendProfileId == userProfile.Id) || FriendshipsReceived.Any(f => f.UserProfileId == userProfile.Id))
-            return Result.Fail(Errors.General.UnspecifiedError("Friendship already exists"));
+            return Result.Fail(Error.BadRequest("friendship.exists", "Friendship already exists"));
 
         _friendshipsInitiated.Add(new(Id, userProfile.Id));
         return Result.Ok();
     }
 
-    //TODO: should probaly not return Result, but just throw exceptions
+    //TODO: should probably not return Result, but just throw exceptions
     public Result<Guid> DeleteFriendship(string friendTag)
     {
         if (friendTag == UserTag.Tag)
@@ -99,7 +99,7 @@ public partial class UserProfile : AggregateRoot
             return Result.Ok(friendshipReceived.UserProfileId);
         }
 
-        return Result.Fail<Guid>(Errors.General.UnspecifiedError("Friendship not found"));
+        return Result.Fail<Guid>(Error.BadRequest("friendship.not.found", "Friendship not found"));
     }
 
     public IReadOnlyCollection<UserProfile> GetFriends()

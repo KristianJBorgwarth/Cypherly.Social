@@ -1,4 +1,4 @@
-﻿using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
+using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Social.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
@@ -25,7 +25,7 @@ namespace Social.API.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/[controller]")]
-public class UserProfileController(ISender sender) : BaseController
+public class UserProfileController(ISender sender) : ControllerBase
 {
     [HttpGet("")]
     [ProducesResponseType(typeof(GetUserProfileDto), StatusCodes.Status200OK)]
@@ -34,7 +34,7 @@ public class UserProfileController(ISender sender) : BaseController
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new GetUserProfileQuery { TenantId = tenantId }, cancellationToken);
-        return result.Success ? Ok(result.Value) : Error(result.Error);
+        return result.Success ? Ok(result.Value) : result.ToProblemDetails();
     }
 
     [HttpGet("tag")]
@@ -46,7 +46,7 @@ public class UserProfileController(ISender sender) : BaseController
         var tenantId = User.GetUserId();
         var result = await sender.Send(new GetUserProfileByTagQuery { TenantId = tenantId, Tag = request.Tag },
             cancellationToken);
-        if (result.Success is false) return Error(result.Error);
+        if (!result.Success) return result.ToProblemDetails();
 
         return result.Value is not null ? Ok(result.Value) : NoContent();
     }
@@ -59,7 +59,7 @@ public class UserProfileController(ISender sender) : BaseController
     {
         var query = new GetUserProfilePictureQuery { ProfilePictureUrl = request.ProfilePictureUrl };
         var result = await sender.Send(query, ct);
-        return result.Success ? Ok(result.Value) : Error(result.Error);
+        return result.Success ? Ok(result.Value) : result.ToProblemDetails();
     }
 
     [HttpPut("profile-picture")]
@@ -70,7 +70,7 @@ public class UserProfileController(ISender sender) : BaseController
         var tenantId = User.GetUserId();
         var result = await sender.Send(new UpdateUserProfilePictureCommand
             { TenantId = tenantId, NewProfilePicture = request.ProfilePicture }, ct);
-        return result.Success ? Ok(result.Value) : Error(result.Error);
+        return result.Success ? Ok(result.Value) : result.ToProblemDetails();
     }
 
     [HttpPut("displayname")]
@@ -82,7 +82,7 @@ public class UserProfileController(ISender sender) : BaseController
         var result =
             await sender.Send(
                 new UpdateUserProfileDisplayNameCommand { TenantId = tenantId, DisplayName = request.DisplayName }, ct);
-        return result.Success ? Ok(result.Value) : Error(result.Error);
+        return result.Success ? Ok(result.Value) : result.ToProblemDetails();
     }
 
     [HttpPut("block-user")]
@@ -94,7 +94,7 @@ public class UserProfileController(ISender sender) : BaseController
         var result =
             await sender.Send(new BlockUserCommand() { TenantId = tenantId, BlockedUserTag = request.BlockedUserTag },
                 ct);
-        return result.Success ? Ok() : Error(result.Error);
+        return result.Success ? Ok() : result.ToProblemDetails();
     }
 
     [HttpPut("unblock-user")]
@@ -104,7 +104,7 @@ public class UserProfileController(ISender sender) : BaseController
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new UnblockUserCommand { TenantId = tenantId, Tag = request.Tag }, ct);
-        return result.Success ? Ok() : Error(result.Error);
+        return result.Success ? Ok() : result.ToProblemDetails();
     }
 
     [HttpGet("blocked-users")]
@@ -115,7 +115,7 @@ public class UserProfileController(ISender sender) : BaseController
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new GetBlockedUserProfilesQuery { TenantId = tenantId }, ct);
-        if (result.Success is false) return Error(result.Error);
+        if (!result.Success) return result.ToProblemDetails();
 
         return result.Value!.Count > 0 ? Ok(result.Value) : NoContent();
     }
@@ -123,13 +123,13 @@ public class UserProfileController(ISender sender) : BaseController
     [HttpPost("friendship")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> CreateFriendship([FromBody] CreateFriendshipRequest request,
+    public async Task<IActionResult> CreateFriendship([FromBody] CreateFriendshipRequest request,
         CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new CreateFriendshipCommand
             { TenantId = tenantId, FriendTag = request.FriendTag }, ct);
-        return result.Success ? Ok() : Error(result.Error);
+        return result.Success ? Ok() : result.ToProblemDetails();
     }
 
     [HttpGet("friendships")]
@@ -141,7 +141,7 @@ public class UserProfileController(ISender sender) : BaseController
         var tenantId = User.GetUserId();
         var result = await sender.Send(new GetFriendsQuery {TenantId = tenantId}, ct);
 
-        if (result.Success is false) return Error(result.Error);
+        if (!result.Success) return result.ToProblemDetails();
 
         return result.Value!.Count > 0 ? Ok(result.Value) : NoContent();
     }
@@ -155,7 +155,7 @@ public class UserProfileController(ISender sender) : BaseController
         var tenantId = User.GetUserId();
         var result = await sender.Send(new GetFriendRequestsQuery {TenantId = tenantId}, ct);
 
-        if (result.Success is false) return Error(result.Error);
+        if (!result.Success) return result.ToProblemDetails();
 
         return result.Value!.Length > 0 ? Ok(result.Value) : NoContent();
     }
@@ -167,7 +167,7 @@ public class UserProfileController(ISender sender) : BaseController
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new AcceptFriendshipCommand {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
-        return result.Success ? Ok(result.Value) : Error(result.Error);
+        return result.Success ? Ok(result.Value) : result.ToProblemDetails();
     }
 
     [HttpDelete("friendship/delete")]
@@ -177,7 +177,7 @@ public class UserProfileController(ISender sender) : BaseController
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new DeleteFriendshipCommand {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
-        return result.Success ? Ok() : Error(result.Error);
+        return result.Success ? Ok() : result.ToProblemDetails();
     }
 
     [HttpPut("friendship/seen")]
@@ -187,7 +187,7 @@ public class UserProfileController(ISender sender) : BaseController
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new MarkFriendRequestsAsSeenCommand {TenantId = tenantId, RequestTags = friendRequest.RequestTags}, ct);
-        return result.Success ? Ok() : Error(result.Error);
+        return result.Success ? Ok() : result.ToProblemDetails();
     }
 
     [HttpPut("toggle-privacy")]
@@ -197,7 +197,7 @@ public class UserProfileController(ISender sender) : BaseController
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new TogglePrivacyCommand {TenantId = tenantId, IsPrivate = request.IsPrivate}, ct);
-        return result.Success ? Ok() : Error(result.Error);
+        return result.Success ? Ok() : result.ToProblemDetails();
     }
 
     [HttpDelete("friendship/reject")]
@@ -207,6 +207,6 @@ public class UserProfileController(ISender sender) : BaseController
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new DeleteFriendshipCommand {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
-        return result.Success ? Ok() : Error(result.Error);
+        return result.Success ? Ok() : result.ToProblemDetails();
     }
 }

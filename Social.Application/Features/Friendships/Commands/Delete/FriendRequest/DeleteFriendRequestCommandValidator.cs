@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Social.Domain.Common;
+using FluentValidation;
 
 namespace Social.Application.Features.Friendships.Commands.Delete.FriendRequest;
 
@@ -9,10 +8,10 @@ public sealed class DeleteFriendRequestCommandValidator : AbstractValidator<Dele
     {
         RuleFor(x => x.TenantId)
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsEmpty(nameof(DeleteFriendRequestCommand.TenantId)).Message);
+            .WithMessage($"The value cannot be empty: {nameof(DeleteFriendRequestCommand.TenantId)} ");
 
         RuleFor(x => x.FriendTag)
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsEmpty(nameof(DeleteFriendRequestCommand.FriendTag)).Message);
+            .WithMessage($"The value cannot be empty: {nameof(DeleteFriendRequestCommand.FriendTag)} ");
     }
 }

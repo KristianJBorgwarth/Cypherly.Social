@@ -75,7 +75,7 @@ public class UpdateUserProfilePictuerCommandHandler
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("entity.not.found");
+        result.Error!.Code.Should().Be("entity.not.found");
     }
 
     [Fact]
@@ -92,14 +92,14 @@ public class UpdateUserProfilePictuerCommandHandler
 
         A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._)).Returns(userProfile);
         A.CallTo(() => _fakeProfilePicService.UploadProfilePictureAsync(command.NewProfilePicture, command.TenantId))
-            .Returns(Result.Fail<string>(Errors.General.UnspecifiedError("Invalid profile picture")));
+            .Returns(Result.Fail<string>(Error.Failure("Invalid profile picture")));
 
         // Act
         var result = await _sut.Handle(command, new());
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("unspecified.error");
-        result.Error.Message.Should().Be("Invalid profile picture");
+        result.Error!.Code.Should().Be("internal.server.error");
+        result.Error!.Description.Should().Be("Invalid profile picture");
     }
 }

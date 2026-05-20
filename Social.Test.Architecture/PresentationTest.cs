@@ -46,21 +46,4 @@ public class PresentationTest
 
         result.ShouldBeSuccessful("API project should reference Application project");
     }
-
-    [Fact]
-    public void All_Controllers_Should_Inherit_From_BaseController()
-    {
-        var result = Types.InAssembly(typeof(UserProfileController).Assembly)
-            .That()
-            .ResideInNamespace("Cypherly.ChatUser.API")
-            .And()
-            .HaveNameEndingWith("ControllerTest")
-            .And()
-            .DoNotHaveName("BaseController")
-            .Should()
-            .Inherit(typeof(BaseController))
-            .GetResult();
-
-        result.ShouldBeSuccessful("All controllers should inherit from BaseController");
-    }
 }

@@ -1,4 +1,5 @@
-﻿using Social.Domain.Common;
+using Social.Domain.Aggregates;
+using Social.Domain.Common;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
@@ -17,7 +18,7 @@ public class UpdateUserProfileDisplayNameCommandHandler(
         if (userProfile is null)
         {
             logger.LogWarning("User profile with id: {Id} not found.", cmd.TenantId);
-            return Result.Fail<UpdateUserProfileDisplayNameDto>(Errors.General.NotFound("User profile not found."));
+            return Result.Fail<UpdateUserProfileDisplayNameDto>(Error.NotFound<Social.Domain.Aggregates.UserProfile>(cmd.TenantId.ToString()));
         }
 
         var result = userProfile.SetDisplayName(cmd.DisplayName);

@@ -1,4 +1,3 @@
-﻿using Social.Domain.Common;
 using FluentValidation;
 
 namespace Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
@@ -8,15 +7,12 @@ public class UpdateUserProfilePictureCommandValidator : AbstractValidator<Update
     public UpdateUserProfilePictureCommandValidator()
     {
         RuleFor(cmd => cmd.TenantId)
-            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(UpdateUserProfilePictureCommand.TenantId))
-                .Message)
+            .NotNull().WithMessage($"Value '{nameof(UpdateUserProfilePictureCommand.TenantId)}' is required.")
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsEmpty(nameof(UpdateUserProfilePictureCommand.TenantId)).Message);
+            .WithMessage($"The value cannot be empty: {nameof(UpdateUserProfilePictureCommand.TenantId)} ");
 
         RuleFor(cmd => cmd.NewProfilePicture)
-            .NotNull().WithMessage(Errors.General
-                .ValueIsRequired(nameof(UpdateUserProfilePictureCommand.NewProfilePicture)).Message)
-            .NotEmpty().WithMessage(Errors.General
-                .ValueIsEmpty(nameof(UpdateUserProfilePictureCommand.NewProfilePicture)).Message);
+            .NotNull().WithMessage($"Value '{nameof(UpdateUserProfilePictureCommand.NewProfilePicture)}' is required.")
+            .NotEmpty().WithMessage($"The value cannot be empty: {nameof(UpdateUserProfilePictureCommand.NewProfilePicture)} ");
     }
 }

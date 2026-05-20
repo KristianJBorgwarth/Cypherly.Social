@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.Friendships.Queries.GetBlockedUserProfiles;
 using Social.Domain.Aggregates;
-using Social.Domain.Common;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
 
@@ -63,7 +62,7 @@ public class GetBlockedUserProfilesQueryHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().BeEquivalentTo(Errors.General.NotFound(query.TenantId).Message);
+        result.Error!.Description.Should().Be($"Could not find UserProfile with ID {query.TenantId}.");
     }
 
     [Fact]

@@ -77,7 +77,7 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Contain("Friendship already exists");
+        result.Error!.Description.Should().Contain("Friendship already exists");
     }
 
     [Fact]
@@ -99,7 +99,7 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("entity.not.found");
+        result.Error!.Code.Should().Be("entity.not.found");
     }
 
     [Fact]
@@ -121,6 +121,6 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("entity.not.found");
+        result.Error!.Code.Should().Be("entity.not.found");
     }
 }

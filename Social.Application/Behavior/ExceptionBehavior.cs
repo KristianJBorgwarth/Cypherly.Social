@@ -20,7 +20,7 @@ public class ExceptionBehavior<TRequest, TResponse>(
         catch (Exception ex)
         {
             logger.LogError(ex, "An unhandled exception occurred while processing request of type {RequestType}", typeof(TRequest).Name);
-            var error = Errors.General.UnspecifiedError("An unexpected error occurred. Please try again later.");
+            var error = Error.Failure("An unexpected error occurred. Please try again later.");
             return ResultFactory.Fail<TResponse>(error);
         }
     }

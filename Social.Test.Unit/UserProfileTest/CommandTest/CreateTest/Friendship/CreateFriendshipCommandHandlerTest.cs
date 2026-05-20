@@ -45,7 +45,7 @@ public class CreateFriendshipCommandHandlerTest
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("entity.not.found");
+        result.Error!.Code.Should().Be("entity.not.found");
     }
 
     [Fact]
@@ -67,7 +67,7 @@ public class CreateFriendshipCommandHandlerTest
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("entity.not.found");
+        result.Error!.Code.Should().Be("entity.not.found");
     }
 
     [Fact]
@@ -84,14 +84,14 @@ public class CreateFriendshipCommandHandlerTest
 
         A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
             .ReturnsNextFromSequence<UserProfile?>(friend, user);
-        A.CallTo(() => _fakeService.CreateFriendship(user, friend)).Returns(Result.Fail(Errors.General.UnspecifiedError("error")));
+        A.CallTo(() => _fakeService.CreateFriendship(user, friend)).Returns(Result.Fail(Error.Failure("error")));
 
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Be("error");
+        result.Error!.Description.Should().Be("error");
     }
 
     [Fact]

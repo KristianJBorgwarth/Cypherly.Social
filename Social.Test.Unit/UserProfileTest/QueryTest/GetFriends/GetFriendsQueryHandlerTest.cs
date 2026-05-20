@@ -36,7 +36,7 @@ public class GetFriendsQueryHandlerTest
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("entity.not.found");
+        result.Error!.Code.Should().Be("entity.not.found");
         A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 

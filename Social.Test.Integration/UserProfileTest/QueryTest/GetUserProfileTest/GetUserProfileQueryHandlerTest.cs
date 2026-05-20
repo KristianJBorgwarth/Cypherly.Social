@@ -56,6 +56,6 @@ public class GetUserProfileQueryHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("entity.not.found");
+        result.Error!.Code.Should().Be("entity.not.found");
     }
 }

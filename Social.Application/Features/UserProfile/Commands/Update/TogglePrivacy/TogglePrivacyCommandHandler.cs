@@ -1,4 +1,5 @@
-﻿using Social.Domain.Common;
+using Social.Domain.Aggregates;
+using Social.Domain.Common;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
@@ -17,7 +18,7 @@ public class TogglePrivacyCommandHandler(
         if (userProfile is null)
         {
             logger.LogCritical("User with {ID} not found", request.TenantId);
-            return Result.Fail(Errors.General.NotFound(request.TenantId));
+            return Result.Fail(Error.NotFound<Social.Domain.Aggregates.UserProfile>(request.TenantId.ToString()));
         }
 
         userProfile.TogglePrivacy(request.IsPrivate);

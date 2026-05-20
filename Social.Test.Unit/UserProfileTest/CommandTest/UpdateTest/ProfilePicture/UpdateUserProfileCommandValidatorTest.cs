@@ -1,8 +1,7 @@
-﻿using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
+using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using FakeItEasy;
 using FluentValidation.TestHelper;
 using Microsoft.AspNetCore.Http;
-using Social.Domain.Common;
 using Xunit;
 
 namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.ProfilePicture;
@@ -43,7 +42,7 @@ public class UpdateChatUserProfilePictureCommandValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(cmd => cmd.TenantId)
-            .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(UpdateUserProfilePictureCommand.TenantId)).Message);
+            .WithErrorMessage($"The value cannot be empty: {nameof(UpdateUserProfilePictureCommand.TenantId)} ");
     }
 
     [Fact]
@@ -61,7 +60,7 @@ public class UpdateChatUserProfilePictureCommandValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(cmd => cmd.NewProfilePicture)
-            .WithErrorMessage(Errors.General.ValueIsRequired(nameof(UpdateUserProfilePictureCommand.NewProfilePicture)).Message);
+            .WithErrorMessage($"Value '{nameof(UpdateUserProfilePictureCommand.NewProfilePicture)}' is required.");
     }
 
     [Fact]
@@ -79,6 +78,6 @@ public class UpdateChatUserProfilePictureCommandValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(cmd => cmd.NewProfilePicture)
-            .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(UpdateUserProfilePictureCommand.NewProfilePicture)).Message);
+            .WithErrorMessage($"The value cannot be empty: {nameof(UpdateUserProfilePictureCommand.NewProfilePicture)} ");
     }
 }

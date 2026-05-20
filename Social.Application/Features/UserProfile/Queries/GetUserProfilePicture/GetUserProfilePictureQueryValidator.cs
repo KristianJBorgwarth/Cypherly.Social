@@ -1,4 +1,3 @@
-﻿using Social.Domain.Common;
 using FluentValidation;
 
 namespace Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
@@ -9,6 +8,6 @@ public sealed class GetUserProfilePictureQueryValidator : AbstractValidator<GetU
     {
         RuleFor(x => x.ProfilePictureUrl)
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsRequired(nameof(GetUserProfilePictureQuery.ProfilePictureUrl)).Message);
+            .WithMessage($"Value '{nameof(GetUserProfilePictureQuery.ProfilePictureUrl)}' is required.");
     }
 }

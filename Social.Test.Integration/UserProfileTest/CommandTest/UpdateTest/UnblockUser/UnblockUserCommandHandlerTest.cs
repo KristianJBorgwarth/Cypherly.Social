@@ -53,7 +53,7 @@ public class UnblockUserCommandHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Contain("tag");
+        result.Error!.Description.Should().Contain("tag");
     }
 
     [Fact]

@@ -1,6 +1,5 @@
-﻿using FluentValidation.TestHelper;
+using FluentValidation.TestHelper;
 using Social.Application.Features.Friendships.Queries.GetFriends;
-using Social.Domain.Common;
 using Xunit;
 
 namespace Social.Test.Unit.UserProfileTest.QueryTest.GetFriends
@@ -20,7 +19,7 @@ namespace Social.Test.Unit.UserProfileTest.QueryTest.GetFriends
 
             // Assert
             result.ShouldHaveValidationErrorFor(x => x.TenantId)
-                .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(GetFriendsQuery.TenantId)).Message);
+                .WithErrorMessage($"The value cannot be empty: {nameof(GetFriendsQuery.TenantId)} ");
         }
 
         [Fact]
@@ -34,7 +33,7 @@ namespace Social.Test.Unit.UserProfileTest.QueryTest.GetFriends
 
             // Assert
             result.ShouldHaveValidationErrorFor(x => x.TenantId)
-                .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(GetFriendsQuery.TenantId)).Message);
+                .WithErrorMessage($"The value cannot be empty: {nameof(GetFriendsQuery.TenantId)} ");
         }
 
         [Fact]

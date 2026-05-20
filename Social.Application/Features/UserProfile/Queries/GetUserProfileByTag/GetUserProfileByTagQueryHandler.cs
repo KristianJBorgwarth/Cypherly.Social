@@ -1,4 +1,5 @@
-﻿using Social.Domain.Common;
+using Social.Domain.Aggregates;
+using Social.Domain.Common;
 using Social.Domain.Interfaces;
 using Social.Domain.Services;
 using Microsoft.Extensions.Logging;
@@ -23,7 +24,7 @@ public class GetUserProfileByTagQueryHandler(
         if (requestingUser is null)
         {
             logger.LogWarning("User with ID: {ID} attempted to get profile by tag: {Tag}, but no user with that ID Exists", request.TenantId, request.Tag);
-            return Result.Fail<GetUserProfileByTagDto>(Errors.General.NotFound(request.TenantId));
+            return Result.Fail<GetUserProfileByTagDto>(Error.NotFound<Social.Domain.Aggregates.UserProfile>(request.TenantId.ToString()));
         }
 
         var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileByTagWithBlockedUsersSpec(request.Tag), ct);

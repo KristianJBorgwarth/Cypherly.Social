@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 using Social.Application.Specifications;
+using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Enums;
 
@@ -20,7 +21,7 @@ public class GetFriendRequestsQueryHandler(
         if (userProfile is null)
         {
             logger.LogCritical("UserProfile not found, UserProfileId: {UserProfileId}", q.TenantId);
-            return Result.Fail<GetFriendRequestsDto[]>(Errors.General.NotFound(q.TenantId));
+            return Result.Fail<GetFriendRequestsDto[]>(Error.NotFound<Social.Domain.Aggregates.UserProfile>(q.TenantId.ToString()));
         }
 
         var friendRequests = userProfile.FriendshipsReceived

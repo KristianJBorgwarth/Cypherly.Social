@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Specifications;
+using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Services;
 
@@ -20,14 +21,14 @@ public class UnblockUserCommandHandler(
         if (userProfile is null)
         {
             logger.LogCritical("User with {ID} not found", cmd.TenantId);
-            return Result.Fail(Errors.General.NotFound(cmd.TenantId));
+            return Result.Fail(Error.NotFound<Social.Domain.Aggregates.UserProfile>(cmd.TenantId.ToString()));
         }
 
         var userToUnblock = await userProfileRepository.GetSingleAsync(new UserProfileByTagWithBlockedUsersSpec(cmd.Tag), ct);
         if (userToUnblock is null)
         {
             logger.LogCritical("User with tag {Tag} not found", cmd.Tag);
-            return Result.Fail(Errors.General.NotFound(cmd.Tag));
+            return Result.Fail(Error.NotFound<Social.Domain.Aggregates.UserProfile>(cmd.Tag));
         }
 
         userBlockingService.UnblockUser(userProfile, userToUnblock);
