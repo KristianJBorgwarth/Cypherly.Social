@@ -38,7 +38,7 @@ public class BlockUserCommandHandlerTest
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("entity.not.found");
+        result.Error!.Code.Should().Be("entity.not.found");
     }
 
     [Fact]
@@ -54,6 +54,6 @@ public class BlockUserCommandHandlerTest
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("entity.not.found");
+        result.Error!.Code.Should().Be("entity.not.found");
     }
 }

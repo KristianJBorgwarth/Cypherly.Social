@@ -69,7 +69,7 @@ public class DeleteFriendshipCommandHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("entity.not.found");
+        result.Error!.Code.Should().Be("entity.not.found");
     }
 
     [Fact]
@@ -97,7 +97,7 @@ public class DeleteFriendshipCommandHandlerTest : IntegrationTestBase
         // Assert
         result.Success.Should().BeFalse();
         result.Error.Should().NotBeNull();
-        result.Error.Message.Should().Be("Friendship not found");
+        result.Error!.Description.Should().Be("Friendship not found");
         Db.Friendship.Should().HaveCount(0);
     }
 }

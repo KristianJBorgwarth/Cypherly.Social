@@ -7,7 +7,6 @@ using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Social.Domain.Aggregates;
-using Social.Domain.Common;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
 using Social.Test.Integration.Setup.Helpers;
@@ -72,7 +71,7 @@ public class UpdateUserProfilePictureCommandHandlerTest : IntegrationTestBase
         // Assert
         result.Should().NotBeNull();
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Be(Errors.General.NotFound(command.TenantId).Message);
+        result.Error!.Description.Should().Be($"Could not find UserProfile with ID {command.TenantId}.");
     }
 
     [Fact]
@@ -96,6 +95,6 @@ public class UpdateUserProfilePictureCommandHandlerTest : IntegrationTestBase
         // Assert
         result.Should().NotBeNull();
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Be(Errors.General.UnspecifiedError("Value 'Invalid file type. Only JPG, JPEG and PNG files are allowed.' is not valid in this context").Message);
+        result.Error!.Description.Should().Be("Value 'Invalid file type. Only JPG, JPEG and PNG files are allowed.' is not valid in this context");
     }
 }

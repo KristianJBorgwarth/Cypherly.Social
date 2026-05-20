@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Social.Domain.Common;
+using FluentValidation;
 
 namespace Social.Application.Features.Friendships.Commands.Create;
 
@@ -8,10 +7,10 @@ public class CreateFriendshipCommandValidator : AbstractValidator<CreateFriendsh
     public CreateFriendshipCommandValidator()
     {
         RuleFor(x => x.TenantId)
-            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(CreateFriendshipCommand.TenantId)).Message);
+            .NotEmpty().WithMessage($"The value cannot be empty: {nameof(CreateFriendshipCommand.TenantId)} ");
 
         RuleFor(x => x.FriendTag)
-            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(CreateFriendshipCommand.FriendTag)).Message)
-            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(CreateFriendshipCommand.FriendTag)).Message);
+            .NotNull().WithMessage($"Value '{nameof(CreateFriendshipCommand.FriendTag)}' is required.")
+            .NotEmpty().WithMessage($"The value cannot be empty: {nameof(CreateFriendshipCommand.FriendTag)} ");
     }
 }

@@ -50,7 +50,7 @@ namespace Social.Test.Unit.AggregateRootTest
 
             // Assert
             result.Success.Should().BeFalse();
-            result.Error.Message.Should().Contain("should be at least 3.");
+            result.Error!.Description.Should().Contain("should be at least 3.");
             userProfile.DisplayName.Should().Be("TestUser");
             userProfile.DomainEvents.Should().HaveCount(0);
         }
@@ -67,7 +67,7 @@ namespace Social.Test.Unit.AggregateRootTest
 
             // Assert
             result.Success.Should().BeFalse();
-            result.Error.Message.Should().Contain("should not exceed 20.");
+            result.Error!.Description.Should().Contain("should not exceed 20.");
             userProfile.DisplayName.Should().Be("TestUser");
             userProfile.DomainEvents.Should().HaveCount(0);
 
@@ -85,7 +85,7 @@ namespace Social.Test.Unit.AggregateRootTest
 
             // Assert
             result.Success.Should().BeFalse();
-            result.Error.Message.Should().Contain("not valid");
+            result.Error!.Description.Should().Contain("not valid");
             userProfile.DisplayName.Should().Be("TestUser");
             userProfile.DomainEvents.Should().HaveCount(0);
 
@@ -102,7 +102,7 @@ namespace Social.Test.Unit.AggregateRootTest
 
             // Assert
             result.Success.Should().BeFalse();
-            result.Error.Message.Should().Contain("Cannot add self as friend");
+            result.Error!.Description.Should().Contain("Cannot add self as friend");
         }
 
         [Fact]
@@ -133,7 +133,7 @@ namespace Social.Test.Unit.AggregateRootTest
 
             // Assert
             result.Success.Should().BeFalse();
-            result.Error.Message.Should().Contain("Friendship already exists");
+            result.Error!.Description.Should().Contain("Friendship already exists");
         }
 
         [Fact]
@@ -152,7 +152,7 @@ namespace Social.Test.Unit.AggregateRootTest
 
             // Assert
             result.Success.Should().BeFalse();
-            result.Error.Message.Should().Contain("Friendship already exists");
+            result.Error!.Description.Should().Contain("Friendship already exists");
         }
     }
 }

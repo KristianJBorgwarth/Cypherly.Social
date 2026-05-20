@@ -1,4 +1,5 @@
-﻿using Social.Domain.Common;
+using Social.Domain.Aggregates;
+using Social.Domain.Common;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
@@ -16,7 +17,7 @@ public class GetUserProfileQueryHandler(
     public async Task<Result<GetUserProfileDto>> Handle(GetUserProfileQuery q, CancellationToken ct)
     {
         var up = await userProfileRepository.GetSingleAsync(new UserProfileSpec(q.TenantId), ct);
-        if (up is null) return Result.Fail<GetUserProfileDto>(Errors.General.NotFound(q.TenantId.ToString()));
+        if (up is null) return Result.Fail<GetUserProfileDto>(Error.NotFound<Social.Domain.Aggregates.UserProfile>(q.TenantId.ToString()));
 
         var profilePictureUrl = "";
 

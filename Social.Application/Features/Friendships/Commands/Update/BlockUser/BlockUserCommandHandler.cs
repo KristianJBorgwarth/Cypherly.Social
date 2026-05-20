@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Specifications;
+using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Services;
 
@@ -20,14 +21,14 @@ public class BlockUserCommandHandler(
         if (userProfile is null)
         {
             logger.LogError("User profile not found for user id {UserId}", request.TenantId);
-            return Result.Fail(Errors.General.NotFound(request.TenantId));
+            return Result.Fail(Error.NotFound<Social.Domain.Aggregates.UserProfile>(request.TenantId.ToString()));
         }
 
         var blockedUserProfile = await userProfileRepository.GetSingleAsync(new UserProfileByTagWithFriendshipsSpec(request.BlockedUserTag), cancellationToken);
         if (blockedUserProfile is null)
         {
             logger.LogError("User profile not found for user id {UserId}", request.BlockedUserTag);
-            return Result.Fail(Errors.General.NotFound(request.BlockedUserTag));
+            return Result.Fail(Error.NotFound<Social.Domain.Aggregates.UserProfile>(request.BlockedUserTag));
         }
 
         userBlockingService.BlockUser(userProfile, blockedUserProfile);

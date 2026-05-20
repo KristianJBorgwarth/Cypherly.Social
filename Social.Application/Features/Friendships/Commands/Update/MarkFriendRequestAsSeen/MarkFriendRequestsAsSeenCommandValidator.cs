@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Social.Domain.Common;
+using FluentValidation;
 
 namespace Social.Application.Features.Friendships.Commands.Update.MarkFriendRequestAsSeen;
 
@@ -9,12 +8,12 @@ public class MarkFriendRequestsAsSeenCommandValidator : AbstractValidator<MarkFr
     {
         RuleFor(x => x.TenantId)
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsEmpty(nameof(MarkFriendRequestsAsSeenCommand.TenantId)).Message);
+            .WithMessage($"The value cannot be empty: {nameof(MarkFriendRequestsAsSeenCommand.TenantId)} ");
 
         RuleFor(x => x.RequestTags)
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsEmpty(nameof(MarkFriendRequestsAsSeenCommand.RequestTags)).Message)
+            .WithMessage($"The value cannot be empty: {nameof(MarkFriendRequestsAsSeenCommand.RequestTags)} ")
             .Must(tags => tags.All(tag => !string.IsNullOrWhiteSpace(tag)))
-            .WithMessage(Errors.General.ValueIsEmpty(nameof(MarkFriendRequestsAsSeenCommand.RequestTags)).Message);
+            .WithMessage($"The value cannot be empty: {nameof(MarkFriendRequestsAsSeenCommand.RequestTags)} ");
     }
 }

@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Specifications;
+using Social.Domain.Aggregates;
 using Social.Domain.Common;
 
 namespace Social.Application.Features.Friendships.Queries.GetBlockedUserProfiles;
@@ -17,7 +18,7 @@ public sealed class GetBlockedUserProfilesQueryHandler(
         if (userProfile is null)
         {
             logger.LogError("UserProfile with ID: {UserId} not found", query.TenantId);
-            return Result.Fail<List<GetBlockedUserProfilesDto>>(Errors.General.NotFound(query.TenantId));
+            return Result.Fail<List<GetBlockedUserProfilesDto>>(Error.NotFound<Social.Domain.Aggregates.UserProfile>(query.TenantId.ToString()));
         }
 
         var blockedUserProfiles = userProfile.BlockedUsers

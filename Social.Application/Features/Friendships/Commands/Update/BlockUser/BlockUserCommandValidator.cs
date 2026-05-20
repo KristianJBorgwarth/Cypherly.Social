@@ -1,5 +1,4 @@
 using FluentValidation;
-using Social.Domain.Common;
 
 namespace Social.Application.Features.Friendships.Commands.Update.BlockUser;
 
@@ -8,9 +7,9 @@ public class BlockUserCommandValidator : AbstractValidator<BlockUserCommand>
     public BlockUserCommandValidator()
     {
         RuleFor(x => x.TenantId)
-            .NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(BlockUserCommand.TenantId)).Message);
+            .NotEmpty().WithMessage($"Value '{nameof(BlockUserCommand.TenantId)}' is required.");
 
         RuleFor(x => x.BlockedUserTag)
-            .NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(BlockUserCommand)).Message);
+            .NotEmpty().WithMessage($"Value '{nameof(BlockUserCommand)}' is required.");
     }
 }

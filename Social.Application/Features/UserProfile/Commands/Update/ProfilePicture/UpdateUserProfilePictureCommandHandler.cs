@@ -1,4 +1,5 @@
-﻿using Social.Domain.Common;
+using Social.Domain.Aggregates;
+using Social.Domain.Common;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
@@ -16,7 +17,7 @@ public class UpdateUserProfilePictureCommandHandler(
     public async Task<Result<UpdateUserProfilePictureDto>> Handle(UpdateUserProfilePictureCommand request, CancellationToken cancellationToken)
     {
         var user = await userProfileRepository.GetByIdAsync(request.TenantId, cancellationToken);
-        if (user is null) return Result.Fail<UpdateUserProfilePictureDto>(Errors.General.NotFound(request.TenantId));
+        if (user is null) return Result.Fail<UpdateUserProfilePictureDto>(Error.NotFound<Social.Domain.Aggregates.UserProfile>(request.TenantId.ToString()));
 
         var result = await profilePictureService.UploadProfilePictureAsync(request.NewProfilePicture, request.TenantId);
         if (result.Success is false) return Result.Fail<UpdateUserProfilePictureDto>(result.Error);

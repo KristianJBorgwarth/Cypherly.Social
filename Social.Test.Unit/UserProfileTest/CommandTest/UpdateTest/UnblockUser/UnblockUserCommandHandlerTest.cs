@@ -39,7 +39,7 @@ public class UnblockUserCommandHandlerTest
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().BeEquivalentTo(Errors.General.NotFound(command.TenantId).Message);
+        result.Error!.Description.Should().Be($"Could not find UserProfile with ID {command.TenantId}.");
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustNotHaveHappened();
     }
 
@@ -56,7 +56,7 @@ public class UnblockUserCommandHandlerTest
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().BeEquivalentTo(Errors.General.NotFound(command.Tag).Message);
+        result.Error!.Description.Should().Be($"Could not find UserProfile with ID {command.Tag}.");
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustNotHaveHappened();
         A.CallTo(() => _fakeProfileService.UnblockUser(A<UserProfile>._, A<UserProfile>._)).MustNotHaveHappened();
     }

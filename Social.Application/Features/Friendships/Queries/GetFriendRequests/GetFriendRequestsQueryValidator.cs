@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Social.Domain.Common;
+using FluentValidation;
 
 namespace Social.Application.Features.Friendships.Queries.GetFriendRequests;
 
@@ -8,6 +7,6 @@ public class GetFriendRequestsQueryValidator : AbstractValidator<GetFriendReques
     public GetFriendRequestsQueryValidator()
     {
         RuleFor(x => x.TenantId)
-            .NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(GetFriendRequestsQuery.TenantId)).Message);
+            .NotEmpty().WithMessage($"Value '{nameof(GetFriendRequestsQuery.TenantId)}' is required.");
     }
 }

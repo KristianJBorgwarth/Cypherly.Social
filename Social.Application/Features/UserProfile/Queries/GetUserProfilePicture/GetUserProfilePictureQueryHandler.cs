@@ -1,4 +1,4 @@
-﻿using Social.Domain.Common;
+using Social.Domain.Common;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 
@@ -12,7 +12,7 @@ public sealed class GetUserProfilePictureQueryHandler(IMinioProxyClient minioPro
 
         if (data.HasValue is false)
         {
-            return Result.Fail<GetUserProfilePictureDto>(Errors.General.UnspecifiedError("Error getting user profile picture"));
+            return Result.Fail<GetUserProfilePictureDto>(Error.Failure("Error getting user profile picture"));
         }
 
         var dto = GetUserProfilePictureDto.MapFrom(data.Value.image, data.Value.imageType);

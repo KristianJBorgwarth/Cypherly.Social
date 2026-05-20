@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Social.Infrastructure.S3.Services;
@@ -8,7 +8,6 @@ using Social.Infrastructure.Settings;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
-using Social.Domain.Common;
 using Xunit;
 using Social.Test.Unit.Setup.Helpers;
 
@@ -69,7 +68,7 @@ public class ProfilePictureServiceTests
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Be(Errors.General.UnexpectedValue(errorMessage).Message);
+        result.Error!.Description.Should().Be($"Value '{errorMessage}' is not valid in this context");
     }
 
     [Fact]
@@ -91,7 +90,7 @@ public class ProfilePictureServiceTests
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Be(Errors.General.UnspecifiedError($"{HttpStatusCode.InternalServerError}: Failed to upload profile picture").Message);
+        result.Error!.Description.Should().Be($"{HttpStatusCode.InternalServerError}: Failed to upload profile picture");
     }
 
 
@@ -125,6 +124,6 @@ public class ProfilePictureServiceTests
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Be(Errors.General.UnspecifiedError($"{HttpStatusCode.InternalServerError}: Failed to delete profile picture").Message);
+        result.Error!.Description.Should().Be($"{HttpStatusCode.InternalServerError}: Failed to delete profile picture");
     }
 }

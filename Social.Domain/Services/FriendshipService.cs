@@ -1,4 +1,4 @@
-﻿using Social.Domain.Aggregates;
+using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Dtos;
 using Social.Domain.Enums;
@@ -26,10 +26,10 @@ public class FriendshipService : IFriendshipService
         var friendship = userProfile.FriendshipsReceived.FirstOrDefault(f => f.UserProfile.UserTag.Tag == friendTag);
 
         if (friendship is null)
-            return Result.Fail(Errors.General.UnspecifiedError("Friendship not found"));
+            return Result.Fail(Error.BadRequest("friendship.not.found", "Friendship not found"));
 
         if (friendship.Status != FriendshipStatus.Pending)
-            return Result.Fail(Errors.General.UnspecifiedError("Friendship not pending"));
+            return Result.Fail(Error.BadRequest("friendship.not.pending", "Friendship not pending"));
 
         friendship.AcceptFriendship();
         userProfile.AddDomainEvent(new FriendshipAcceptedEvent(friendship.UserProfile.Id, userProfile.UserTag.Tag));
@@ -51,15 +51,15 @@ public class FriendshipService : IFriendshipService
         var friendship = userProfile.FriendshipsReceived.FirstOrDefault(f => f.UserProfile.UserTag.Tag == friendTag);
 
         if (friendship is null)
-            return Result.Fail(Errors.General.UnspecifiedError("Friendship not found"));
+            return Result.Fail(Error.BadRequest("friendship.not.found", "Friendship not found"));
 
         if (friendship.Status != FriendshipStatus.Pending)
-            return Result.Fail(Errors.General.UnspecifiedError("Friendship not pending"));
+            return Result.Fail(Error.BadRequest("friendship.not.pending", "Friendship not pending"));
 
         userProfile.DeleteFriendship(friendTag);
 
         userProfile.AddDomainEvent(new FriendRequestRejectedEvent(userProfile.Id, friendship.UserProfileId));
-        
+
         return Result.Ok();
     }
 
