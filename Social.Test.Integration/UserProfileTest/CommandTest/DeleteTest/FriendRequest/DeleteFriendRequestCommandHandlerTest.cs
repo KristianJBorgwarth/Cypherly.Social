@@ -93,7 +93,7 @@ public class DeleteFriendRequestCommandHandlerTest : IntegrationTestBase
         // Assert
         result.Success.Should().BeFalse();
         result.Error.Should().NotBeNull();
-        result.Error.Message.Should().Contain("Friendship not found");
+        result.Error!.Description.Should().Contain("Friendship not found");
     }
 
     [Fact]

@@ -1,4 +1,3 @@
-﻿using Social.Domain.Common;
 using FluentValidation;
 
 namespace Social.Application.Features.UserProfile.Commands.Update.DisplayName;
@@ -8,10 +7,9 @@ public class UpdateUserProfileDisplayNameCommandValidator : AbstractValidator<Up
     public UpdateUserProfileDisplayNameCommandValidator()
     {
         RuleFor(cmd => cmd.TenantId)
-            .NotNull().NotEmpty().WithMessage(Errors.General
-                .ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.TenantId)).Message);
+            .NotNull().NotEmpty().WithMessage($"The value cannot be empty: {nameof(UpdateUserProfileDisplayNameCommand.TenantId)} ");
         RuleFor(cmd => cmd.DisplayName)
-            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(UpdateUserProfileDisplayNameCommand.DisplayName)).Message)
-            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.DisplayName)).Message);
+            .NotNull().WithMessage($"Value '{nameof(UpdateUserProfileDisplayNameCommand.DisplayName)}' is required.")
+            .NotEmpty().WithMessage($"The value cannot be empty: {nameof(UpdateUserProfileDisplayNameCommand.DisplayName)} ");
     }
 }

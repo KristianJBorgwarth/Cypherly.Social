@@ -1,4 +1,4 @@
-﻿using Social.Infrastructure.Persistence.Context;
+using Social.Infrastructure.Persistence.Context;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,7 +49,7 @@ public class BlockUserCommandHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Should().BeEquivalentTo(Errors.General.NotFound(command.TenantId));
+        result.Error.Should().BeEquivalentTo(Error.NotFound<UserProfile>(command.TenantId.ToString()));
     }
 
     [Fact]
@@ -71,7 +71,7 @@ public class BlockUserCommandHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Should().BeEquivalentTo(Errors.General.NotFound(command.BlockedUserTag));
+        result.Error.Should().BeEquivalentTo(Error.NotFound<UserProfile>(command.BlockedUserTag));
     }
 
     [Fact]

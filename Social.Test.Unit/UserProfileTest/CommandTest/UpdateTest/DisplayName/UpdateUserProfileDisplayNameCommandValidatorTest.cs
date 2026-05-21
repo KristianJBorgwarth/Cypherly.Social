@@ -1,6 +1,5 @@
-﻿using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
+using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
 using FluentAssertions;
-using Social.Domain.Common;
 using Xunit;
 
 namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName
@@ -25,7 +24,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName
             // Assert
             result.IsValid.Should().BeFalse();
             result.Errors[0].ErrorMessage.Should()
-                .Be(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.TenantId)).Message);
+                .Be($"The value cannot be empty: {nameof(UpdateUserProfileDisplayNameCommand.TenantId)} ");
         }
 
         [Fact]
@@ -44,7 +43,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName
             // Assert
             result.IsValid.Should().BeFalse();
             result.Errors[0].ErrorMessage.Should()
-                .Be(Errors.General.ValueIsRequired(nameof(UpdateUserProfileDisplayNameCommand.DisplayName)).Message);
+                .Be($"Value '{nameof(UpdateUserProfileDisplayNameCommand.DisplayName)}' is required.");
         }
 
         [Fact]
@@ -80,7 +79,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName
             // Assert
             result.IsValid.Should().BeFalse();
             result.Errors[0].ErrorMessage.Should()
-                .Be(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.TenantId)).Message);
+                .Be($"The value cannot be empty: {nameof(UpdateUserProfileDisplayNameCommand.TenantId)} ");
         }
 
         [Fact]
@@ -99,7 +98,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.DisplayName
             // Assert
             result.IsValid.Should().BeFalse();
             result.Errors[0].ErrorMessage.Should()
-                .Be(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.DisplayName)).Message);
+                .Be($"The value cannot be empty: {nameof(UpdateUserProfileDisplayNameCommand.DisplayName)} ");
         }
     }
 }

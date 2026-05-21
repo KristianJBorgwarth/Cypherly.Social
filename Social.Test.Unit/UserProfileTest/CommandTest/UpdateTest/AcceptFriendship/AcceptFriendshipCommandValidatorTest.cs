@@ -1,6 +1,5 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Social.Application.Features.Friendships.Commands.Update.AcceptFriendship;
-using Social.Domain.Common;
 using Xunit;
 
 namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.AcceptFriendship
@@ -41,7 +40,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.AcceptFriendsh
 
             // Assert
             result.IsValid.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(AcceptFriendshipCommand.TenantId) && e.ErrorMessage == Errors.General.ValueIsEmpty(nameof(AcceptFriendshipCommand.TenantId)).Message);
+            result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(AcceptFriendshipCommand.TenantId) && e.ErrorMessage == $"The value cannot be empty: {nameof(AcceptFriendshipCommand.TenantId)} ");
         }
 
         [Fact]
@@ -59,7 +58,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.AcceptFriendsh
 
             // Assert
             result.IsValid.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(AcceptFriendshipCommand.FriendTag) && e.ErrorMessage == Errors.General.ValueIsRequired(nameof(AcceptFriendshipCommand.FriendTag)).Message);
+            result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(AcceptFriendshipCommand.FriendTag) && e.ErrorMessage == $"Value '{nameof(AcceptFriendshipCommand.FriendTag)}' is required.");
         }
 
         [Fact]
@@ -77,7 +76,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.UpdateTest.AcceptFriendsh
 
             // Assert
             result.IsValid.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(AcceptFriendshipCommand.FriendTag) && e.ErrorMessage == Errors.General.ValueIsEmpty(nameof(AcceptFriendshipCommand.FriendTag)).Message);
+            result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(AcceptFriendshipCommand.FriendTag) && e.ErrorMessage == $"The value cannot be empty: {nameof(AcceptFriendshipCommand.FriendTag)} ");
         }
     }
 }

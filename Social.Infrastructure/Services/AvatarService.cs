@@ -23,7 +23,7 @@ internal sealed class AvatarService(
     public async Task<Result<Avatar>> UploadAsync(IFormFile file, Guid userId, CancellationToken ct = default)
     {
         if (!fileValidator.IsValidImageFile(file, out var errorMessage))
-            return Result.Fail<Avatar>(Errors.General.UnexpectedValue(errorMessage));
+            return Result.Fail<Avatar>(Error.Validation($"Value '{errorMessage}' is not valid in this context"));
 
         var avatarId = Guid.NewGuid();
 

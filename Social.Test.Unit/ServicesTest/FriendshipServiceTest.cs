@@ -46,7 +46,7 @@ public class FriendshipServiceTest
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Be("Friendship already exists");
+        result.Error!.Description.Should().Be("Friendship already exists");
     }
 
     [Fact(Skip = "EF Core handles population, use integration test")]
@@ -82,6 +82,6 @@ public class FriendshipServiceTest
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Be("Friendship not found");
+        result.Error!.Description.Should().Be("Friendship not found");
     }
 }

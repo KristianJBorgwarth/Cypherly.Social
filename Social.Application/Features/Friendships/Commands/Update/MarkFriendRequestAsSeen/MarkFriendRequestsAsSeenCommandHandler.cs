@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Specifications;
+using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Interfaces;
 
@@ -20,7 +21,7 @@ public class MarkFriendRequestsAsSeenCommandHandler(
         if (userProfile is null)
         {
             logger.LogError("User profile not found for ID: {Id}", q.TenantId);
-            return Result.Fail(Errors.General.NotFound(q.TenantId));
+            return Result.Fail(Error.NotFound<Social.Domain.Aggregates.UserProfile>(q.TenantId.ToString()));
         }
 
         friendshipService.MarkeFriendshipAsSeen(userProfile, [.. q.RequestTags]);

@@ -1,4 +1,3 @@
-﻿using Social.Domain.Common;
 using FluentValidation;
 
 namespace Social.Application.Features.UserProfile.Queries.GetUserProfile;
@@ -8,7 +7,7 @@ public class GetUserProfileQueryValidator : AbstractValidator<GetUserProfileQuer
     public GetUserProfileQueryValidator()
     {
         RuleFor(x => x.TenantId)
-            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(GetUserProfileQuery.TenantId)).Message)
-            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(GetUserProfileQuery.TenantId)).Message);
+            .NotNull().WithMessage($"Value '{nameof(GetUserProfileQuery.TenantId)}' is required.")
+            .NotEmpty().WithMessage($"The value cannot be empty: {nameof(GetUserProfileQuery.TenantId)} ");
     }
 }

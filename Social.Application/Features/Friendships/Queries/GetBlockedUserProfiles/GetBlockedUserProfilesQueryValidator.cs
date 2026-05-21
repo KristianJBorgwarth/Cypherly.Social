@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Social.Domain.Common;
+using FluentValidation;
 
 namespace Social.Application.Features.Friendships.Queries.GetBlockedUserProfiles;
 
@@ -9,6 +8,6 @@ public class GetBlockedUserProfilesQueryValidator : AbstractValidator<GetBlocked
     {
         RuleFor(x => x.TenantId)
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsEmpty(nameof(GetBlockedUserProfilesQuery.TenantId)).Message);
+            .WithMessage($"The value cannot be empty: {nameof(GetBlockedUserProfilesQuery.TenantId)} ");
     }
 }

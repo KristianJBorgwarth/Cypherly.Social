@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Specifications;
+using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Interfaces;
 
@@ -20,7 +21,7 @@ public sealed class DeleteFriendRequestCommandHandler(
         if (userProfile is null)
         {
             logger.LogWarning("User profile with ID {Id} not found.", request.TenantId);
-            return Result.Fail(Errors.General.NotFound(request.TenantId));
+            return Result.Fail(Error.NotFound<Social.Domain.Aggregates.UserProfile>(request.TenantId.ToString()));
         }
 
         var delResult = friendshipService.DeleteFriendRequest(userProfile, request.FriendTag);

@@ -92,6 +92,6 @@ public class GetFriendRequestsQueryHandlerTest : IntegrationTestBase
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Should().BeEquivalentTo(Errors.General.NotFound(query.TenantId));
+        result.Error.Should().BeEquivalentTo(Error.NotFound<UserProfile>(query.TenantId.ToString()));
     }
 }

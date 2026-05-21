@@ -9,6 +9,6 @@ public sealed class GetAvatarQueryValidator : AbstractValidator<GetAvatarQuery>
     {
         RuleFor(x => x.AvatarId)
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsRequired(nameof(GetAvatarQuery.AvatarId)).Message);
+            .WithMessage(Er
     }
 }

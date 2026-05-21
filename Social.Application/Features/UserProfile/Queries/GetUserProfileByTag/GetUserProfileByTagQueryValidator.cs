@@ -1,4 +1,3 @@
-﻿using Social.Domain.Common;
 using FluentValidation;
 
 namespace Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
@@ -7,11 +6,10 @@ public class GetUserProfileByTagQueryValidator : AbstractValidator<GetUserProfil
 {
     public GetUserProfileByTagQueryValidator()
     {
-
         RuleFor(x => x.TenantId)
-            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(GetUserProfileByTagQuery.TenantId)).Message);
+            .NotEmpty().WithMessage($"The value cannot be empty: {nameof(GetUserProfileByTagQuery.TenantId)} ");
         RuleFor(x => x.Tag)
-            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(GetUserProfileByTagQuery.Tag)).Message)
-            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(GetUserProfileByTagQuery.Tag)).Message);
+            .NotNull().WithMessage($"Value '{nameof(GetUserProfileByTagQuery.Tag)}' is required.")
+            .NotEmpty().WithMessage($"The value cannot be empty: {nameof(GetUserProfileByTagQuery.Tag)} ");
     }
 }

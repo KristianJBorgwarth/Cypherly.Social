@@ -1,6 +1,5 @@
-﻿using FluentValidation.TestHelper;
+using FluentValidation.TestHelper;
 using Social.Application.Features.Friendships.Commands.Create;
-using Social.Domain.Common;
 using Xunit;
 
 namespace Social.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship
@@ -24,7 +23,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship
 
             // Assert
             result.ShouldHaveValidationErrorFor(x => x.TenantId)
-                .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(CreateFriendshipCommand.TenantId)).Message);
+                .WithErrorMessage($"The value cannot be empty: {nameof(CreateFriendshipCommand.TenantId)} ");
         }
 
         [Fact]
@@ -42,7 +41,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship
 
             // Assert
             result.ShouldHaveValidationErrorFor(x => x.FriendTag)
-                .WithErrorMessage(Errors.General.ValueIsRequired(nameof(CreateFriendshipCommand.FriendTag)).Message);
+                .WithErrorMessage($"Value '{nameof(CreateFriendshipCommand.FriendTag)}' is required.");
         }
 
         [Fact]
@@ -60,7 +59,7 @@ namespace Social.Test.Unit.UserProfileTest.CommandTest.CreateTest.Friendship
 
             // Assert
             result.ShouldHaveValidationErrorFor(x => x.FriendTag)
-                .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(CreateFriendshipCommand.FriendTag)).Message);
+                .WithErrorMessage($"The value cannot be empty: {nameof(CreateFriendshipCommand.FriendTag)} ");
         }
 
         [Fact]

@@ -38,7 +38,7 @@ public class GetUserProfileQueryHandlerTest
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Code.Should().Be("entity.not.found");
+        result.Error!.Code.Should().Be("entity.not.found");
         A.CallTo(() => _fakeRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(A<string>._)).MustNotHaveHappened();
     }
@@ -96,7 +96,7 @@ public class GetUserProfileQueryHandlerTest
 
         A.CallTo(() => _fakeRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).Returns(userProfile);
         A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl))
-            .Returns(Result.Fail<string>(Errors.General.UnspecifiedError("Failed to get presigned url")));
+            .Returns(Result.Fail<string>(Error.Failure("Failed to get presigned url")));
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
