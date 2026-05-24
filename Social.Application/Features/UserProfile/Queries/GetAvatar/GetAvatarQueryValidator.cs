@@ -6,7 +6,7 @@ public sealed class GetAvatarQueryValidator : AbstractValidator<GetAvatarQuery>
 {
     public GetAvatarQueryValidator()
     {
-        RuleFor(q => q.AvatarId)
+        RuleFor(q => q.FileKey)
             .NotEmpty();
     }
 }

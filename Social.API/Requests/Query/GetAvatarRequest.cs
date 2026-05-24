@@ -2,5 +2,5 @@
 
 public sealed record GetAvatarRequest
 {
-    public required Guid AvatarId { get; init; }
+    public required Guid FileKey { get; init; }
 }

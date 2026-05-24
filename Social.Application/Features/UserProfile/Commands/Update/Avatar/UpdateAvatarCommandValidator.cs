@@ -1,3 +1,4 @@
+
 using FluentValidation;
 
 namespace Social.Application.Features.UserProfile.Commands.Update.Avatar;

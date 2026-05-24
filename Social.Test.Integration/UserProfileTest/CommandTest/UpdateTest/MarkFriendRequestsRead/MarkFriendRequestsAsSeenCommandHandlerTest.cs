@@ -10,7 +10,7 @@ using Social.Domain.Interfaces;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
 
-namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.MarkFriendRequestsReadCommandHandler;
+namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.MarkFriendRequestsRead;
 
 public class MarkFriendRequestsAsSeenCommandHandlerTest : IntegrationTestBase
 {
