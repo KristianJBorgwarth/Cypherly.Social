@@ -59,7 +59,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
     public async Task<IActionResult> GetAvatar([FromQuery] GetAvatarRequest req, CancellationToken ct = default)
     {
-        var result = await sender.Send(new GetAvatarQuery { AvatarId = req.AvatarId, ETag = Request.GetETag() }, ct);
+        var result = await sender.Send(new GetAvatarQuery { FileKey = req.FileKey, ETag = Request.GetETag() }, ct);
         if (!result.Success) return result.ToProblemDetails();
 
         if (result.RequiredValue.ETag is not null)

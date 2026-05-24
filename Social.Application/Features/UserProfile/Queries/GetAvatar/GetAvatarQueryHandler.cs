@@ -18,11 +18,11 @@ public sealed class GetAvatarQueryHandler(
     {
         if (!string.IsNullOrWhiteSpace(q.ETag))
         {
-            return await HandleEtagReq(q.ETag, q.AvatarId, ct);
+            return await HandleEtagReq(q.ETag, q.FileKey, ct);
         }
         else
         {
-            return await HandleReqWithoutEtag(q.AvatarId, ct);
+            return await HandleReqWithoutEtag(q.FileKey, ct);
         }
     }
 
@@ -43,17 +43,17 @@ public sealed class GetAvatarQueryHandler(
         return await HandleReqWithoutEtag(avatarId, ct);
     }
 
-    private async Task<Result<GetAvatarDto>> HandleReqWithoutEtag(Guid avatarId, CancellationToken ct)
+    private async Task<Result<GetAvatarDto>> HandleReqWithoutEtag(Guid fileKey, CancellationToken ct)
     {
-        var avatar = await avatarRepository.GetByIdAsync(avatarId, ct);
+        var avatar = await avatarRepository.GetSingleAsync(new AvatarByFileKeySpec(fileKey), ct);
 
         if (avatar is null)
         {
-            logger.LogWarning("Avatar with ID '{AvatarId}' not found", avatarId);
-            return Result.Fail<GetAvatarDto>(Error.NotFound<Avatar>($"Avatar with ID '{avatarId}' not found"));
+            logger.LogWarning("Avatar with ID '{AvatarId}' not found", fileKey);
+            return Result.Fail<GetAvatarDto>(Error.NotFound<Avatar>($"Avatar with ID '{fileKey}' not found"));
         }
 
-        var stream = avatarService.Get(avatar.Id);
+        var stream = avatarService.Get(avatar.FileKey);
 
         return Result.Ok(new GetAvatarDto()
         {
