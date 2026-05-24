@@ -26,5 +26,9 @@ public sealed class AvatarModelConfiguration : BaseModelConfiguration<Avatar>
         builder.Property(e => e.UserProfileId)
             .HasColumnName("user_profile_id")
             .IsRequired();
+
+        builder.Property(e => e.ConentType)
+            .HasColumnName("content_type")
+            .IsRequired();
     }
 }

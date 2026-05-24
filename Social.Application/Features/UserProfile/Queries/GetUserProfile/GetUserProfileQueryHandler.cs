@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
-using Social.Application.Specifications;
+using Social.Application.Specifications.User;
 
 namespace Social.Application.Features.UserProfile.Queries.GetUserProfile;
 

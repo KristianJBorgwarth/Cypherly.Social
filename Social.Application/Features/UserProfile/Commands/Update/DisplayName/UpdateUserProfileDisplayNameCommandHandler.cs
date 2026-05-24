@@ -1,4 +1,3 @@
-using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;

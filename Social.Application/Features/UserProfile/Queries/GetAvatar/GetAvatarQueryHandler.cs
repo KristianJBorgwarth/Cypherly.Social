@@ -58,8 +58,8 @@ public sealed class GetAvatarQueryHandler(
         return Result.Ok(new GetAvatarDto()
         {
             AvatarId = avatar.Id,
-            Content = stream.Content,
-            ContentType = stream.ContentType,
+            Content = stream,
+            ContentType = avatar.ConentType,
             IsModified = true,
             ETag = avatar.Etag.Value
         });
