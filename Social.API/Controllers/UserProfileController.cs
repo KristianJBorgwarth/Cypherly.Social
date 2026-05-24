@@ -53,13 +53,18 @@ public class UserProfileController(ISender sender) : ControllerBase
 
     [HttpGet("avatar")]
     [ProducesResponseType(typeof(GetAvatarDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status304NotModified)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
-    public Task<IActionResult> GetAvatar([FromQuery] GetAvatarRequest req, CancellationToken ct = default)
+    public async Task<IActionResult> GetAvatar([FromQuery] GetAvatarRequest req, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var result = await sender.Send(new GetAvatarQuery { AvatarId = req.AvatarId, ETag = Request.GetETag() }, ct);
+        if (!result.Success) return result.ToProblemDetails();
+
+        return result.RequiredValue.IsModified
+            ? File(result.RequiredValue.Content!, result.RequiredValue.ContentType!)
+            : StatusCode(StatusCodes.Status304NotModified);
     }
 
     [HttpPut("profile-picture")]
@@ -69,7 +74,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new UpdateUserProfilePictureCommand
-            { TenantId = tenantId, NewProfilePicture = request.ProfilePicture }, ct);
+        { TenantId = tenantId, NewProfilePicture = request.ProfilePicture }, ct);
         return result.Success ? Ok(result.Value) : result.ToProblemDetails();
     }
 
@@ -128,7 +133,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new CreateFriendshipCommand
-            { TenantId = tenantId, FriendTag = request.FriendTag }, ct);
+        { TenantId = tenantId, FriendTag = request.FriendTag }, ct);
         return result.Success ? Ok() : result.ToProblemDetails();
     }
 
@@ -139,7 +144,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> GetFriends(CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new GetFriendsQuery {TenantId = tenantId}, ct);
+        var result = await sender.Send(new GetFriendsQuery { TenantId = tenantId }, ct);
 
         if (!result.Success) return result.ToProblemDetails();
 
@@ -153,7 +158,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> GetFriendRequests(CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new GetFriendRequestsQuery {TenantId = tenantId}, ct);
+        var result = await sender.Send(new GetFriendRequestsQuery { TenantId = tenantId }, ct);
 
         if (!result.Success) return result.ToProblemDetails();
 
@@ -166,7 +171,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> AcceptFriendship([FromBody] AcceptFriendshipRequest request, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new AcceptFriendshipCommand {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
+        var result = await sender.Send(new AcceptFriendshipCommand { TenantId = tenantId, FriendTag = request.FriendTag }, ct);
         return result.Success ? Ok(result.Value) : result.ToProblemDetails();
     }
 
@@ -176,7 +181,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> RemoveFriendship([FromQuery] DeleteFriendshipRequest request, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new DeleteFriendshipCommand {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
+        var result = await sender.Send(new DeleteFriendshipCommand { TenantId = tenantId, FriendTag = request.FriendTag }, ct);
         return result.Success ? Ok() : result.ToProblemDetails();
     }
 
@@ -186,7 +191,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> MarkFriendRequestsAsSeen([FromBody] MarkFriendRequestsAsSeenRequest friendRequest, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new MarkFriendRequestsAsSeenCommand {TenantId = tenantId, RequestTags = friendRequest.RequestTags}, ct);
+        var result = await sender.Send(new MarkFriendRequestsAsSeenCommand { TenantId = tenantId, RequestTags = friendRequest.RequestTags }, ct);
         return result.Success ? Ok() : result.ToProblemDetails();
     }
 
@@ -196,7 +201,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> TogglePrivacy([FromBody] TogglePrivacyRequest request, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new TogglePrivacyCommand {TenantId = tenantId, IsPrivate = request.IsPrivate}, ct);
+        var result = await sender.Send(new TogglePrivacyCommand { TenantId = tenantId, IsPrivate = request.IsPrivate }, ct);
         return result.Success ? Ok() : result.ToProblemDetails();
     }
 
@@ -206,7 +211,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> RejectFriendship([FromQuery] DeleteFriendRequest request, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new DeleteFriendshipCommand {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
+        var result = await sender.Send(new DeleteFriendshipCommand { TenantId = tenantId, FriendTag = request.FriendTag }, ct);
         return result.Success ? Ok() : result.ToProblemDetails();
     }
 }

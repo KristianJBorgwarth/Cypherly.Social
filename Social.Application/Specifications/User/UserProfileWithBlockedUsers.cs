@@ -2,7 +2,7 @@ using Social.Application.Abstractions;
 using Social.Domain.Aggregates;
 using Social.Domain.Entities;
 
-namespace Social.Application.Specifications;
+namespace Social.Application.Specifications.User;
 
 internal sealed class UserProfileWithBlockedUsersSpec : Specification<UserProfile>
 {
