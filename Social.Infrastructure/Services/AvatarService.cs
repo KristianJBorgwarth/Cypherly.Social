@@ -11,7 +11,7 @@ internal sealed class AvatarService(
     IFileValidator fileValidator)
     : IAvatarService
 {
-    public Stream Get(Guid avatarId, CancellationToken ct = default) => blobStore.Open(avatarId);
+    public Stream Get(Guid avatarId) => blobStore.Open(avatarId);
 
     public async Task<Result<AvatarStream>> UploadAsync(IFormFile file, Guid avatarId, CancellationToken ct = default)
     {
@@ -24,8 +24,5 @@ internal sealed class AvatarService(
         return Result.Ok(new AvatarStream(stream, file.ContentType));
     }
 
-    public void Delete(Guid avatarId, CancellationToken ct = default)
-    {
-        blobStore.Delete(avatarId);
-    }
+    public void Delete(Guid avatarId) => blobStore.Delete(avatarId);
 }

@@ -15,17 +15,21 @@ public class UpdateAvatarCommandHandler(
     public async Task<Result<UpdateAvatarDto>> Handle(UpdateAvatarCommand cmd, CancellationToken ct)
     {
         var userProfile = await upRepo.GetSingleAsync(new UserProfileSpec(cmd.TenantId), ct);
-        if (userProfile is null) 
+        if (userProfile is null)
             return Result.Fail<UpdateAvatarDto>(Error.NotFound<UserProfile>(cmd.TenantId.ToString()));
 
         var avatar = userProfile.GetOrCreateAvatar(cmd.NewProfilePicture.ContentType);
 
         var uploadResult = await ats.UploadAsync(cmd.NewProfilePicture, avatar.FileKey, ct);
-        if (!uploadResult.Success) 
+        if (!uploadResult.Success)
             return Result.Fail<UpdateAvatarDto>(uploadResult.Error);
 
         await uow.SaveChangesAsync(ct);
 
-        return Result.Ok(new UpdateAvatarDto(userProfile.Avatar!.FileKey, userProfile.Avatar.Etag.Value));
+        return Result.Ok(new UpdateAvatarDto()
+        {
+            FileKey = avatar.FileKey,
+            Etag = avatar.Etag.Value
+        });
     }
 }
