@@ -62,6 +62,9 @@ public class UserProfileController(ISender sender) : ControllerBase
         var result = await sender.Send(new GetAvatarQuery { AvatarId = req.AvatarId, ETag = Request.GetETag() }, ct);
         if (!result.Success) return result.ToProblemDetails();
 
+        if (result.RequiredValue.ETag is not null)
+            Response.Headers.ETag = result.RequiredValue.ETag;
+
         return result.RequiredValue.IsModified
             ? File(result.RequiredValue.Content!, result.RequiredValue.ContentType!)
             : StatusCode(StatusCodes.Status304NotModified);
