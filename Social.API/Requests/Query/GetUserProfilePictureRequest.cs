@@ -1,6 +1,6 @@
 ﻿namespace Social.API.Requests.Query;
 
-public sealed record GetUserProfilePictureRequest
+public sealed record GetAvatarRequest
 {
-    public required string ProfilePictureUrl { get; init; }
+    public required Guid AvatarId { get; init; }
 }

@@ -3,7 +3,7 @@ using Social.Domain.Abstractions;
 
 namespace Social.Application.Contracts.Repositories;
 
-public interface IRepository<T> where T : AggregateRoot
+public interface IRepository<T> where T : Entity
 {
     Task CreateAsync(T entity, CancellationToken cancellationToken = default);
     Task DeleteAsync(T entity, CancellationToken cancellationToken = default);

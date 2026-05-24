@@ -3,7 +3,6 @@ using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Social.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
 using Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
-using Social.Application.Features.UserProfile.Queries.GetUserProfilePicture;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +18,7 @@ using Social.Application.Features.Friendships.Commands.Update.UnblockUser;
 using Social.Application.Features.Friendships.Queries.GetBlockedUserProfiles;
 using Social.Application.Features.Friendships.Queries.GetFriendRequests;
 using Social.Application.Features.Friendships.Queries.GetFriends;
+using Social.Application.Features.UserProfile.Queries.GetAvatar;
 
 namespace Social.API.Controllers;
 
@@ -51,15 +51,23 @@ public class UserProfileController(ISender sender) : ControllerBase
         return result.Value is not null ? Ok(result.Value) : NoContent();
     }
 
-    [HttpGet("profile-picture")]
-    [ProducesResponseType(typeof(GetUserProfilePictureDto), StatusCodes.Status200OK)]
+    [HttpGet("avatar")]
+    [ProducesResponseType(typeof(GetAvatarDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status304NotModified)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetProfilePicture([FromQuery] GetUserProfilePictureRequest request,
-        CancellationToken ct = default)
+    [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+    public async Task<IActionResult> GetAvatar([FromQuery] GetAvatarRequest req, CancellationToken ct = default)
     {
-        var query = new GetUserProfilePictureQuery { ProfilePictureUrl = request.ProfilePictureUrl };
-        var result = await sender.Send(query, ct);
-        return result.Success ? Ok(result.Value) : result.ToProblemDetails();
+        var result = await sender.Send(new GetAvatarQuery { AvatarId = req.AvatarId, ETag = Request.GetETag() }, ct);
+        if (!result.Success) return result.ToProblemDetails();
+
+        if (result.RequiredValue.ETag is not null)
+            Response.Headers.ETag = result.RequiredValue.ETag;
+
+        return result.RequiredValue.IsModified
+            ? File(result.RequiredValue.Content!, result.RequiredValue.ContentType!)
+            : StatusCode(StatusCodes.Status304NotModified);
     }
 
     [HttpPut("profile-picture")]
@@ -69,7 +77,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new UpdateUserProfilePictureCommand
-            { TenantId = tenantId, NewProfilePicture = request.ProfilePicture }, ct);
+        { TenantId = tenantId, NewProfilePicture = request.ProfilePicture }, ct);
         return result.Success ? Ok(result.Value) : result.ToProblemDetails();
     }
 
@@ -128,7 +136,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new CreateFriendshipCommand
-            { TenantId = tenantId, FriendTag = request.FriendTag }, ct);
+        { TenantId = tenantId, FriendTag = request.FriendTag }, ct);
         return result.Success ? Ok() : result.ToProblemDetails();
     }
 
@@ -139,7 +147,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> GetFriends(CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new GetFriendsQuery {TenantId = tenantId}, ct);
+        var result = await sender.Send(new GetFriendsQuery { TenantId = tenantId }, ct);
 
         if (!result.Success) return result.ToProblemDetails();
 
@@ -153,7 +161,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> GetFriendRequests(CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new GetFriendRequestsQuery {TenantId = tenantId}, ct);
+        var result = await sender.Send(new GetFriendRequestsQuery { TenantId = tenantId }, ct);
 
         if (!result.Success) return result.ToProblemDetails();
 
@@ -166,7 +174,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> AcceptFriendship([FromBody] AcceptFriendshipRequest request, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new AcceptFriendshipCommand {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
+        var result = await sender.Send(new AcceptFriendshipCommand { TenantId = tenantId, FriendTag = request.FriendTag }, ct);
         return result.Success ? Ok(result.Value) : result.ToProblemDetails();
     }
 
@@ -176,7 +184,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> RemoveFriendship([FromQuery] DeleteFriendshipRequest request, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new DeleteFriendshipCommand {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
+        var result = await sender.Send(new DeleteFriendshipCommand { TenantId = tenantId, FriendTag = request.FriendTag }, ct);
         return result.Success ? Ok() : result.ToProblemDetails();
     }
 
@@ -186,7 +194,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> MarkFriendRequestsAsSeen([FromBody] MarkFriendRequestsAsSeenRequest friendRequest, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new MarkFriendRequestsAsSeenCommand {TenantId = tenantId, RequestTags = friendRequest.RequestTags}, ct);
+        var result = await sender.Send(new MarkFriendRequestsAsSeenCommand { TenantId = tenantId, RequestTags = friendRequest.RequestTags }, ct);
         return result.Success ? Ok() : result.ToProblemDetails();
     }
 
@@ -196,7 +204,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> TogglePrivacy([FromBody] TogglePrivacyRequest request, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new TogglePrivacyCommand {TenantId = tenantId, IsPrivate = request.IsPrivate}, ct);
+        var result = await sender.Send(new TogglePrivacyCommand { TenantId = tenantId, IsPrivate = request.IsPrivate }, ct);
         return result.Success ? Ok() : result.ToProblemDetails();
     }
 
@@ -206,7 +214,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     public async Task<IActionResult> RejectFriendship([FromQuery] DeleteFriendRequest request, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new DeleteFriendshipCommand {TenantId = tenantId, FriendTag = request.FriendTag}, ct);
+        var result = await sender.Send(new DeleteFriendshipCommand { TenantId = tenantId, FriendTag = request.FriendTag }, ct);
         return result.Success ? Ok() : result.ToProblemDetails();
     }
 }

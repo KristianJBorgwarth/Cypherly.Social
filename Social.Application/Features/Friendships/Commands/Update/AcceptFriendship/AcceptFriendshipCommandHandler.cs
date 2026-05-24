@@ -3,7 +3,7 @@ using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
-using Social.Application.Specifications;
+using Social.Application.Specifications.User;
 using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Interfaces;

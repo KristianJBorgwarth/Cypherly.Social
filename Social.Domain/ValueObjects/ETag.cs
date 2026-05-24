@@ -18,7 +18,7 @@ public sealed class ETag : ValueObject
 
     public static ETag Generate()
     {
-        return new ETag(Guid.NewGuid().ToString());
+        return new ETag($"\"{Guid.NewGuid()}\"");
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Http;
 using Social.Application.Contracts.Services;
-using Social.Application.Dtos;
 using Social.Domain.Common;
 using Social.Domain.Entities;
 using Social.Domain.ValueObjects;
@@ -14,11 +13,7 @@ internal sealed class AvatarService(
     IFileValidator fileValidator)
     : IAvatarService
 {
-    public AvatarStream Get(Guid avatarId, CancellationToken ct = default)
-    {
-        var stream = blobStore.Open(avatarId);
-        return new AvatarStream() { Content = stream };
-    }
+    public Stream Get(Guid avatarId, CancellationToken ct = default) => blobStore.Open(avatarId);
 
     public async Task<Result<Avatar>> UploadAsync(IFormFile file, Guid userId, CancellationToken ct = default)
     {
@@ -33,6 +28,7 @@ internal sealed class AvatarService(
         return Result.Ok(new Avatar(
             userProfileId: userId,
             avatarId: avatarId,
+            ContentType: file.ContentType,
             etag: ETag.Generate()));
     }
 

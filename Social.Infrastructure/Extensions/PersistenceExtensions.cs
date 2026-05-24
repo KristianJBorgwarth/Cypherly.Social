@@ -31,6 +31,7 @@ internal static class PersistenceExtensions
     {
         services.AddScoped<IUserProfileRepository, UserProfileRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IAvatarRepository, AvatarRepository>();
         services.AddScoped<IOutboxRepository, OutboxRepository>();
     }
 }

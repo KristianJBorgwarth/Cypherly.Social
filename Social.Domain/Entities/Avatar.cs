@@ -7,13 +7,15 @@ namespace Social.Domain.Entities;
 public sealed class Avatar : Entity
 {
     public Guid UserProfileId { get; private set; }
+    public string ConentType { get; private set; }
     public ETag Etag { get; private set; }
 
     public Avatar() { } // For EF Core
 
-    public Avatar(Guid userProfileId, Guid avatarId, ETag etag) : base(avatarId)
+    public Avatar(Guid userProfileId, Guid avatarId, string ContentType, ETag etag) : base(avatarId)
     {
         UserProfileId = userProfileId;
+        ConentType = ContentType;
         Etag = etag;
     }
 }
