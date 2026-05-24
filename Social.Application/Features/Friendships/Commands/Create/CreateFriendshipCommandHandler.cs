@@ -2,7 +2,6 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Specifications.User;
-using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Interfaces;
 
@@ -21,14 +20,14 @@ public class CreateFriendshipCommandHandler(
         if (friend is null)
         {
             logger.LogWarning("Friend not found for {FriendTag}", cmd.FriendTag);
-            return Result.Fail(Error.NotFound<Social.Domain.Aggregates.UserProfile>(cmd.FriendTag));
+            return Result.Fail(Error.NotFound<Domain.Aggregates.UserProfile>(cmd.FriendTag));
         }
 
         var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendshipsSpec(cmd.TenantId), ct);
         if (userProfile is null)
         {
             logger.LogWarning("User not found for {UserId}", cmd.TenantId);
-            return Result.Fail(Error.NotFound<Social.Domain.Aggregates.UserProfile>(cmd.TenantId.ToString()));
+            return Result.Fail(Error.NotFound<Domain.Aggregates.UserProfile>(cmd.TenantId.ToString()));
         }
 
         var result = friendshipService.CreateFriendship(userProfile, friend);

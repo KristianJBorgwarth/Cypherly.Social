@@ -53,7 +53,7 @@ public sealed class GetAvatarQueryHandler(
             return Result.Fail<GetAvatarDto>(Error.NotFound<Avatar>($"Avatar with ID '{avatarId}' not found"));
         }
 
-        var stream = avatarService.Get(avatar.Id, ct);
+        var stream = avatarService.Get(avatar.Id);
 
         return Result.Ok(new GetAvatarDto()
         {

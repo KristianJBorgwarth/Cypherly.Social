@@ -1,5 +1,4 @@
 using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
-using Social.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Social.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
 using Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
@@ -19,6 +18,7 @@ using Social.Application.Features.Friendships.Queries.GetBlockedUserProfiles;
 using Social.Application.Features.Friendships.Queries.GetFriendRequests;
 using Social.Application.Features.Friendships.Queries.GetFriends;
 using Social.Application.Features.UserProfile.Queries.GetAvatar;
+using Social.Application.Features.UserProfile.Commands.Update.Avatar;
 
 namespace Social.API.Controllers;
 
@@ -71,12 +71,12 @@ public class UserProfileController(ISender sender) : ControllerBase
     }
 
     [HttpPut("profile-picture")]
-    [ProducesResponseType(typeof(UpdateUserProfilePictureDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UpdateAvatarDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateProfilePicture([FromForm] UpdateUserProfilePictureRequest request, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new UpdateUserProfilePictureCommand
+        var result = await sender.Send(new UpdateAvatarCommand() 
         { TenantId = tenantId, NewProfilePicture = request.ProfilePicture }, ct);
         return result.Success ? Ok(result.Value) : result.ToProblemDetails();
     }

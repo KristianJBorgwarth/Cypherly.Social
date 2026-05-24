@@ -30,5 +30,9 @@ public sealed class AvatarModelConfiguration : BaseModelConfiguration<Avatar>
         builder.Property(e => e.ConentType)
             .HasColumnName("content_type")
             .IsRequired();
+
+        builder.Property(e => e.FileKey)
+            .HasColumnName("file_key")
+            .IsRequired();
     }
 }
