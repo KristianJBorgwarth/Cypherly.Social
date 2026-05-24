@@ -5,6 +5,8 @@ using Social.Infrastructure.Persistence.Context;
 using Social.Test.Integration.Setup;
 using Social.Test.Integration.Setup.Helpers;
 
+namespace Social.Test.Integration.StorageTests;
+
 public class AvatarServiceTest : IntegrationTestBase
 {
     private readonly IAvatarService _sut;
@@ -31,8 +33,7 @@ public class AvatarServiceTest : IntegrationTestBase
         // Assert
         result.Success.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        result.Value.Id.Should().NotBeEmpty();
-        result.Value.Etag.Should().NotBeNull();
-        result.Value.Etag.Value.Should().NotBeEmpty();
+        result.Value.ContentType.Should().Be("image/png");
+        result.Value.Stream.Should().NotBeNull();
     }
 }

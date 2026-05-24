@@ -14,7 +14,8 @@ public partial class UserProfile : AggregateRoot
     public string? DisplayName { get; private set; }
     public string? ProfilePictureUrl { get; private set; }
     public bool IsPrivate { get; private set; }
-    public Avatar? Avatar { get; private set; }
+    private Avatar? _avatar;
+    public Avatar? Avatar => _avatar;
 
     private readonly List<BlockedUser> _blockedUsers = [];
     public IReadOnlyCollection<BlockedUser> BlockedUsers => _blockedUsers;
@@ -40,10 +41,18 @@ public partial class UserProfile : AggregateRoot
         AddDomainEvent(new UserProfilePictureUpdatedEvent(Id));
     }
 
-    public void SetAvatar(Avatar avatar)
+    public Avatar GetOrCreateAvatar(string contentType)
     {
-        Avatar = avatar;
+        if (_avatar is null)
+        {
+            _avatar = new Avatar(Id, Guid.NewGuid(), contentType, ETag.Generate());
+            return _avatar;
+        }
+
+        _avatar.UpdateContentType(contentType);
+        _avatar.BumpTag();
         AddDomainEvent(new UserProfilePictureUpdatedEvent(Id));
+        return _avatar;
     }
 
     public Result SetDisplayName(string displayName)
