@@ -1,11 +1,7 @@
 ﻿using Social.Infrastructure.Persistence.Context;
-using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Contracts.Services;
 using Social.Application.Features.Friendships.Queries.GetFriends;
 using Social.Domain.Aggregates;
 using Social.Domain.Entities;
@@ -21,9 +17,7 @@ public class GetFriendsQueryHandlerTest : IntegrationTestBase
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<GetFriendsQueryHandler>>();
-        var profilePictureService = scope.ServiceProvider.GetRequiredService<IProfilePictureService>();
-        _sut = new(repo, profilePictureService, logger);
+        _sut = new(repo);  
     }
 
     [Fact]

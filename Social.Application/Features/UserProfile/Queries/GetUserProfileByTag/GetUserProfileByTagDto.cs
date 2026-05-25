@@ -8,26 +8,31 @@ public sealed record GetUserProfileByTagDto
     public string Username { get; init; }
     public string UserTag { get; init; }
     public string? DisplayName { get; init; }
-    public string? ProfilePictureUrl { get; init; }
+    public Guid? AvatarKey { get; init; }
     public FriendshipStatusDto FriendshipStatus { get; init; }
 
     [JsonConstructor]
-    private GetUserProfileByTagDto(string username, string userTag, string? displayName, string? profilePictureUrl, FriendshipStatusDto friendshipStatus)
+    private GetUserProfileByTagDto(
+        string username, 
+        string userTag, 
+        string? displayName, 
+        Guid? avatarKey,
+        FriendshipStatusDto friendshipStatus)
     {
         Username = username;
         UserTag = userTag;
         DisplayName = displayName;
-        ProfilePictureUrl = profilePictureUrl;
+        AvatarKey = avatarKey;
         FriendshipStatus = friendshipStatus;
     }
 
-    public static GetUserProfileByTagDto MapFrom(Domain.Aggregates.UserProfile friendProfile, string? presignedUrl, FriendshipStatusDto friendshipStatusDto)
+    public static GetUserProfileByTagDto MapFrom(Domain.Aggregates.UserProfile friendProfile,  FriendshipStatusDto friendshipStatusDto)
     {
         return new GetUserProfileByTagDto(
             friendProfile.Username,
             friendProfile.UserTag.Tag,
             friendProfile.DisplayName,
-            presignedUrl,
+            friendProfile.Avatar?.FileKey,
             friendshipStatusDto
         );
     }

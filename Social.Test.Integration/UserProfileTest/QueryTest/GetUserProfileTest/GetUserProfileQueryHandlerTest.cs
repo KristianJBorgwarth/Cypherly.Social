@@ -3,7 +3,6 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
@@ -19,17 +18,14 @@ public class GetUserProfileQueryHandlerTest : IntegrationTestBase
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
-        var profilePictureService = scope.ServiceProvider.GetRequiredService<IProfilePictureService>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<GetUserProfileQueryHandler>>();
 
-        _sut = new(repo, profilePictureService, logger);
+        _sut = new(repo);
     }
 
     [Fact]
     public async Task Handle_Query_With_Valid_ID_Should_Return_UserProfile()
     {
         // Arrange
-        var exclusiveConnectionId = Guid.NewGuid();
         var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
         Db.UserProfile.Add(userProfile);
         await Db.SaveChangesAsync();

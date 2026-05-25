@@ -1,6 +1,5 @@
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
 using FakeItEasy;
 using FluentAssertions;
@@ -16,7 +15,6 @@ public class GetUserProfileByTagQueryHandlerTest
 {
     private readonly IUserProfileRepository _userProfileRepository;
     private readonly IUserBlockingService _userBlockingService;
-    private readonly IProfilePictureService _profilePictureService;
     private readonly IFriendshipService _friendshipService;
 
     private readonly GetUserProfileByTagQueryHandler _sut;
@@ -25,11 +23,10 @@ public class GetUserProfileByTagQueryHandlerTest
     {
         _userProfileRepository = A.Fake<IUserProfileRepository>();
         _userBlockingService = A.Fake<IUserBlockingService>();
-        _profilePictureService = A.Fake<IProfilePictureService>();
         _friendshipService = A.Fake<IFriendshipService>();
         var logger = A.Fake<ILogger<GetUserProfileByTagQueryHandler>>();
 
-        _sut = new(_userProfileRepository, _userBlockingService, _profilePictureService, _friendshipService, logger);
+        _sut = new(_userProfileRepository, _userBlockingService, _friendshipService, logger);
     }
 
     [Fact]

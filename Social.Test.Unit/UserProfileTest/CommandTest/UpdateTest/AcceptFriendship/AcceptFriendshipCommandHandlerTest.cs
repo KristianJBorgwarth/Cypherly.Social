@@ -1,7 +1,6 @@
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Contracts.Services;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -20,7 +19,6 @@ public class AcceptFriendshipCommandHandlerTest
     private readonly IFriendshipService _fakeService;
     private readonly IUnitOfWork _fakeUow;
     private readonly IConnectionIdProvider _fakeProvider;
-    private readonly IProfilePictureService _fakePictureService;
     private readonly AcceptFriendshipCommandHandler _sut;
 
     public AcceptFriendshipCommandHandlerTest()
@@ -28,10 +26,9 @@ public class AcceptFriendshipCommandHandlerTest
         _fakeRepo = A.Fake<IUserProfileRepository>();
         _fakeService = A.Fake<IFriendshipService>();
         _fakeUow = A.Fake<IUnitOfWork>();
-        _fakePictureService = A.Fake<IProfilePictureService>();
         _fakeProvider = A.Fake<IConnectionIdProvider>();
         var fakeLogger = A.Fake<ILogger<AcceptFriendshipCommandHandler>>();
-        _sut = new AcceptFriendshipCommandHandler(_fakeRepo, _fakeService, _fakePictureService, _fakeProvider, _fakeUow, fakeLogger);
+        _sut = new AcceptFriendshipCommandHandler(_fakeRepo, _fakeService, _fakeProvider, _fakeUow, fakeLogger);
     }
 
     [Fact]
@@ -45,6 +42,7 @@ public class AcceptFriendshipCommandHandlerTest
             FriendTag = "friend",
             TenantId = userProfile.Id
         };
+        friendProfile.GetOrCreateAvatar("image/png");
         A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
             .ReturnsNextFromSequence<UserProfile?>(userProfile, friendProfile);
         A.CallTo(() => _fakeService.AcceptFriendship(userProfile, command.FriendTag)).Returns(Result.Ok());
@@ -59,7 +57,7 @@ public class AcceptFriendshipCommandHandlerTest
         result.Success.Should().BeTrue();
         result.Value.Should().NotBeNull();
         result.Value.DisplayName.Should().BeEquivalentTo("Friend");
-        result.Value.ProfilePictureUrl.Should().BeNullOrEmpty();
+        result.Value.AvatarKey.Should().Be(friendProfile.Avatar!.FileKey);
         result.Value.ConnectionIds.Should().HaveCount(2);
         A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).MustHaveHappenedTwiceExactly();
         A.CallTo(() => _fakeService.AcceptFriendship(userProfile, command.FriendTag)).MustHaveHappenedOnceExactly();

@@ -12,7 +12,6 @@ public partial class UserProfile : AggregateRoot
     public string Username { get; private set; } = null!;
     public UserTag UserTag { get; private set; } = null!;
     public string? DisplayName { get; private set; }
-    public string? ProfilePictureUrl { get; private set; }
     public bool IsPrivate { get; private set; }
     private Avatar? _avatar;
     public Avatar? Avatar => _avatar;
@@ -35,12 +34,6 @@ public partial class UserProfile : AggregateRoot
         UserTag = userUserTag;
     }
 
-    public void SetProfilePictureUrl(string profilePictureUrl)
-    {
-        ProfilePictureUrl = profilePictureUrl;
-        AddDomainEvent(new UserProfilePictureUpdatedEvent(Id));
-    }
-
     public Avatar GetOrCreateAvatar(string contentType)
     {
         if (_avatar is null)
@@ -51,7 +44,7 @@ public partial class UserProfile : AggregateRoot
 
         _avatar.UpdateContentType(contentType);
         _avatar.BumpTag();
-        AddDomainEvent(new UserProfilePictureUpdatedEvent(Id));
+        AddDomainEvent(new AvatarUpdatedEvent(Id));
         return _avatar;
     }
 

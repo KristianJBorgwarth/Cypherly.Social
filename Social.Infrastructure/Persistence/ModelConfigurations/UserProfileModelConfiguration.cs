@@ -34,9 +34,6 @@ public class UserProfileModelConfiguration : BaseModelConfiguration<UserProfile>
             .HasColumnName("display_name")
             .HasMaxLength(20);
 
-        builder.Property(x => x.ProfilePictureUrl)
-            .HasColumnName("profile_picture_url");
-
         builder.HasOne(x => x.Avatar)
             .WithOne()
             .HasForeignKey<Avatar>(x => x.UserProfileId)

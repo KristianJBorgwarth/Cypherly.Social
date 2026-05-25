@@ -1,22 +1,17 @@
 ﻿namespace Social.Application.Features.Friendships.Queries.GetFriendRequests;
 
-public class GetFriendRequestsDto
+public sealed class GetFriendRequestsDto
 {
-    public string Username { get; private init; } = null!;
-    public string UserTag { get; private init; } = null!;
+    public string Username { get; private init; } 
+    public string UserTag { get; private init; } 
     public string? DisplayName { get; private init; }
-    public string? ProfilePictureUrl { get; private init; }
+    public Guid? AvatarKey { get; private init; }
 
-    private GetFriendRequestsDto() { }
-
-    public static GetFriendRequestsDto MapFrom(string username, string userTag, string? displayName, string? profilePictureUrl = null)
+    public GetFriendRequestsDto(Domain.Aggregates.UserProfile userProfile)
     {
-        return new GetFriendRequestsDto
-        {
-            Username = username,
-            UserTag = userTag,
-            DisplayName = displayName,
-            ProfilePictureUrl = profilePictureUrl
-        };
+        Username = userProfile.Username;
+        UserTag = userProfile.UserTag.Tag;
+        DisplayName = userProfile.DisplayName;
+        AvatarKey = userProfile.Avatar?.FileKey;
     }
 }

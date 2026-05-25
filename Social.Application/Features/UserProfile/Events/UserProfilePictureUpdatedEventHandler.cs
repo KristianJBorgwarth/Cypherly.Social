@@ -1,23 +1,21 @@
-﻿using Cypherly.Message.Contracts.Abstractions;
-using Cypherly.Message.Contracts.Messages.Profile;
-using Social.Domain.Events.UserProfile;
+﻿using Social.Domain.Events.UserProfile;
 using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Contracts.Services;
+using Cypherly.Message.Contracts.Abstractions;
+using Cypherly.Message.Contracts.Messages.Profile;
 
 namespace Social.Application.Features.UserProfile.Events;
 
 public class UserProfilePictureUpdatedEventHandler(
     IUserProfileRepository userProfileRepository,
     IConnectionIdProvider connectionIdProvider,
-    IProfilePictureService profilePictureService,
-    IProducer<ProfilePictureUpdatedMessage> producer,
+    IProducer<AvatarUpdatedMessage> producer,
     ILogger<UserProfilePictureUpdatedEventHandler> logger)
-    : IDomainEventHandler<UserProfilePictureUpdatedEvent>
+    : IDomainEventHandler<AvatarUpdatedEvent>
 {
-    public async Task Handle(UserProfilePictureUpdatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(AvatarUpdatedEvent notification, CancellationToken cancellationToken)
     {
         try
         {
@@ -37,14 +35,12 @@ public class UserProfilePictureUpdatedEventHandler(
                 return;
             }
 
-            var presignedUrl = await profilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl!);
-
-            var message = new ProfilePictureUpdatedMessage()
+            var message = new AvatarUpdatedMessage()
             {
                 CorrelationId = Guid.NewGuid(),
                 UserTag = userProfile.UserTag.Tag,
                 ConnectionIds = connectionIds,
-                ProfilePictureUrl = presignedUrl,
+                AvatarKey = userProfile.Avatar!.FileKey
             };
 
             logger.LogInformation("Publishing ProfilePictureUpdatedMessage for UserProfileId: {UserProfileId} with ConnectionIds: {@ConnectionIds}", notification.UserProfileId, connectionIds);
