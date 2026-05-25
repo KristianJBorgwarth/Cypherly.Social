@@ -12,8 +12,8 @@ public class UpdateAvatarCommandValidator : AbstractValidator<UpdateAvatarComman
             .NotEmpty()
             .WithMessage($"The value cannot be empty: {nameof(UpdateAvatarCommand.TenantId)} ");
 
-        RuleFor(cmd => cmd.NewProfilePicture)
-            .NotNull().WithMessage($"Value '{nameof(UpdateAvatarCommand.NewProfilePicture)}' is required.")
-            .NotEmpty().WithMessage($"The value cannot be empty: {nameof(UpdateAvatarCommand.NewProfilePicture)} ");
+        RuleFor(cmd => cmd.Avatar)
+            .NotNull().WithMessage($"Value '{nameof(UpdateAvatarCommand.Avatar)}' is required.")
+            .NotEmpty().WithMessage($"The value cannot be empty: {nameof(UpdateAvatarCommand.Avatar)} ");
     }
 }

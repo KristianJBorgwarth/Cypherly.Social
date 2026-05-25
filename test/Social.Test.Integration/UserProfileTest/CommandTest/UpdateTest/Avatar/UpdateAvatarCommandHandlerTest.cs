@@ -42,7 +42,7 @@ public class UpdateAvatarCommandHandlerTest : IntegrationTestBase
         var command = new UpdateAvatarCommand()
         {
             TenantId = user.Id,
-            NewProfilePicture = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "test/Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png")
+            Avatar = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "test/Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png")
         };
 
         // Act
@@ -71,7 +71,7 @@ public class UpdateAvatarCommandHandlerTest : IntegrationTestBase
         var setupCommand = new UpdateAvatarCommand()
         {
             TenantId = user.Id,
-            NewProfilePicture = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "test/Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png")
+            Avatar = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "test/Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png")
         };
         var setupResult = await _sut.Handle(setupCommand, CancellationToken.None);
         var userProfile = await Db.UserProfile.AsNoTracking().Include(up => up.Avatar).FirstOrDefaultAsync(up => up.Id == user.Id);
@@ -83,7 +83,7 @@ public class UpdateAvatarCommandHandlerTest : IntegrationTestBase
         var updateCommand = new UpdateAvatarCommand()
         {
             TenantId = user.Id,
-            NewProfilePicture = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "test/Social.Test.Integration/Setup/Resources/cm-purple.jpg"), "image/jpg")
+            Avatar = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "test/Social.Test.Integration/Setup/Resources/cm-purple.jpg"), "image/jpg")
         };
 
         // Act
@@ -112,7 +112,7 @@ public class UpdateAvatarCommandHandlerTest : IntegrationTestBase
         var command = new UpdateAvatarCommand()
         {
             TenantId = Guid.NewGuid(),
-            NewProfilePicture = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "test/Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png")
+            Avatar = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "test/Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png")
         };
 
         // Act
