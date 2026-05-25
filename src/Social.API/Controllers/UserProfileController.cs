@@ -52,7 +52,8 @@ public class UserProfileController(ISender sender) : ControllerBase
     }
 
     [HttpGet("avatar")]
-    [ProducesResponseType(typeof(GetAvatarDto), StatusCodes.Status200OK)]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(File), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status304NotModified)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
