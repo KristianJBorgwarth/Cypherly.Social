@@ -1,4 +1,8 @@
-﻿using Social.Infrastructure.Settings;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Social.Infrastructure.Settings;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using MassTransit;
@@ -13,6 +17,7 @@ using Microsoft.Extensions.Options;
 using Social.Test.Integration.Setup.Authentication;
 using Social.Test.Integration.Setup.Helpers;
 using Testcontainers.PostgreSql;
+using Xunit;
 
 // ReSharper disable ClassNeverInstantiated.Global
 

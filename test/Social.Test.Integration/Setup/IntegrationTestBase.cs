@@ -1,8 +1,12 @@
-﻿using AutoFixture;
+﻿using System;
+using System.Net.Http;
+using AutoFixture;
 using Social.Infrastructure.Persistence.Context;
 using MassTransit.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Xunit;
+
 // ReSharper disable MemberCanBeProtected.Global
 
 namespace Social.Test.Integration.Setup;

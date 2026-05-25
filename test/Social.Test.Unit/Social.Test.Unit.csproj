@@ -27,8 +27,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Social.Application\Social.Application.csproj" />
-      <ProjectReference Include="..\Social.Infrastructure\Social.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\Social.Application\Social.Application.csproj" />
+      <ProjectReference Include="..\..\src\Social.Infrastructure\Social.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

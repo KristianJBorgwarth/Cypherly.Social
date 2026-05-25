@@ -1,4 +1,6 @@
-﻿using Social.Infrastructure.Persistence.Context;
+﻿using System;
+using System.Threading;
+using Social.Infrastructure.Persistence.Context;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +11,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.Interfaces;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Xunit;
 
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataQuery
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataUsage

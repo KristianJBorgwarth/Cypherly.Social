@@ -23,10 +23,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Social.API\Social.API.csproj" />
-      <ProjectReference Include="..\Social.Domain\Social.Domain.csproj" />
-      <ProjectReference Include="..\Social.Infrastructure\Social.Infrastructure.csproj" />
-      <ProjectReference Include="..\Social.API\Social.API.csproj" />
+      <ProjectReference Include="..\..\src\Social.API\Social.API.csproj" />
+      <ProjectReference Include="..\..\src\Social.Domain\Social.Domain.csproj" />
+      <ProjectReference Include="..\..\src\Social.Infrastructure\Social.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

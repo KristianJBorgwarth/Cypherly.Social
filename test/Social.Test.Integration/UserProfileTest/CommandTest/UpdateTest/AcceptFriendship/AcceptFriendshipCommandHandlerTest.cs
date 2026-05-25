@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -10,6 +14,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Interfaces;
 using Social.Domain.ValueObjects;
+using Xunit;
 
 namespace Social.Test.Integration.UserProfileTest.CommandTest.UpdateTest.AcceptFriendship;
 

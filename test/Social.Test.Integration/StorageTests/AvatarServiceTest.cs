@@ -1,16 +1,21 @@
+using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Social.Application.Contracts.Services;
 using Social.Infrastructure.Persistence.Context;
 using Social.Test.Integration.Setup;
 using Social.Test.Integration.Setup.Helpers;
+using Xunit;
 
 namespace Social.Test.Integration.StorageTests;
 
 public class AvatarServiceTest : IntegrationTestBase
 {
     private readonly IAvatarService _sut;
-    private readonly string testFilePath = "Social.Test.Integration/Setup/Resources/test_profile_picture.png";
+    private readonly string testFilePath = "test/Social.Test.Integration/Setup/Resources/test_profile_picture.png";
 
     public AvatarServiceTest(IntegrationTestFactory<Program, SocialDbContext> factory) : base(factory)
     {

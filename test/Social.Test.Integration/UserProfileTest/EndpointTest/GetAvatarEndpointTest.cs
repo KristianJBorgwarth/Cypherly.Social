@@ -30,7 +30,7 @@ public class GetAvatarEndpointTest : IntegrationTestBase
         user.GetOrCreateAvatar("image/png");
         Db.UserProfile.Add(user);
         await Db.SaveChangesAsync();
-        var testpicture = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png");
+        var testpicture = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "test/Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png");
 
         var fk = user.Avatar!.FileKey;
         await _avatarService.UploadAsync(testpicture, fk, CancellationToken.None);
@@ -70,7 +70,7 @@ public class GetAvatarEndpointTest : IntegrationTestBase
         user.GetOrCreateAvatar("image/png");
         Db.UserProfile.Add(user);
         await Db.SaveChangesAsync();
-        var testpicture = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png");
+        var testpicture = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "test/Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png");
 
         var fk = user.Avatar!.FileKey;
         await _avatarService.UploadAsync(testpicture, fk, CancellationToken.None);
@@ -94,7 +94,7 @@ public class GetAvatarEndpointTest : IntegrationTestBase
         user.GetOrCreateAvatar("image/png");
         Db.UserProfile.Add(user);
         await Db.SaveChangesAsync();
-        var testpicture = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png");
+        var testpicture = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "test/Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "image/png");
 
         var fk = user.Avatar!.FileKey;
         await _avatarService.UploadAsync(testpicture, fk, CancellationToken.None);

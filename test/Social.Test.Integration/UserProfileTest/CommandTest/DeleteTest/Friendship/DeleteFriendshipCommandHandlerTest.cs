@@ -1,4 +1,7 @@
-﻿using Social.Infrastructure.Persistence.Context;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Social.Infrastructure.Persistence.Context;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -8,6 +11,7 @@ using Social.Domain.Aggregates;
 using Social.Domain.Interfaces;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
+using Xunit;
 
 namespace Social.Test.Integration.UserProfileTest.CommandTest.DeleteTest.Friendship;
 
