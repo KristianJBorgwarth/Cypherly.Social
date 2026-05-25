@@ -12,16 +12,16 @@ COPY nuget.config .
 RUN --mount=type=secret,id=nuget_token \
     sed -i "s|%NUGET_TOKEN%|$(cat /run/secrets/nuget_token)|g" nuget.config
 
-COPY ["Social.API/Social.API.csproj", "Social.API/"]
-COPY ["Social.Application/Social.Application.csproj", "Social.Application/"]
-COPY ["Social.Domain/Social.Domain.csproj", "Social.Domain/"]
-COPY ["Social.Infrastructure/Social.Infrastructure.csproj", "Social.Infrastructure/"]
+COPY ["src/Social.API/Social.API.csproj", "src/Social.API/"]
+COPY ["src/Social.Application/Social.Application.csproj", "src/Social.Application/"]
+COPY ["src/Social.Domain/Social.Domain.csproj", "src/Social.Domain/"]
+COPY ["src/Social.Infrastructure/Social.Infrastructure.csproj", "src/Social.Infrastructure/"]
 
-RUN dotnet restore "Social.API/Social.API.csproj" --configfile nuget.config
+RUN dotnet restore "src/Social.API/Social.API.csproj" --configfile nuget.config
 
 COPY . .
 
-WORKDIR "/src/Social.API"
+WORKDIR "/src/src/Social.API"
 RUN dotnet build "./Social.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
