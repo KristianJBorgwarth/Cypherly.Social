@@ -3,7 +3,6 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
 using Social.Domain.Aggregates;
 using Social.Domain.Interfaces;
@@ -22,10 +21,9 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var friendshipService = scope.ServiceProvider.GetRequiredService<IFriendshipService>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<GetUserProfileByTagQueryHandler>>();
-        var profilePictureService = scope.ServiceProvider.GetRequiredService<IProfilePictureService>();
         var userProfileService = scope.ServiceProvider.GetRequiredService<IUserBlockingService>();
 
-        _sut = new(repo, userProfileService, profilePictureService, friendshipService, logger);
+        _sut = new(repo, userProfileService, friendshipService, logger);
     }
 
     [Fact]

@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Contracts.Services;
 using Social.Domain.Events.Friendships;
 
 namespace Social.Application.Features.Friendships.Events;
@@ -13,7 +12,6 @@ public sealed class FriendshipAcceptedEventHandler(
     IUserProfileRepository userProfileRepository,
     IConnectionIdProvider connectionIdProvider,
     IProducer<FriendshipAcceptedMessage> producer,
-    IProfilePictureService profilePictureService,
     ILogger<FriendshipAcceptedEventHandler> logger)
     : IDomainEventHandler<FriendshipAcceptedEvent>
 {
@@ -53,28 +51,13 @@ public sealed class FriendshipAcceptedEventHandler(
         if (connectionIds[receiver.Id].Count == 0)
             return;
 
-        var presignedUrl = string.Empty;
-
-        if (friend.ProfilePictureUrl is not null)
-        {
-            var presignedUrlResult = await profilePictureService.GetPresignedProfilePictureUrlAsync(friend.ProfilePictureUrl);
-            if (presignedUrlResult.Success)
-            {
-                presignedUrl = presignedUrlResult.Value;
-            }
-            else
-            {
-                logger.LogWarning("Failed to get presigned URL for profile picture of user {UserId}", friend.Id);
-            }
-        }
-
         var message = new FriendshipAcceptedMessage()
         {
             CorrelationId = Guid.NewGuid(),
             Username = friend.Username,
             Tag = friend.UserTag.Tag ?? throw new Exception("UserTag is null for user with Id " + friend.Id),
             DisplayName = friend.DisplayName,
-            ProfilePictureUrl = presignedUrl,
+            AvatarKey = friend.Avatar?.FileKey,
             RouteIds = connectionIds[receiver.Id],
             ConnectionIds = connectionIds[friend.Id]
         };

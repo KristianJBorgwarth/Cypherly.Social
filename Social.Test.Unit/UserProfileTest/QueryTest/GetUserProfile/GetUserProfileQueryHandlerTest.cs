@@ -4,9 +4,7 @@ using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
 using FakeItEasy;
 using FluentAssertions;
-using Microsoft.Extensions.Logging;
 using Social.Domain.Aggregates;
-using Social.Domain.Common;
 using Social.Domain.ValueObjects;
 using Xunit;
 
@@ -22,8 +20,7 @@ public class GetUserProfileQueryHandlerTest
     {
         _fakeRepository = A.Fake<IUserProfileRepository>();
         _fakeProfilePictureService = A.Fake<IProfilePictureService>();
-        var fakeLogger = A.Fake<ILogger<GetUserProfileQueryHandler>>();
-        _sut = new(_fakeRepository, _fakeProfilePictureService, fakeLogger);
+        _sut = new(_fakeRepository);
     }
 
     [Fact]
@@ -52,7 +49,7 @@ public class GetUserProfileQueryHandlerTest
 
         A.CallTo(() => _fakeRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).Returns(userProfile);
 
-        var dto = GetUserProfileDto.MapFrom(userProfile, "");
+        var dto = GetUserProfileDto.MapFrom(userProfile);
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -69,20 +66,19 @@ public class GetUserProfileQueryHandlerTest
         // Arrange
         var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() };
         var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
-        userProfile.SetProfilePictureUrl("profilePictureUrl");
+        userProfile.GetOrCreateAvatar("image/png");
 
         A.CallTo(() => _fakeRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).Returns(userProfile);
-        A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).Returns(Result.Ok("presignedUrl"));
 
-        var dto = GetUserProfileDto.MapFrom(userProfile, "presignedUrl");
+        var dto = GetUserProfileDto.MapFrom(userProfile);
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
 
         // Assert
         result.Success.Should().BeTrue();
-        result.Value.ProfilePictureUrl.Should().Be("presignedUrl");
-        A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).MustHaveHappenedOnceExactly();
+        result.Value.Should().BeEquivalentTo(dto);
+        result.Value.AvatarKey.Should().Be(userProfile.Avatar!.FileKey);
         A.CallTo(() => _fakeRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 
@@ -92,19 +88,17 @@ public class GetUserProfileQueryHandlerTest
         // Arrange
         var query = new GetUserProfileQuery { TenantId = Guid.NewGuid() };
         var userProfile = new UserProfile(Guid.NewGuid(), "David", UserTag.Create("David"));
-        userProfile.SetProfilePictureUrl("profilePictureUrl");
+        userProfile.GetOrCreateAvatar("image/png");
 
         A.CallTo(() => _fakeRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).Returns(userProfile);
-        A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl))
-            .Returns(Result.Fail<string>(Error.Failure("Failed to get presigned url")));
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
 
         // Assert
         result.Success.Should().BeTrue();
-        result.Value.ProfilePictureUrl.Should().Be("");
-        A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).MustHaveHappenedOnceExactly();
+        result.Value.Should().NotBeNull();
+        result.Value.AvatarKey.Should().Be(userProfile.Avatar!.FileKey);
         A.CallTo(() => _fakeRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 }

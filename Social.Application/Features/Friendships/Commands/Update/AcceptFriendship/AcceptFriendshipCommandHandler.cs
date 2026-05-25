@@ -2,9 +2,7 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Contracts.Services;
 using Social.Application.Specifications.User;
-using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Interfaces;
 
@@ -13,7 +11,6 @@ namespace Social.Application.Features.Friendships.Commands.Update.AcceptFriendsh
 public class AcceptFriendshipCommandHandler(
     IUserProfileRepository userProfileRepository,
     IFriendshipService friendshipService,
-    IProfilePictureService profilePictureService,
     IConnectionIdProvider connectionIdProvider,
     IUnitOfWork unitOfWork,
     ILogger<AcceptFriendshipCommandHandler> logger)
@@ -25,7 +22,7 @@ public class AcceptFriendshipCommandHandler(
         if (userProfile is null)
         {
             logger.LogError("User not found: {UserId}", cmd.TenantId);
-            return Result.Fail<AcceptFriendshipDto>(Error.NotFound<Social.Domain.Aggregates.UserProfile>(cmd.TenantId.ToString()));
+            return Result.Fail<AcceptFriendshipDto>(Error.NotFound<Domain.Aggregates.UserProfile>(cmd.TenantId.ToString()));
         }
 
         var result = friendshipService.AcceptFriendship(userProfile, cmd.FriendTag);
@@ -39,7 +36,7 @@ public class AcceptFriendshipCommandHandler(
         if (newFriend is null)
         {
             logger.LogError("Friend not found: {FriendTag}", cmd.FriendTag);
-            return Result.Fail<AcceptFriendshipDto>(Error.NotFound<Social.Domain.Aggregates.UserProfile>(cmd.FriendTag));
+            return Result.Fail<AcceptFriendshipDto>(Error.NotFound<Domain.Aggregates.UserProfile>(cmd.FriendTag));
         }
 
         var connectionIds = await connectionIdProvider.GetConnectionIdsSingleTenant(newFriend.Id, ct);
@@ -47,19 +44,9 @@ public class AcceptFriendshipCommandHandler(
         await userProfileRepository.UpdateAsync(userProfile, ct);
         await unitOfWork.SaveChangesAsync(ct);
 
-        var presignedUrl = await FetchPresignedUrl(newFriend.ProfilePictureUrl);
 
-        var acceptFriendshipDto = AcceptFriendshipDto.MapFrom(newFriend, presignedUrl, connectionIds);
+        var acceptFriendshipDto = AcceptFriendshipDto.MapFrom(newFriend, connectionIds);
 
         return Result.Ok(acceptFriendshipDto);
-    }
-
-    private async Task<string?> FetchPresignedUrl(string? profilePictureUrl)
-    {
-        if (string.IsNullOrEmpty(profilePictureUrl))
-            return string.Empty;
-
-        var presignedUrl = await profilePictureService.GetPresignedProfilePictureUrlAsync(profilePictureUrl);
-        return presignedUrl;
     }
 }

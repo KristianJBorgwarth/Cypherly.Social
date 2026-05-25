@@ -32,7 +32,7 @@ internal static class MassTransitExtensions
     {
         services.AddProducer<OperationSucceededMessage>();
         services.AddProducer<FriendshipAcceptedMessage>();
-        services.AddProducer<ProfilePictureUpdatedMessage>();
+        services.AddProducer<AvatarUpdatedMessage>();
         services.AddProducer<FriendRequestMessage>();
         services.AddProducer<FriendRequestRejectedMessage>();
         services.AddProducer<FriendshipDeletedMessage>();

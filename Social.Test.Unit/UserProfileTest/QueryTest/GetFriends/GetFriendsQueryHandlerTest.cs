@@ -1,9 +1,7 @@
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Contracts.Services;
 using FakeItEasy;
 using FluentAssertions;
-using Microsoft.Extensions.Logging;
 using Social.Application.Features.Friendships.Queries.GetFriends;
 using Social.Domain.Aggregates;
 using Social.Domain.ValueObjects;
@@ -19,9 +17,7 @@ public class GetFriendsQueryHandlerTest
     public GetFriendsQueryHandlerTest()
     {
         _fakeRepo = A.Fake<IUserProfileRepository>();
-        var fakeLogger = A.Fake<ILogger<GetFriendsQueryHandler>>();
-        var fakeProfilePictureService = A.Fake<IProfilePictureService>();
-        _sut = new GetFriendsQueryHandler(_fakeRepo, fakeProfilePictureService, fakeLogger);
+        _sut = new GetFriendsQueryHandler(_fakeRepo);
     }
 
     [Fact]
