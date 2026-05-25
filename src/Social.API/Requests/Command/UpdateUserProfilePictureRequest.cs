@@ -1,6 +1,6 @@
 ﻿namespace Social.API.Requests.Command;
 
-public sealed record UpdateUserProfilePictureRequest
+public sealed record UpdateAvatarRequest
 {
-    public required IFormFile ProfilePicture { get; init; }
+    public required IFormFile Avatar { get; init; }
 }

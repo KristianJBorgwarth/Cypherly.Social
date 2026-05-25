@@ -18,9 +18,9 @@ public class UpdateAvatarCommandHandler(
         if (userProfile is null)
             return Result.Fail<UpdateAvatarDto>(Error.NotFound<UserProfile>(cmd.TenantId.ToString()));
 
-        var avatar = userProfile.GetOrCreateAvatar(cmd.NewProfilePicture.ContentType);
+        var avatar = userProfile.GetOrCreateAvatar(cmd.Avatar.ContentType);
 
-        var uploadResult = await ats.UploadAsync(cmd.NewProfilePicture, avatar.FileKey, ct);
+        var uploadResult = await ats.UploadAsync(cmd.Avatar, avatar.FileKey, ct);
         if (!uploadResult.Success)
             return Result.Fail<UpdateAvatarDto>(uploadResult.Error);
 

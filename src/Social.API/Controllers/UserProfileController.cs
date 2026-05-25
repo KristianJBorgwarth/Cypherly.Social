@@ -41,11 +41,11 @@ public class UserProfileController(ISender sender) : ControllerBase
     [ProducesResponseType(typeof(GetUserProfileByTagDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetUserProfileByTag([FromQuery] GetUserProfileByTagRequest request, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetUserProfileByTag([FromQuery] GetUserProfileByTagRequest req, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
-        var result = await sender.Send(new GetUserProfileByTagQuery { TenantId = tenantId, Tag = request.Tag },
-            cancellationToken);
+        var result = await sender.Send(new GetUserProfileByTagQuery { TenantId = tenantId, Tag = req.Tag },
+            ct);
         if (!result.Success) return result.ToProblemDetails();
 
         return result.Value is not null ? Ok(result.Value) : NoContent();
@@ -71,14 +71,14 @@ public class UserProfileController(ISender sender) : ControllerBase
             : StatusCode(StatusCodes.Status304NotModified);
     }
 
-    [HttpPut("profile-picture")]
+    [HttpPut("avatar")]
     [ProducesResponseType(typeof(UpdateAvatarDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateProfilePicture([FromForm] UpdateUserProfilePictureRequest request, CancellationToken ct = default)
+    public async Task<IActionResult> UpdateProfilePicture([FromForm] UpdateAvatarRequest req, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new UpdateAvatarCommand() 
-        { TenantId = tenantId, NewProfilePicture = request.ProfilePicture }, ct);
+        { TenantId = tenantId, Avatar = req.Avatar }, ct);
         return result.Success ? Ok(result.Value) : result.ToProblemDetails();
     }
 
