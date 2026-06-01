@@ -15,6 +15,7 @@ public static class ResultExtensions
             Status = result.Error?.Type.ToHttpStatusCode(),
             Type = result.Error?.Type.ToProblemDetailsTypeUri(),
             Title = result.Error?.Type.ToProblemDetailsTitle(),
+            Detail = result.Error?.Description,
             Extensions = { ["errors"] = new[] { result.Error } }
         })
         {

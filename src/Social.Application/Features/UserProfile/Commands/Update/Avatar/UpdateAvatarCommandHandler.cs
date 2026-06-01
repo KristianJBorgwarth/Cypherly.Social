@@ -2,7 +2,6 @@ using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Commands.Update.Avatar;
-using Social.Application.Specifications.User;
 using Social.Domain.Aggregates;
 using Social.Domain.Common;
 
@@ -14,7 +13,7 @@ public class UpdateAvatarCommandHandler(
 {
     public async Task<Result<UpdateAvatarDto>> Handle(UpdateAvatarCommand cmd, CancellationToken ct)
     {
-        var userProfile = await upRepo.GetSingleAsync(new UserProfileSpec(cmd.TenantId), ct);
+        var userProfile = await upRepo.GetSingleAsync(new UserProfileWithAvatarSpec(cmd.TenantId), ct);
         if (userProfile is null)
             return Result.Fail<UpdateAvatarDto>(Error.NotFound<UserProfile>(cmd.TenantId.ToString()));
 
