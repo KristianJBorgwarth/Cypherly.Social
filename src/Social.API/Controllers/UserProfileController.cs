@@ -74,11 +74,11 @@ public class UserProfileController(ISender sender) : ControllerBase
     [HttpPut("avatar")]
     [ProducesResponseType(typeof(UpdateAvatarDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateProfilePicture([FromForm] UpdateAvatarRequest req, CancellationToken ct = default)
+    public async Task<IActionResult> UpdateProfilePicture([FromForm] IFormFile Avatar, CancellationToken ct = default)
     {
         var tenantId = User.GetUserId();
         var result = await sender.Send(new UpdateAvatarCommand() 
-        { TenantId = tenantId, Avatar = req.Avatar }, ct);
+        { TenantId = tenantId, Avatar = Avatar }, ct);
         return result.Success ? Ok(result.Value) : result.ToProblemDetails();
     }
 
