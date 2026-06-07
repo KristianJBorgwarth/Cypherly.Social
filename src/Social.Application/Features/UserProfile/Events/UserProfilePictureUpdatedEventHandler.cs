@@ -8,18 +8,18 @@ using Cypherly.Message.Contracts.Messages.Profile;
 
 namespace Social.Application.Features.UserProfile.Events;
 
-public class UserProfilePictureUpdatedEventHandler(
+public class AvatarUpdatedEventHandler(
     IUserProfileRepository userProfileRepository,
     IConnectionIdProvider connectionIdProvider,
     IProducer<AvatarUpdatedMessage> producer,
-    ILogger<UserProfilePictureUpdatedEventHandler> logger)
+    ILogger<AvatarUpdatedEventHandler> logger)
     : IDomainEventHandler<AvatarUpdatedEvent>
 {
-    public async Task Handle(AvatarUpdatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(AvatarUpdatedEvent notification, CancellationToken ct)
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(notification.UserProfileId, cancellationToken);
+            var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithAvatarSpec(notification.UserProfileId), ct);
 
             if (userProfile is null)
             {
@@ -44,7 +44,7 @@ public class UserProfilePictureUpdatedEventHandler(
             };
 
             logger.LogInformation("Publishing ProfilePictureUpdatedMessage for UserProfileId: {UserProfileId} with ConnectionIds: {@ConnectionIds}", notification.UserProfileId, connectionIds);
-            await producer.PublishMessageAsync(message, cancellationToken);
+            await producer.PublishMessageAsync(message, ct);
         }
         catch (Exception ex)
         {
