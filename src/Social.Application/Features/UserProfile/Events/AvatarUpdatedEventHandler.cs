@@ -19,7 +19,7 @@ public class AvatarUpdatedEventHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithAvatarSpec(notification.UserProfileId), ct);
+            var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithAvatarAndFriendsSpec(notification.UserProfileId), ct);
 
             if (userProfile is null)
             {
