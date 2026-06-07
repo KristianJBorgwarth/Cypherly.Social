@@ -1,6 +1,5 @@
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Repositories;
-using Social.Application.Contracts.Services;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
 using FakeItEasy;
 using FluentAssertions;
@@ -13,13 +12,11 @@ namespace Social.Test.Unit.UserProfileTest.QueryTest.GetUserProfile;
 public class GetUserProfileQueryHandlerTest
 {
     private readonly IUserProfileRepository _fakeRepository;
-    private readonly IProfilePictureService _fakeProfilePictureService;
     private readonly GetUserProfileQueryHandler _sut;
 
     public GetUserProfileQueryHandlerTest()
     {
         _fakeRepository = A.Fake<IUserProfileRepository>();
-        _fakeProfilePictureService = A.Fake<IProfilePictureService>();
         _sut = new(_fakeRepository);
     }
 
@@ -37,7 +34,6 @@ public class GetUserProfileQueryHandlerTest
         result.Success.Should().BeFalse();
         result.Error!.Code.Should().Be("entity.not.found");
         A.CallTo(() => _fakeRepository.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(A<string>._)).MustNotHaveHappened();
     }
 
     [Fact]

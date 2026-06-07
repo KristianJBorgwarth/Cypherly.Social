@@ -8,7 +8,6 @@ public sealed class GetFriendsDto
     public string Username { get; private init; }
     public string UserTag { get; private init; }
     public string? DisplayName { get; private init; }
-    public string? ProfilePictureUrl { get; private init; }
     public Guid? AvatarKey { get; private init; }
 
     public GetFriendsDto(Domain.Aggregates.UserProfile userProfile)
