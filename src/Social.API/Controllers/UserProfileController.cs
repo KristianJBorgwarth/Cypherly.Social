@@ -57,7 +57,7 @@ public class UserProfileController(ISender sender) : ControllerBase
     [ProducesResponseType(StatusCodes.Status304NotModified)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, VaryByHeader = "If-None-Match")]
     public async Task<IActionResult> GetAvatar([FromQuery] GetAvatarRequest req, CancellationToken ct = default)
     {
         var result = await sender.Send(new GetAvatarQuery { FileKey = req.FileKey, ETag = Request.GetETag() }, ct);
