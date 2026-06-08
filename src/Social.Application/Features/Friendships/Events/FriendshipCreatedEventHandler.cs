@@ -4,36 +4,39 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
+using Social.Application.Specifications.Friendships;
+using Social.Domain.Entities;
 using Social.Domain.Events.Friendships;
 
 namespace Social.Application.Features.Friendships.Events;
 
 public class FriendshipCreatedEventHandler(
     IUserProfileRepository userProfileRepository,
+    IReadRepository<Friendship> friendshipReadRepository,
     IConnectionIdProvider connectionIdProvider,
     IProducer<FriendRequestMessage> producer,
     ILogger<FriendshipCreatedEventHandler> logger)
     : IDomainEventHandler<FriendshipCreatedEvent>
 {
-    public async Task Handle(FriendshipCreatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(FriendshipCreatedEvent ntf, CancellationToken ct)
     {
         try
         {
-            var user = await userProfileRepository.GetSingleAsync(new UserProfileWithAvatarAndFriendsSpec(notification.IntiateeId), cancellationToken);
+            var user = await userProfileRepository.GetSingleAsync(new UserProfileWithAvatarAndFriendsSpec(ntf.IntiateeId), ct);
             if (user is null)
             {
-                logger.LogCritical("User not found with {ID}", notification.IntiateeId);
+                logger.LogCritical("User not found with {ID}", ntf.IntiateeId);
                 throw new InvalidOperationException("Could not find user with");
             }
 
-            var connectionIds = await connectionIdProvider.GetConnectionIdsSingleTenant(user.Id, cancellationToken);
+            var connectionIds = await connectionIdProvider.GetConnectionIdsSingleTenant(user.Id, ct);
             if (connectionIds.Count <= 0) return;
 
-            var friend = await userProfileRepository.GetSingleAsync(new UserProfileWithAvatarAndFriendsSpec(notification.IntiateeId), cancellationToken);
+            var friend = await friendshipReadRepository.GetSingleAsync(new FriendshipWithUserProfiles(ntf.IntiateeId, includeInitiated: true), ct);
 
             if (friend is null)
             {
-                logger.LogCritical("User not found with {ID}", notification.InitiatorId);
+                logger.LogCritical("User not found with {ID}", ntf.InitiatorId);
                 throw new InvalidOperationException("Could not find user with");
             }
 
@@ -59,12 +62,12 @@ public class FriendshipCreatedEventHandler(
                 ConnectionIds = connectionIds,
             };
             
-            await producer.PublishMessageAsync(message, cancellationToken);
+            await producer.PublishMessageAsync(message, ct);
 
         }
         catch (Exception ex)
         {
-            logger.LogCritical(ex, "An exception occured while attempting to handle FriendshipCreatedEvent for UserProfile with {ID}", notification.IntiateeId);
+            logger.LogCritical(ex, "An exception occured while attempting to handle FriendshipCreatedEvent for UserProfile with {ID}", ntf.IntiateeId);
         }
     }
 }
