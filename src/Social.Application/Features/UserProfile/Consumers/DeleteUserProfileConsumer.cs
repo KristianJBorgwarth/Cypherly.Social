@@ -6,6 +6,7 @@ using Social.Domain.Services;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
+using Social.Application.Specifications.User;
 
 namespace Social.Application.Features.UserProfile.Consumers;
 
@@ -17,12 +18,12 @@ public class DeleteUserProfileConsumer(
     ILogger<DeleteUserProfileConsumer> logger)
     : IConsumer<UserDeleteMessage>
 {
-    public async Task Consume(ConsumeContext<UserDeleteMessage> context)
+    public async Task Consume(ConsumeContext<UserDeleteMessage> ctx)
     {
         try
         {
-            var message = context.Message;
-            var user = await userProfileRepository.GetByIdAsync(message.UserProfileId, context.CancellationToken);
+            var message = ctx.Message;
+            var user = await userProfileRepository.GetSingleAsync(new UserProfileSpec(message.UserProfileId));
 
             if (user is null)
             {
@@ -35,8 +36,8 @@ public class DeleteUserProfileConsumer(
 
             var responseMessage = new OperationSucceededMessage()
             {
-                CorrelationId = context.Message.CorrelationId,
-                CausationId = context.Message.Id,
+                CorrelationId = ctx.Message.CorrelationId,
+                CausationId = ctx.Message.Id,
                 OperationType = OperationType.UserProfileDelete,
             };
             

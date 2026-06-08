@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
+using Social.Application.Specifications.User;
 using Social.Domain.Events.Friendships;
 
 namespace Social.Application.Features.Friendships.Events;
@@ -20,8 +21,8 @@ public sealed class FriendshipAcceptedEventHandler(
         logger.LogInformation("Handling friendship accepted event for user {UserProfileId} and friend {FriendTag}",
             notification.UserProfileId, notification.FriendTag);
 
-        var acceptor = await userProfileRepository.GetByIdAsync(notification.UserProfileId, cancellationToken);
-        var instigator = await userProfileRepository.GetByUserTag(notification.FriendTag, cancellationToken);
+        var acceptor = await userProfileRepository.GetSingleAsync(new UserProfileSpec(notification.UserProfileId), cancellationToken);
+        var instigator = await userProfileRepository.GetSingleAsync(new UserProfileByTagSpec(notification.FriendTag), cancellationToken);
 
         if (acceptor is null || instigator is null)
         {
