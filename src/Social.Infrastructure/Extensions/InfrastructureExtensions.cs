@@ -4,7 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Social.Application.Contracts.Services;
 using Social.Infrastructure.Services;
 using Social.Infrastructure.Settings;
-using Social.Infrastructure.Store;
+using Social.Infrastructure.Storage.Store;
+using Social.Infrastructure.Storage.Validation;
 
 namespace Social.Infrastructure.Extensions;
 
@@ -17,7 +18,6 @@ public static class InfrastructureExtensions
         services.AddPersistence(configuration, assembly);
         services.AddProviders();
         services.AddOutboxProcessingJob(assembly);
-        services.AddStorage();
         services.AddServices();
     }
 
@@ -33,5 +33,6 @@ public static class InfrastructureExtensions
     {
         services.AddScoped<IAvatarService, AvatarService>();
         services.AddSingleton<IBlobStore, BlobStore>();
+        services.AddScoped<IFileValidator, FileValidator>();
     }
 }

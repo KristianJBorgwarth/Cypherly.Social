@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
 using Social.Infrastructure.Settings;
 
-namespace Social.Infrastructure.Store;
+namespace Social.Infrastructure.Storage.Store;
 
 internal sealed class BlobStore(IOptions<BlobStoreSettings> options) : IBlobStore
 {

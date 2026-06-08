@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Social.Infrastructure.Settings;
-using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Containers;
+﻿using Social.Infrastructure.Settings;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
@@ -15,9 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Social.Test.Integration.Setup.Authentication;
-using Social.Test.Integration.Setup.Helpers;
 using Testcontainers.PostgreSql;
-using Xunit;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -28,25 +20,10 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
 {
     private readonly string StorageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "TestBlobStore");
 
-    private readonly IContainer _minioBucketContainer = new ContainerBuilder()
-        .WithImage("bitnamilegacy/minio")
-        .WithEnvironment("MINIO_ROOT_USER", "MinioRoot")
-        .WithEnvironment("MINIO_ROOT_PASSWORD", "rootErinoTest?87")
-        .WithExposedPort(9000)
-        .WithExposedPort(9001)
-        .WithPortBinding(9023, 9000)
-        .WithPortBinding(9024, 9001)
-        .WithCleanUp(true)
-        .Build();
-
-
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:latest")
         .WithCleanUp(true)
         .Build();
-
-    private readonly MinioBucketHandler _minioBucketHandler = new("MinioRoot", "rootErinoTest?87");
-
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -129,17 +106,14 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
     public async Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
-        await _minioBucketContainer.StartAsync();
 
         // Adding a delay to ensure Minio is ready
         await Task.Delay(10000);
-        await _minioBucketHandler.CreateBucketAsync("bucket-name");
     }
 
     public async new Task DisposeAsync()
     {
         await _dbContainer.DisposeAsync();
-        await _minioBucketContainer.StopAsync();
         Directory.Delete(StorageDirectory, true);
     }
 }

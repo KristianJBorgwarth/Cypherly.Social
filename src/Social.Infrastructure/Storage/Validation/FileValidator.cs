@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Social.Infrastructure.S3.Validation;
+namespace Social.Infrastructure.Storage.Validation;
 
 public class FileValidator : IFileValidator
 {

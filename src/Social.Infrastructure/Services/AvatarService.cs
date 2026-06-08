@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Http;
 using Social.Application.Contracts.Services;
 using Social.Domain.Common;
-using Social.Infrastructure.S3.Validation;
-using Social.Infrastructure.Store;
+using Social.Infrastructure.Storage.Store;
+using Social.Infrastructure.Storage.Validation;
 
 namespace Social.Infrastructure.Services;
 

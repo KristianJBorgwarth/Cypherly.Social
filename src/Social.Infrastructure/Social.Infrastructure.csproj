@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="AWSSDK.S3" Version="4.0.23.1" />
       <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.9" />
       <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.3.10" />
       <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.8" />
