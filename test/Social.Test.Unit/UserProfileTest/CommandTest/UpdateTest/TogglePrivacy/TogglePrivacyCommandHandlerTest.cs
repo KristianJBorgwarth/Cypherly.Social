@@ -1,5 +1,6 @@
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
+using Social.Application.Specifications.User;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -34,7 +35,7 @@ public class TogglePrivacyCommandHandlerTest
             IsPrivate = true
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._)).Returns(profile);
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<UserProfileSpec>._, A<CancellationToken>._)).Returns(profile);
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>.Ignored)).DoesNothing();
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
@@ -42,7 +43,7 @@ public class TogglePrivacyCommandHandlerTest
         // Assert
         result.Success.Should().BeTrue();
         profile.IsPrivate.Should().BeTrue();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<UserProfileSpec>._, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>.Ignored)).MustHaveHappenedOnceExactly();
     }
 
@@ -55,13 +56,13 @@ public class TogglePrivacyCommandHandlerTest
             IsPrivate = true
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._)).Returns<UserProfile>(null);
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<UserProfileSpec>._, A<CancellationToken>._)).Returns<UserProfile>(null);
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
 
         // Assert
         result.Success.Should().BeFalse();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.TenantId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<UserProfileSpec>._, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>.Ignored)).MustNotHaveHappened();
     }
 }

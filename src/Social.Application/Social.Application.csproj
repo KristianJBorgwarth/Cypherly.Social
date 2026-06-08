@@ -34,4 +34,16 @@
       <Folder Include="Features\Friendships\Queries\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+        <_Parameter1>Social.Test.Unit</_Parameter1>
+      </AssemblyAttribute>
+      <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+        <_Parameter1>Social.Test.Architecture</_Parameter1>
+      </AssemblyAttribute>
+      <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+        <_Parameter1>Social.Test.Integration</_Parameter1>
+      </AssemblyAttribute>
+    </ItemGroup>
+
 </Project>

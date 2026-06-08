@@ -3,6 +3,7 @@ using Cypherly.Message.Contracts.Enums;
 using Cypherly.Message.Contracts.Messages.User;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Consumers;
+using Social.Application.Specifications.User;
 using FakeItEasy;
 using MassTransit;
 using Microsoft.Extensions.Logging;
@@ -37,8 +38,8 @@ public class RollbackUserProfileDeleteConsumerTest
         var message = _fixture.Build<UserDeleteFailedMessage>()
             .With(x => x.Services, [ServiceType.UserManagementService])
             .Create();
-        
-        A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserId, A<CancellationToken>._)).Returns<UserProfile?>(null);
+
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<UserProfileSpec>._, A<CancellationToken>._)).Returns<UserProfile?>(null);
 
         var fakeConsumeContext = A.Fake<ConsumeContext<UserDeleteFailedMessage>>();
         A.CallTo(() => fakeConsumeContext.Message).Returns(message);
@@ -48,7 +49,7 @@ public class RollbackUserProfileDeleteConsumerTest
 
 
         // Assert
-        A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<UserProfileSpec>._, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeLifecycleService.RevertSoftDelete(A<UserProfile>.Ignored)).MustNotHaveHappened();
     }
 
@@ -59,9 +60,9 @@ public class RollbackUserProfileDeleteConsumerTest
         var message = _fixture.Build<UserDeleteFailedMessage>()
             .With(x => x.Services, [ServiceType.UserManagementService])
             .Create();
-        
+
         var user = new UserProfile(Guid.NewGuid(), "james", UserTag.Create("james"));
-        A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserId, A<CancellationToken>._)).Returns(user);
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<UserProfileSpec>._, A<CancellationToken>._)).Returns(user);
 
         var fakeConsumeContext = A.Fake<ConsumeContext<UserDeleteFailedMessage>>();
         A.CallTo(() => fakeConsumeContext.Message).Returns(message);
@@ -70,7 +71,7 @@ public class RollbackUserProfileDeleteConsumerTest
         await _sut.Consume(fakeConsumeContext);
 
         // Assert
-        A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserId, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<UserProfileSpec>._, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeLifecycleService.RevertSoftDelete(user)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
@@ -90,7 +91,7 @@ public class RollbackUserProfileDeleteConsumerTest
         await _sut.Consume(fakeConsumeContext);
 
         // Assert
-        A.CallTo(() => _fakeRepo.GetByIdAsync(A<Guid>._, A<CancellationToken>._)).MustNotHaveHappened();
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<UserProfileSpec>._, A<CancellationToken>._)).MustNotHaveHappened();
         A.CallTo(() => _fakeLifecycleService.RevertSoftDelete(A<UserProfile>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>._)).MustNotHaveHappened();
     }
