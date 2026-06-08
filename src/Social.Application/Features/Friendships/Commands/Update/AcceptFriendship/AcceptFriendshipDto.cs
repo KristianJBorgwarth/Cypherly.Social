@@ -6,7 +6,7 @@ public sealed class AcceptFriendshipDto
     public required string Tag { get; init; }
     public string? DisplayName { get; private init; }
     public Guid? AvatarKey { get; private init; }
-    public IReadOnlyCollection<Guid> ConnectionIds { get; private init; }
+    public IReadOnlyCollection<Guid> ConnectionIds { get; private init; } = [];
 
     public static AcceptFriendshipDto MapFrom(Domain.Aggregates.UserProfile userProfile, IReadOnlyCollection<Guid>? connectionIds)
     {
@@ -16,7 +16,7 @@ public sealed class AcceptFriendshipDto
             Tag = userProfile.UserTag.Tag,
             DisplayName = userProfile.DisplayName,
             AvatarKey = userProfile.Avatar?.FileKey,
-            ConnectionIds = connectionIds
+            ConnectionIds = connectionIds ?? []
         };
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Social.Application.Abstractions;
 using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
+using Social.Application.Specifications.User;
 using Social.Domain.Events.Friendships;
 
 namespace Social.Application.Features.Friendships.Events;
@@ -15,15 +16,15 @@ public sealed class FriendshipDeletedEventHandler(
     ILogger<FriendshipDeletedEventHandler> logger)
     : IDomainEventHandler<FriendshipDeletedEvent>
 {
-    public async Task Handle(FriendshipDeletedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(FriendshipDeletedEvent ntf, CancellationToken cancellationToken)
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(notification.UserProfileId, cancellationToken);
-            var deletedFriendProfile = await userProfileRepository.GetByIdAsync(notification.FriendProfileId, cancellationToken);
+            var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileSpec(ntf.UserProfileId), cancellationToken);
+            var deletedFriendProfile = await userProfileRepository.GetSingleAsync(new UserProfileSpec(ntf.FriendProfileId), cancellationToken);
             if (userProfile is null || deletedFriendProfile is null)
             {
-                logger.LogWarning("User profile or friend profile not found for user {UserProfileId} and friend {FriendProfileId}", notification.UserProfileId, notification.FriendProfileId);
+                logger.LogWarning("User profile or friend profile not found for user {UserProfileId} and friend {FriendProfileId}", ntf.UserProfileId, ntf.FriendProfileId);
 
                 throw new InvalidOperationException("User profile or friend profile not found");
             }
@@ -42,7 +43,7 @@ public sealed class FriendshipDeletedEventHandler(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error handling FriendshipDeletedEvent for user {UserProfileId} and friend {FriendProfileId}", notification.UserProfileId, notification.FriendProfileId);
+            logger.LogError(ex, "Error handling FriendshipDeletedEvent for user {UserProfileId} and friend {FriendProfileId}", ntf.UserProfileId, ntf.FriendProfileId);
             throw;
         }
     }

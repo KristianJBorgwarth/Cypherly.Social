@@ -5,10 +5,9 @@ namespace Social.Application.Contracts.Repositories;
 
 public interface IRepository<T> where T : Entity
 {
-    Task CreateAsync(T entity, CancellationToken cancellationToken = default);
-    Task DeleteAsync(T entity, CancellationToken cancellationToken = default);
-    Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<T?> GetSingleAsync(ISpecification<T> spec, CancellationToken cancellationToken = default);
-    Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
+    Task<T?> GetSingleAsync(ISpecification<T> spec, CancellationToken ct = default);
+    Task CreateAsync(T entity, CancellationToken ct = default);
+    Task DeleteAsync(T entity, CancellationToken ct = default);
+    Task UpdateAsync(T entity, CancellationToken ct = default);
 }
 

@@ -4,6 +4,7 @@ using Cypherly.Message.Contracts.Messages.Common;
 using Cypherly.Message.Contracts.Messages.User;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Features.UserProfile.Consumers;
+using Social.Application.Specifications.User;
 using FakeItEasy;
 using FluentAssertions;
 using MassTransit;
@@ -22,7 +23,7 @@ public class DeleteUserProfileConsumerTest
     private readonly IUserProfileLifecycleService _fakeLifecycleService;
     private readonly Fixture _fixture = new();
     private readonly DeleteUserProfileConsumer _sut;
-    
+
     public DeleteUserProfileConsumerTest()
     {
         _fakeRepo = A.Fake<IUserProfileRepository>();
@@ -39,7 +40,7 @@ public class DeleteUserProfileConsumerTest
         // Arrange
         var message = _fixture.Create<UserDeleteMessage>();
         var user = new UserProfile();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserProfileId, A<CancellationToken>._)).Returns(user);
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<UserProfileSpec>._, A<CancellationToken>._)).Returns(user);
 
         var fakeConsumeContext = A.Fake<ConsumeContext<UserDeleteMessage>>();
         A.CallTo(() => fakeConsumeContext.Message).Returns(message);
@@ -58,7 +59,7 @@ public class DeleteUserProfileConsumerTest
     {
         // Arrange
         var message = _fixture.Create<UserDeleteMessage>();
-        A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserProfileId, A<CancellationToken>._)).Returns<UserProfile?>(null);
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<UserProfileSpec>._, A<CancellationToken>._)).Returns<UserProfile?>(null);
 
         var fakeConsumeContext = A.Fake<ConsumeContext<UserDeleteMessage>>();
         A.CallTo(() => fakeConsumeContext.Message).Returns(message);

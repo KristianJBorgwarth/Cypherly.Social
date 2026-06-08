@@ -1,5 +1,4 @@
-﻿using Social.Application.Contracts;
-using Social.Application.Contracts.Repositories;
+﻿using Social.Application.Contracts.Repositories;
 using Social.Domain.Aggregates;
 using Microsoft.EntityFrameworkCore;
 using Social.Application.Abstractions;
@@ -9,39 +8,29 @@ namespace Social.Infrastructure.Persistence.Repositories;
 
 public class UserProfileRepository(SocialDbContext context) : IUserProfileRepository
 {
-    public async Task CreateAsync(UserProfile entity, CancellationToken cancellationToken = default)
+    public async Task CreateAsync(UserProfile entity, CancellationToken ct = default)
     {
-        await context.UserProfile.AddAsync(entity, cancellationToken);
+        await context.UserProfile.AddAsync(entity, ct);
     }
 
-    public Task DeleteAsync(UserProfile entity, CancellationToken cancellationToken = default)
+    public Task DeleteAsync(UserProfile entity, CancellationToken ct = default)
     {
         context.UserProfile.Remove(entity);
         return Task.CompletedTask;
     }
 
-    public async Task<UserProfile?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        return await context.UserProfile.FindAsync([id], cancellationToken);
-    }
-
-    public async Task<UserProfile?> GetSingleAsync(ISpecification<UserProfile> spec, CancellationToken cancellationToken = default)
+    public async Task<UserProfile?> GetSingleAsync(ISpecification<UserProfile> spec, CancellationToken ct = default)
     {
         var q = context.UserProfile.Where(spec.Criteria);
         
         q = spec.Includes.Aggregate(q, (current, include) => current.Include(include));
         
-        return await q.FirstOrDefaultAsync(cancellationToken);
+        return await q.FirstOrDefaultAsync(ct);
     }
 
-    public Task UpdateAsync(UserProfile entity, CancellationToken cancellationToken = default)
+    public Task UpdateAsync(UserProfile entity, CancellationToken ct = default)
     {
         context.UserProfile.Update(entity);
         return Task.CompletedTask;
-    }
-
-    public async Task<UserProfile?> GetByUserTag(string userTag, CancellationToken cancellationToken = default)
-    {
-        return await context.UserProfile.FirstOrDefaultAsync(x => x.UserTag.Tag == userTag, cancellationToken);
     }
 }

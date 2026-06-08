@@ -4,6 +4,7 @@ using Social.Domain.Services;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Social.Application.Contracts.Repositories;
+using Social.Application.Specifications.User;
 
 namespace Social.Application.Features.UserProfile.Consumers;
 
@@ -13,15 +14,15 @@ public class RollbackUserProfileDeleteConsumer(
     IUnitOfWork unitOfWork,
     ILogger<RollbackUserProfileDeleteConsumer> logger) : IConsumer<UserDeleteFailedMessage>
 {
-    public async Task Consume(ConsumeContext<UserDeleteFailedMessage> context)
+    public async Task Consume(ConsumeContext<UserDeleteFailedMessage> ctx)
     {
         try
         {
-            var message = context.Message;
+            var message = ctx.Message;
 
             if (!message.ContainsService(ServiceType.UserManagementService)) return;
 
-            var user = await userProfileRepository.GetByIdAsync(message.UserId, context.CancellationToken);
+            var user = await userProfileRepository.GetSingleAsync(new UserProfileSpec(message.UserId), ctx.CancellationToken);
             if (user is null)
             {
                 logger.LogError("User with id {UserId} not found", message.UserId);
