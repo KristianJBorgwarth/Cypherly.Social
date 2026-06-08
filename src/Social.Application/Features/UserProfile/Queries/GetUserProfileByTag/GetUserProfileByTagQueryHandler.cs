@@ -15,16 +15,16 @@ public class GetUserProfileByTagQueryHandler(
     ILogger<GetUserProfileByTagQueryHandler> logger)
     : IQueryHandler<GetUserProfileByTagQuery, GetUserProfileByTagDto>
 {
-    public async Task<Result<GetUserProfileByTagDto>> Handle(GetUserProfileByTagQuery request, CancellationToken ct)
+    public async Task<Result<GetUserProfileByTagDto>> Handle(GetUserProfileByTagQuery q, CancellationToken ct)
     {
-        var requestingUser = await userProfileRepository.GetSingleAsync(new UserProfileWithBlockedUsersSpec(request.TenantId), ct);
+        var requestingUser = await userProfileRepository.GetSingleAsync(new UserProfileWithBlockedUsersSpec(q.TenantId, true), ct);
         if (requestingUser is null)
         {
-            logger.LogWarning("User with ID: {ID} attempted to get profile by tag: {Tag}, but no user with that ID Exists", request.TenantId, request.Tag);
-            return Result.Fail<GetUserProfileByTagDto>(error: Error.NotFound<Domain.Aggregates.UserProfile>(request.TenantId.ToString()));
+            logger.LogWarning("User with ID: {ID} attempted to get profile by tag: {Tag}, but no user with that ID Exists", q.TenantId, q.Tag);
+            return Result.Fail<GetUserProfileByTagDto>(error: Error.NotFound<Domain.Aggregates.UserProfile>(q.TenantId.ToString()));
         }
 
-        var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileByTagWithBlockedUsersSpec(request.Tag), ct);
+        var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileByTagWithBlockedUsersSpec(q.Tag, true), ct);
 
         if (userProfile is null || userBlockingService.IsUserBlocked(requestingUser, userProfile) || userProfile.IsPrivate)
             return Result.Ok<GetUserProfileByTagDto>();
