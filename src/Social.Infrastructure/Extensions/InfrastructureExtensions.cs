@@ -23,8 +23,6 @@ public static class InfrastructureExtensions
 
     private static void AddSettings(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<MinioSettings>(configuration.GetSection("Bucket"));
-        services.Configure<HttpClientSettings>(configuration.GetSection("ApiBaseUrls"));
         services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
         services.Configure<BlobStoreSettings>(configuration.GetSection("BlobStore"));
     }

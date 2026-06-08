@@ -60,7 +60,6 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
 
             services.AddMassTransitTestHarness(cfg => { cfg.AddConsumers(typeof(TProgram).Assembly); });
 
-            StubMinioSettings(services);
             SetupBlobstore(services);
         });
     }
@@ -81,26 +80,6 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
             .Build();
 
         services.Configure<BlobStoreSettings>(configuration.GetSection("BlobStore"));
-    }
-
-    private void StubMinioSettings(IServiceCollection services)
-    {
-        services.RemoveAll(typeof(IConfigureOptions<MinioSettings>));
-
-        // Add in-memory configuration
-        var inMemorySettings = new Dictionary<string, string>
-        {
-            { "S3:Host", "http://localhost:9023" },
-            { "S3:ProfilePictureBucket", "bucket-name" },
-            { "S3:User", "MinioRoot" },
-            { "S3:Password", "rootErinoTest?87" }
-        };
-
-        var configuration = new ConfigurationBuilder()
-            .AddInMemoryCollection(inMemorySettings!)
-            .Build();
-
-        services.Configure<MinioSettings>(configuration.GetSection("S3"));
     }
 
     public async Task InitializeAsync()
