@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Social.Infrastructure.Persistence.Context;
 using Social.Infrastructure.Persistence.Repositories;
+using Social.Domain.Entities;
 
 namespace Social.Infrastructure.Extensions;
 
@@ -30,6 +31,7 @@ internal static class PersistenceExtensions
     private static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+        services.AddScoped<IReadRepository<Friendship>, ReadRepository<Friendship>>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IAvatarRepository, AvatarRepository>();
         services.AddScoped<IOutboxRepository, OutboxRepository>();
