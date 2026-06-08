@@ -29,7 +29,7 @@ public class FriendshipCreatedEventHandler(
             var connectionIds = await connectionIdProvider.GetConnectionIdsSingleTenant(user.Id, cancellationToken);
             if (connectionIds.Count <= 0) return;
 
-            var friend = await userProfileRepository.GetSingleAsync(new UserProfileWithAvatarAndFriendsSpec(notification.IntiateeId), cancellationToken);
+            var friend = await userProfileRepository.GetSingleAsync(new UserProfileWithAvatarAndFriendsSpec(notification.InitiatorId), cancellationToken);
 
             if (friend is null)
             {
