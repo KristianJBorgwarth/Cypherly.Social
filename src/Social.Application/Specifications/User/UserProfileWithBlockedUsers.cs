@@ -6,8 +6,16 @@ namespace Social.Application.Specifications.User;
 
 internal sealed class UserProfileWithBlockedUsersSpec : Specification<UserProfile>
 {
-    public UserProfileWithBlockedUsersSpec(Guid userId) : base(u => u.Id == userId)
+    public UserProfileWithBlockedUsersSpec(Guid userId, bool includeFriendships = false) : base(u => u.Id == userId)
     {
         AddIncludes($"{nameof(UserProfile.BlockedUsers)}.{nameof(BlockedUser.BlockedUserProfile)}");
+
+        if (includeFriendships)
+        {
+            AddIncludes(
+                    $"{nameof(UserProfile.FriendshipsInitiated)}.{nameof(Friendship.FriendProfile)}",
+                    $"{nameof(UserProfile.FriendshipsReceived)}.{nameof(Friendship.UserProfile)}"
+            );
+        }
     }
 }
