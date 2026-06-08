@@ -6,7 +6,7 @@ namespace Social.Application.Specifications.User;
 
 internal sealed class UserProfileByTagWithBlockedUsersSpec : Specification<UserProfile>
 {
-    public UserProfileByTagWithBlockedUsersSpec(string tag, bool includeFriendships) : base(u => u.UserTag.Tag == tag)
+    public UserProfileByTagWithBlockedUsersSpec(string tag, bool includeFriendships = false) : base(u => u.UserTag.Tag == tag)
     {
         AddIncludes($"{nameof(UserProfile.BlockedUsers)}.{nameof(BlockedUser.BlockedUserProfile)}");
         if (includeFriendships)
