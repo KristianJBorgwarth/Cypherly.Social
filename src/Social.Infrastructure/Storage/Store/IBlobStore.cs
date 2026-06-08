@@ -1,4 +1,4 @@
-namespace Social.Infrastructure.Store;
+namespace Social.Infrastructure.Storage.Store;
 
 public interface IBlobStore
 {

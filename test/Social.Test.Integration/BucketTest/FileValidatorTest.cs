@@ -1,7 +1,7 @@
-﻿using Social.Infrastructure.S3.Validation;
-using FakeItEasy;
+﻿using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Social.Infrastructure.Storage.Validation;
 
 namespace Social.Test.Integration.BucketTest;
 

@@ -1,14 +1,9 @@
-using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Social.Application.Contracts.Services;
 using Social.Infrastructure.Persistence.Context;
 using Social.Test.Integration.Setup;
 using Social.Test.Integration.Setup.Helpers;
-using Xunit;
 
 namespace Social.Test.Integration.StorageTests;
 

@@ -1,17 +1,17 @@
 ﻿using System.Security.Claims;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Social.Test.Integration.Setup.Authentication;
 
-public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+public class TestAuthHandler(
+    IOptionsMonitor<AuthenticationSchemeOptions> options,
+    ILoggerFactory loggerFactory,
+    UrlEncoder encoder)
+    : AuthenticationHandler<AuthenticationSchemeOptions>(options, loggerFactory, encoder)
 {
-    public TestAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory loggerFactory, UrlEncoder encoder)
-        : base(options, loggerFactory, encoder) { }
-
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var claims = new[]
