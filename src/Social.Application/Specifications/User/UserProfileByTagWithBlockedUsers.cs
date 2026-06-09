@@ -8,7 +8,7 @@ internal sealed class UserProfileByTagWithBlockedUsersSpec : Specification<UserP
 {
     public UserProfileByTagWithBlockedUsersSpec(string tag, bool includeFriendships = false) : base(u => u.UserTag.Tag == tag)
     {
-        AddIncludes($"{nameof(UserProfile.BlockedUsers)}.{nameof(BlockedUser.BlockedUserProfile)}");
+        AddIncludes($"{nameof(UserProfile.BlockedUsers)}.{nameof(BlockedUser.BlockedUserProfile)}", $"{nameof(UserProfile.Avatar)}");
         if (includeFriendships)
         {
             AddIncludes(
