@@ -12,7 +12,7 @@ public class TogglePrivacyCommandHandler(
     ILogger<TogglePrivacyCommandHandler> logger)
     : ICommandHandler<TogglePrivacyCommand>
 {
-    public async Task<Result> Handle(TogglePrivacyCommand cmd, CancellationToken ct)
+    public async ValueTask<Result> Handle(TogglePrivacyCommand cmd, CancellationToken ct)
     {
         var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileSpec(cmd.TenantId), ct);
         if (userProfile is null)

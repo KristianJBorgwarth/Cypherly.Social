@@ -14,7 +14,7 @@ public class UnblockUserCommandHandler(
     ILogger<UnblockUserCommandHandler> logger)
     : ICommandHandler<UnblockUserCommand>
 {
-    public async Task<Result> Handle(UnblockUserCommand cmd, CancellationToken ct)
+    public async ValueTask<Result> Handle(UnblockUserCommand cmd, CancellationToken ct)
     {
         var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithBlockedUsersSpec(cmd.TenantId), ct);
         if (userProfile is null)

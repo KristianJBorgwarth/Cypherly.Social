@@ -15,7 +15,7 @@ public class FriendshipCreatedEventHandler(
     ILogger<FriendshipCreatedEventHandler> logger)
     : IDomainEventHandler<FriendshipCreatedEvent>
 {
-    public async Task Handle(FriendshipCreatedEvent notification, CancellationToken cancellationToken)
+    public async ValueTask Handle(FriendshipCreatedEvent notification, CancellationToken cancellationToken)
     {
         try
         {

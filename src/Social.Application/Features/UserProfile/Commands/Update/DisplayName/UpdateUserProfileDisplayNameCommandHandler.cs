@@ -12,7 +12,7 @@ public class UpdateUserProfileDisplayNameCommandHandler(
     IUnitOfWork unitOfWork)
     : ICommandHandler<UpdateUserProfileDisplayNameCommand, UpdateUserProfileDisplayNameDto>
 {
-    public async Task<Result<UpdateUserProfileDisplayNameDto>> Handle(UpdateUserProfileDisplayNameCommand cmd, CancellationToken ct)
+    public async ValueTask<Result<UpdateUserProfileDisplayNameDto>> Handle(UpdateUserProfileDisplayNameCommand cmd, CancellationToken ct)
     {
         var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileSpec(cmd.TenantId), ct);
         if (userProfile is null)

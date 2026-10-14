@@ -10,7 +10,7 @@ public class UserBlockedEventHandler(
     ILogger<UserBlockedEventHandler> logger)
     : IDomainEventHandler<UserBlockedEvent>
 {
-    public async Task Handle(UserBlockedEvent notification, CancellationToken cancellationToken)
+    public async ValueTask Handle(UserBlockedEvent notification, CancellationToken cancellationToken)
     {
         //TODO - Implement logic to notify blocked user to delete their friendship data, if we decide to cache friendship data in the future
     }

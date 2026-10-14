@@ -16,7 +16,7 @@ public class FriendRequestRejectedEventHandler(
     ILogger<FriendRequestRejectedEvent> logger)
     : IDomainEventHandler<FriendRequestRejectedEvent>
 {
-    public async Task Handle(FriendRequestRejectedEvent ntf, CancellationToken ct)
+    public async ValueTask Handle(FriendRequestRejectedEvent ntf, CancellationToken ct)
     {
         try
         {

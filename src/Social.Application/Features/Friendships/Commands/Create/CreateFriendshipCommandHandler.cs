@@ -14,7 +14,7 @@ public class CreateFriendshipCommandHandler(
     ILogger<CreateFriendshipCommandHandler> logger)
     : ICommandHandler<CreateFriendshipCommand>
 {
-    public async Task<Result> Handle(CreateFriendshipCommand cmd, CancellationToken ct)
+    public async ValueTask<Result> Handle(CreateFriendshipCommand cmd, CancellationToken ct)
     {
         var friend = await userProfileRepository.GetSingleAsync(new UserProfileByTagWithFriendshipsSpec(cmd.FriendTag), ct);
         if (friend is null)

@@ -15,7 +15,7 @@ public class BlockUserCommandHandler(
     ILogger<BlockUserCommandHandler> logger)
     : ICommandHandler<BlockUserCommand>
 {
-    public async Task<Result> Handle(BlockUserCommand request, CancellationToken cancellationToken)
+    public async ValueTask<Result> Handle(BlockUserCommand request, CancellationToken cancellationToken)
     {
         var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendshipsSpec(request.TenantId), cancellationToken);
         if (userProfile is null)

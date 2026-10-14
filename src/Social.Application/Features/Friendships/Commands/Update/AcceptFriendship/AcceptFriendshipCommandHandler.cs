@@ -16,7 +16,7 @@ public class AcceptFriendshipCommandHandler(
     ILogger<AcceptFriendshipCommandHandler> logger)
     : ICommandHandler<AcceptFriendshipCommand, AcceptFriendshipDto>
 {
-    public async Task<Result<AcceptFriendshipDto>> Handle(AcceptFriendshipCommand cmd, CancellationToken ct)
+    public async ValueTask<Result<AcceptFriendshipDto>> Handle(AcceptFriendshipCommand cmd, CancellationToken ct)
     {
         var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendshipsSpec(cmd.TenantId), ct);
         if (userProfile is null)

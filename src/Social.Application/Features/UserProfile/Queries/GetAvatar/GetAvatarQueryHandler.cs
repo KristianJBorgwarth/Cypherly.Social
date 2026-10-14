@@ -14,7 +14,7 @@ public sealed class GetAvatarQueryHandler(
     ILogger<GetAvatarQueryHandler> logger)
     : IQueryHandler<GetAvatarQuery, GetAvatarDto>
 {
-    public async Task<Result<GetAvatarDto>> Handle(GetAvatarQuery q, CancellationToken ct)
+    public async ValueTask<Result<GetAvatarDto>> Handle(GetAvatarQuery q, CancellationToken ct)
     {
         if (!string.IsNullOrWhiteSpace(q.ETag))
         {
@@ -26,7 +26,7 @@ public sealed class GetAvatarQueryHandler(
         }
     }
 
-    private async Task<Result<GetAvatarDto>> HandleEtagReq(string etag, Guid avatarId, CancellationToken ct)
+    private async ValueTask<Result<GetAvatarDto>> HandleEtagReq(string etag, Guid avatarId, CancellationToken ct)
     {
         var avatar = await avatarRepository.GetSingleAsync(new AvatarByEtagSpec(etag), ct);
         if (avatar is not null)
@@ -43,7 +43,7 @@ public sealed class GetAvatarQueryHandler(
         return await HandleReqWithoutEtag(avatarId, ct);
     }
 
-    private async Task<Result<GetAvatarDto>> HandleReqWithoutEtag(Guid fileKey, CancellationToken ct)
+    private async ValueTask<Result<GetAvatarDto>> HandleReqWithoutEtag(Guid fileKey, CancellationToken ct)
     {
         var avatar = await avatarRepository.GetSingleAsync(new AvatarByFileKeySpec(fileKey), ct);
 

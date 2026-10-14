@@ -8,7 +8,7 @@ public class GetUserProfileQueryHandler(
     IUserProfileRepository userProfileRepository)
     : IQueryHandler<GetUserProfileQuery, GetUserProfileDto>
 {
-    public async Task<Result<GetUserProfileDto>> Handle(GetUserProfileQuery q, CancellationToken ct)
+    public async ValueTask<Result<GetUserProfileDto>> Handle(GetUserProfileQuery q, CancellationToken ct)
     {
         var up = await userProfileRepository.GetSingleAsync(new UserProfileWithAvatarSpec(q.TenantId), ct);
         if (up is null) return Result.Fail<GetUserProfileDto>(Error.NotFound<Domain.Aggregates.UserProfile>(q.TenantId.ToString()));

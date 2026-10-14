@@ -15,7 +15,7 @@ public class GetUserProfileByTagQueryHandler(
     ILogger<GetUserProfileByTagQueryHandler> logger)
     : IQueryHandler<GetUserProfileByTagQuery, GetUserProfileByTagDto>
 {
-    public async Task<Result<GetUserProfileByTagDto>> Handle(GetUserProfileByTagQuery q, CancellationToken ct)
+    public async ValueTask<Result<GetUserProfileByTagDto>> Handle(GetUserProfileByTagQuery q, CancellationToken ct)
     {
         var requestingUser = await userProfileRepository.GetSingleAsync(new UserProfileWithBlockedUsersSpec(q.TenantId, true), ct);
         if (requestingUser is null)

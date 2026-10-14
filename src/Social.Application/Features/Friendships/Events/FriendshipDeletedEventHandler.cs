@@ -16,7 +16,7 @@ public sealed class FriendshipDeletedEventHandler(
     ILogger<FriendshipDeletedEventHandler> logger)
     : IDomainEventHandler<FriendshipDeletedEvent>
 {
-    public async Task Handle(FriendshipDeletedEvent ntf, CancellationToken cancellationToken)
+    public async ValueTask Handle(FriendshipDeletedEvent ntf, CancellationToken cancellationToken)
     {
         try
         {

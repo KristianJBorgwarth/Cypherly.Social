@@ -15,7 +15,7 @@ public sealed class DeleteFriendRequestCommandHandler(
     ILogger<DeleteFriendRequestCommandHandler> logger
     ) : ICommandHandler<DeleteFriendRequestCommand>
 {
-    public async Task<Result> Handle(DeleteFriendRequestCommand request, CancellationToken ct)
+    public async ValueTask<Result> Handle(DeleteFriendRequestCommand request, CancellationToken ct)
     {
         var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendRequestsSpec(request.TenantId), ct);
         if (userProfile is null)
