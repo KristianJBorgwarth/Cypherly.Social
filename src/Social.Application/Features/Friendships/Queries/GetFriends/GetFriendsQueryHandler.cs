@@ -11,7 +11,7 @@ public class GetFriendsQueryHandler(
     IUserProfileRepository userProfileRepository)
     : ILimitedQueryHandler<GetFriendsQuery, List<GetFriendsDto>>
 {
-    public async Task<Result<List<GetFriendsDto>>> Handle(GetFriendsQuery q, CancellationToken ct)
+    public async ValueTask<Result<List<GetFriendsDto>>> Handle(GetFriendsQuery q, CancellationToken ct)
     {
         var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendshipsSpec(q.TenantId), ct);
         if (userProfile is null)

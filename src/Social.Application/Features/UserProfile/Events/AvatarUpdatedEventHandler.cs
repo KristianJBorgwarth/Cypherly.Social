@@ -15,7 +15,7 @@ public class AvatarUpdatedEventHandler(
     ILogger<AvatarUpdatedEventHandler> logger)
     : IDomainEventHandler<AvatarUpdatedEvent>
 {
-    public async Task Handle(AvatarUpdatedEvent notification, CancellationToken ct)
+    public async ValueTask Handle(AvatarUpdatedEvent notification, CancellationToken ct)
     {
         try
         {

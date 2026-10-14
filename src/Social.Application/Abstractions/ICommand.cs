@@ -1,5 +1,5 @@
 ﻿using Social.Domain.Common;
-using MediatR;
+using Mediator;
 
 namespace Social.Application.Abstractions;
 

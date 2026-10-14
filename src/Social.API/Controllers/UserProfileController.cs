@@ -2,7 +2,7 @@ using Social.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Social.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
 using Social.Application.Features.UserProfile.Queries.GetUserProfile;
 using Social.Application.Features.UserProfile.Queries.GetUserProfileByTag;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Social.API.Common;

@@ -15,7 +15,7 @@ public sealed class FriendshipAcceptedEventHandler(
     ILogger<FriendshipAcceptedEventHandler> logger)
     : IDomainEventHandler<FriendshipAcceptedEvent>
 {
-    public async Task Handle(FriendshipAcceptedEvent notification, CancellationToken cancellationToken)
+    public async ValueTask Handle(FriendshipAcceptedEvent notification, CancellationToken cancellationToken)
     {
         logger.LogInformation("Handling friendship accepted event for user {UserProfileId} and friend {FriendTag}",
             notification.UserProfileId, notification.FriendTag);

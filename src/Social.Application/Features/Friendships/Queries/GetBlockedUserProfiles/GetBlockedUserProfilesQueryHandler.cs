@@ -12,7 +12,7 @@ public sealed class GetBlockedUserProfilesQueryHandler(
     ILogger<GetBlockedUserProfilesQueryHandler> logger)
     : IQueryHandler<GetBlockedUserProfilesQuery, List<GetBlockedUserProfilesDto>>
 {
-    public async Task<Result<List<GetBlockedUserProfilesDto>>> Handle(GetBlockedUserProfilesQuery query, CancellationToken cancellationToken)
+    public async ValueTask<Result<List<GetBlockedUserProfilesDto>>> Handle(GetBlockedUserProfilesQuery query, CancellationToken cancellationToken)
     {
         var userProfile = await repository.GetSingleAsync(new UserProfileWithBlockedUsersSpec(query.TenantId), cancellationToken);
         if (userProfile is null)

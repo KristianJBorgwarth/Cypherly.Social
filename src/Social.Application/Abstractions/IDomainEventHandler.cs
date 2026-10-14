@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using Mediator;
 using Social.Domain.Abstractions;
 
 namespace Social.Application.Abstractions;

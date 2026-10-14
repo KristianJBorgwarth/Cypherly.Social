@@ -11,7 +11,7 @@ public class UpdateAvatarCommandHandler(
    IAvatarService ats)
     : ICommandHandler<UpdateAvatarCommand, UpdateAvatarDto>
 {
-    public async Task<Result<UpdateAvatarDto>> Handle(UpdateAvatarCommand cmd, CancellationToken ct)
+    public async ValueTask<Result<UpdateAvatarDto>> Handle(UpdateAvatarCommand cmd, CancellationToken ct)
     {
         var userProfile = await upRepo.GetSingleAsync(new UserProfileWithAvatarSpec(cmd.TenantId), ct);
         if (userProfile is null)

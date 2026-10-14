@@ -15,7 +15,7 @@ public class MarkFriendRequestsAsSeenCommandHandler(
     ILogger<MarkFriendRequestsAsSeenCommandHandler> logger)
     : ICommandHandler<MarkFriendRequestsAsSeenCommand>
 {
-    public async Task<Result> Handle(MarkFriendRequestsAsSeenCommand q, CancellationToken ct)
+    public async ValueTask<Result> Handle(MarkFriendRequestsAsSeenCommand q, CancellationToken ct)
     {
         var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendRequestsSpec(q.TenantId), ct);
         if (userProfile is null)
