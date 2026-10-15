@@ -7,6 +7,7 @@ using Social.Application.Features.Friendships.Commands.Create;
 using Social.Domain.Aggregates;
 using Social.Domain.Common;
 using Social.Domain.Interfaces;
+using Social.Domain.Services;
 using Social.Domain.ValueObjects;
 using Xunit;
 
@@ -16,6 +17,7 @@ public class CreateFriendshipCommandHandlerTest
 {
     private readonly IUserProfileRepository _fakeRepo;
     private readonly IFriendshipService _fakeService;
+    private readonly IUserBlockingService _fakeBlockingService;
     private readonly IUnitOfWork _fakeUnitOfWork;
     private readonly CreateFriendshipCommandHandler _sut;
 
@@ -23,9 +25,10 @@ public class CreateFriendshipCommandHandlerTest
     {
         _fakeRepo = A.Fake<IUserProfileRepository>();
         _fakeService = A.Fake<IFriendshipService>();
+        _fakeBlockingService = A.Fake<IUserBlockingService>();
         _fakeUnitOfWork = A.Fake<IUnitOfWork>();
         var fakeLogger = A.Fake<ILogger<CreateFriendshipCommandHandler>>();
-        _sut = new(_fakeRepo, _fakeService, _fakeUnitOfWork, fakeLogger);
+        _sut = new(_fakeRepo, _fakeService, _fakeBlockingService, _fakeUnitOfWork, fakeLogger);
     }
 
     [Fact]
@@ -115,5 +118,57 @@ public class CreateFriendshipCommandHandlerTest
 
         // Assert
         result.Success.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Handle_WhenFriendIsPrivate_ReturnsNotFound()
+    {
+        // Arrange
+        var command = new CreateFriendshipCommand()
+        {
+            FriendTag = "tag",
+            TenantId = Guid.NewGuid()
+        };
+        var user = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create("eric"));
+        var friend = new UserProfile(Guid.NewGuid(), "friend", UserTag.Create("friend"));
+        friend.TogglePrivacy(true);
+
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
+            .ReturnsNextFromSequence<UserProfile?>(friend, user);
+
+        // Act
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeFalse();
+        result.Error!.Code.Should().Be("entity.not.found");
+        A.CallTo(() => _fakeService.CreateFriendship(A<UserProfile>._, A<UserProfile>._)).MustNotHaveHappened();
+        A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>._)).MustNotHaveHappened();
+    }
+
+    [Fact]
+    public async Task Handle_WhenBlocked_ReturnsNotFound()
+    {
+        // Arrange
+        var command = new CreateFriendshipCommand()
+        {
+            FriendTag = "tag",
+            TenantId = Guid.NewGuid()
+        };
+        var user = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create("eric"));
+        var friend = new UserProfile(Guid.NewGuid(), "friend", UserTag.Create("friend"));
+
+        A.CallTo(() => _fakeRepo.GetSingleAsync(A<ISpecification<UserProfile>>._, A<CancellationToken>._))
+            .ReturnsNextFromSequence<UserProfile?>(friend, user);
+        A.CallTo(() => _fakeBlockingService.IsUserBlocked(user, friend)).Returns(true);
+
+        // Act
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeFalse();
+        result.Error!.Code.Should().Be("entity.not.found");
+        A.CallTo(() => _fakeService.CreateFriendship(A<UserProfile>._, A<UserProfile>._)).MustNotHaveHappened();
+        A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>._)).MustNotHaveHappened();
     }
 }
