@@ -9,6 +9,7 @@ using Social.Application.Contracts.Repositories;
 using Social.Application.Features.Friendships.Commands.Create;
 using Social.Domain.Aggregates;
 using Social.Domain.Interfaces;
+using Social.Domain.Services;
 using Social.Domain.ValueObjects;
 using Social.Test.Integration.Setup;
 using Xunit;
@@ -26,9 +27,10 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var service = scope.ServiceProvider.GetRequiredService<IFriendshipService>();
+        var blockingService = scope.ServiceProvider.GetRequiredService<IUserBlockingService>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<CreateFriendshipCommandHandler>>();
-        _sut = new CreateFriendshipCommandHandler(repo, service, unitOfWork, logger);
+        _sut = new CreateFriendshipCommandHandler(repo, service, blockingService, unitOfWork, logger);
     }
 
     [Fact]
@@ -125,5 +127,80 @@ public class CreateFriendshipCommandHandlerTest : IntegrationTestBase
         // Assert
         result.Success.Should().BeFalse();
         result.Error!.Code.Should().Be("entity.not.found");
+    }
+
+    [Fact]
+    public async void Handle_Given_Private_Friend_Should_Return_NotFound()
+    {
+        // Arrange
+        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
+        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        friend.TogglePrivacy(true);
+        Db.UserProfile.AddRange(user, friend);
+        await Db.SaveChangesAsync();
+
+        var command = new CreateFriendshipCommand()
+        {
+            FriendTag = friend.UserTag.Tag,
+            TenantId = user.Id
+        };
+
+        // Act
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeFalse();
+        result.Error!.Code.Should().Be("entity.not.found");
+        Db.Friendship.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async void Handle_Given_Friend_Blocked_User_Should_Return_NotFound()
+    {
+        // Arrange
+        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
+        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        friend.BlockUser(user.Id);
+        Db.UserProfile.AddRange(user, friend);
+        await Db.SaveChangesAsync();
+
+        var command = new CreateFriendshipCommand()
+        {
+            FriendTag = friend.UserTag.Tag,
+            TenantId = user.Id
+        };
+
+        // Act
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeFalse();
+        result.Error!.Code.Should().Be("entity.not.found");
+        Db.Friendship.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async void Handle_Given_User_Blocked_Friend_Should_Return_NotFound()
+    {
+        // Arrange
+        var user = new UserProfile(Guid.NewGuid(), "James", UserTag.Create("James"));
+        var friend = new UserProfile(Guid.NewGuid(), "John", UserTag.Create("John"));
+        user.BlockUser(friend.Id);
+        Db.UserProfile.AddRange(user, friend);
+        await Db.SaveChangesAsync();
+
+        var command = new CreateFriendshipCommand()
+        {
+            FriendTag = friend.UserTag.Tag,
+            TenantId = user.Id
+        };
+
+        // Act
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeFalse();
+        result.Error!.Code.Should().Be("entity.not.found");
+        Db.Friendship.Should().BeEmpty();
     }
 }
