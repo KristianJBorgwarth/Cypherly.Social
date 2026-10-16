@@ -31,7 +31,7 @@ public class AcceptFriendshipCommandHandler(
             logger.LogError("Error accepting friendship: {Error} {UserId} {FriendTag}", result.Error, cmd.TenantId, cmd.FriendTag);
             return Result.Fail<AcceptFriendshipDto>(result.Error);
         }
-        var newFriend = await userProfileRepository.GetSingleAsync(new UserProfileByTagWithFriendshipsSpec(cmd.FriendTag), ct);
+        var newFriend = await userProfileRepository.GetSingleAsync(new UserProfileByTagWithFriendshipsSpec(cmd.FriendTag, includeAvatar: true), ct);
 
         if (newFriend is null)
         {
