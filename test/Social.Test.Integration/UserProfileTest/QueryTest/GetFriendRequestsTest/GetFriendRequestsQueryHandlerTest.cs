@@ -55,6 +55,32 @@ public class GetFriendRequestsQueryHandlerTest : IntegrationTestBase
     }
 
     [Fact]
+    public async Task Handle_Given_Requester_With_Avatar_Should_Return_AvatarKey()
+    {
+        // Arrange
+        var user = new UserProfile(Guid.NewGuid(), "Kristian", UserTag.Create("Kristian"));
+        var friend = new UserProfile(Guid.NewGuid(), "Friend", UserTag.Create("Friend"));
+        var avatar = friend.GetOrCreateAvatar("image/png");
+
+        Db.Add(user);
+        Db.Add(friend);
+        friend.AddFriendship(user);
+        await Db.SaveChangesAsync();
+
+        var query = new GetFriendRequestsQuery()
+        {
+            TenantId = user.Id,
+        };
+
+        // Act
+        var result = await _sut.Handle(query, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        result.Value.Should().ContainSingle().Which.AvatarKey.Should().Be(avatar.FileKey);
+    }
+
+    [Fact]
     public async Task Handle_Given_Valid_Query_But_No_Friends_Should_Return_Empty_List()
     {
         // Arrange

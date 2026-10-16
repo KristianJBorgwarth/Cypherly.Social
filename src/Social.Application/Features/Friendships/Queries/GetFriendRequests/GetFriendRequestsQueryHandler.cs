@@ -14,7 +14,7 @@ public class GetFriendRequestsQueryHandler(
 {
     public async ValueTask<Result<GetFriendRequestsDto[]>> Handle(GetFriendRequestsQuery q, CancellationToken ct)
     {
-        var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendRequestsSpec(q.TenantId), ct);
+        var userProfile = await userProfileRepository.GetSingleAsync(new UserProfileWithFriendRequestsSpec(q.TenantId, includeAvatar: true), ct);
 
         if (userProfile is null)
         {

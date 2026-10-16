@@ -6,8 +6,10 @@ namespace Social.Application.Specifications.User;
 
 internal sealed class UserProfileWithFriendRequestsSpec : Specification<UserProfile>
 {
-    public UserProfileWithFriendRequestsSpec(Guid userId) : base(u => u.Id == userId)
+    public UserProfileWithFriendRequestsSpec(Guid userId, bool includeAvatar = false) : base(u => u.Id == userId)
     {
-        AddIncludes($"{nameof(UserProfile.FriendshipsReceived)}.{nameof(Friendship.UserProfile)}");
+        AddIncludes(includeAvatar
+            ? $"{nameof(UserProfile.FriendshipsReceived)}.{nameof(Friendship.UserProfile)}.{nameof(UserProfile.Avatar)}"
+            : $"{nameof(UserProfile.FriendshipsReceived)}.{nameof(Friendship.UserProfile)}");
     }
 }
