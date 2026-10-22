@@ -36,5 +36,6 @@ public class IntegrationTestBase : IDisposable
         Db.BlockedUser.ExecuteDelete();
         Db.UserProfile.ExecuteDelete();
         Db.OutboxMessage.ExecuteDelete();
+        Harness.Stop();
     }
 }
