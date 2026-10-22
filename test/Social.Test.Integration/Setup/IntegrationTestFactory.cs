@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
+using Quartz;
 using Social.Test.Integration.Setup.Authentication;
 using Testcontainers.PostgreSql;
 
@@ -20,8 +21,7 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
 {
     private readonly string StorageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "TestBlobStore");
 
-    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
-        .WithImage("postgres:latest")
+    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder("postgres:latest")
         .WithCleanUp(true)
         .Build();
 
@@ -44,6 +44,9 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
                 options.UseNpgsql(_dbContainer.GetConnectionString(),
                     b => b.MigrationsAssembly(typeof(TDbContext).Assembly.FullName));
             });
+
+            services.Configure<QuartzOptions>(options =>
+                options["quartz.dataSource.default.connectionString"] = _dbContainer.GetConnectionString());
 
             // Mock out authentication and authorization for testing
             services.AddAuthentication("Test")
@@ -85,6 +88,14 @@ public sealed class IntegrationTestFactory<TProgram, TDbContext> : WebApplicatio
     public async Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
+
+        var options = new DbContextOptionsBuilder<TDbContext>()
+            .UseNpgsql(_dbContainer.GetConnectionString(),
+                b => b.MigrationsAssembly(typeof(TDbContext).Assembly.FullName))
+            .Options;
+
+        await using var context = (TDbContext)Activator.CreateInstance(typeof(TDbContext), options)!;
+        await context.Database.MigrateAsync();
 
         // Adding a delay to ensure Minio is ready
         await Task.Delay(10000);

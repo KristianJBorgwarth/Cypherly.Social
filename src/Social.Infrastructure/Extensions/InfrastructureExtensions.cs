@@ -17,7 +17,7 @@ public static class InfrastructureExtensions
         services.AddMassTransitRabbitMq();
         services.AddPersistence(configuration, assembly);
         services.AddProviders();
-        services.AddOutboxProcessingJob(assembly);
+        services.AddOutboxProcessingJob(configuration, assembly);
         services.AddServices();
     }
 
