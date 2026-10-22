@@ -66,6 +66,8 @@ public class UserProfileController(ISender sender) : ControllerBase
         if (result.RequiredValue.ETag is not null)
             Response.Headers.ETag = result.RequiredValue.ETag;
 
+        Response.Headers.XContentTypeOptions = "nosniff";
+
         return result.RequiredValue.IsModified
             ? File(result.RequiredValue.Content!, result.RequiredValue.ContentType!)
             : StatusCode(StatusCodes.Status304NotModified);

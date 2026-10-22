@@ -27,10 +27,11 @@ public class FileValidatorTests
         var file = CreateFakeFile("test.png", "image/png", fileBytes);
 
         // Act
-        var result = _fileValidator.IsValidImageFile(file, out var errorMessage);
+        var result = _fileValidator.IsValidImageFile(file, out var contentType, out var errorMessage);
 
         // Assert
         result.Should().BeTrue();
+        contentType.Should().Be("image/png");
         errorMessage.Should().BeEmpty();
     }
 
@@ -42,10 +43,27 @@ public class FileValidatorTests
         var file = CreateFakeFile("test.jpg", "image/jpeg", fileBytes);
 
         // Act
-        var result = _fileValidator.IsValidImageFile(file, out var errorMessage);
+        var result = _fileValidator.IsValidImageFile(file, out var contentType, out var errorMessage);
 
         // Assert
         result.Should().BeTrue();
+        contentType.Should().Be("image/jpeg");
+        errorMessage.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void IsValidImageFile_Png_With_Spoofed_ContentType_Returns_Detected_ContentType()
+    {
+        // Arrange
+        var fileBytes = new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x3C, 0x68, 0x74, 0x6D, 0x6C, 0x3E };
+        var file = CreateFakeFile("test.png", "text/html", fileBytes);
+
+        // Act
+        var result = _fileValidator.IsValidImageFile(file, out var contentType, out var errorMessage);
+
+        // Assert
+        result.Should().BeTrue();
+        contentType.Should().Be("image/png");
         errorMessage.Should().BeEmpty();
     }
 
@@ -57,7 +75,7 @@ public class FileValidatorTests
         var file = CreateFakeFile("test.txt", "text/plain", fileBytes); // Invalid Extension
 
         // Act
-        var result = _fileValidator.IsValidImageFile(file, out var errorMessage);
+        var result = _fileValidator.IsValidImageFile(file, out var contentType, out var errorMessage);
 
         // Assert
         result.Should().BeFalse();
@@ -72,7 +90,7 @@ public class FileValidatorTests
         var file = CreateFakeFile("test.jpg", "image/jpeg", fileBytes);
 
         // Act
-        var result = _fileValidator.IsValidImageFile(file, out var errorMessage);
+        var result = _fileValidator.IsValidImageFile(file, out var contentType, out var errorMessage);
 
         // Assert
         result.Should().BeFalse();
@@ -87,7 +105,7 @@ public class FileValidatorTests
         var file = CreateFakeFile("test.jpg", "image/jpeg", fileBytes);
 
         // Act
-        var result = _fileValidator.IsValidImageFile(file, out var errorMessage);
+        var result = _fileValidator.IsValidImageFile(file, out var contentType, out var errorMessage);
 
         // Assert
         result.Should().BeFalse();
