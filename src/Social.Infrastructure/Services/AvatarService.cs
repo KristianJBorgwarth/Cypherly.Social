@@ -15,13 +15,13 @@ internal sealed class AvatarService(
 
     public async Task<Result<AvatarStream>> UploadAsync(IFormFile file, Guid avatarId, CancellationToken ct = default)
     {
-        if (!fileValidator.IsValidImageFile(file, out var errorMessage))
+        if (!fileValidator.IsValidImageFile(file, out var contentType, out var errorMessage))
             return Result.Fail<AvatarStream>(Error.Validation($"Value '{errorMessage}' is not valid in this context"));
 
         await using var stream = file.OpenReadStream();
         await blobStore.PutAsync(avatarId, stream, ct);
 
-        return Result.Ok(new AvatarStream(stream, file.ContentType));
+        return Result.Ok(new AvatarStream(stream, contentType));
     }
 
     public void Delete(Guid avatarId) => blobStore.Delete(avatarId);

@@ -41,6 +41,7 @@ public class GetAvatarEndpointTest : IntegrationTestBase
         // Assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         response.Content.Headers.ContentType!.MediaType.Should().Be("image/png");
+        response.Headers.GetValues("X-Content-Type-Options").Should().ContainSingle().Which.Should().Be("nosniff");
         var contentStream = await response.Content.ReadAsStreamAsync();
         contentStream.Should().NotBeNull();
         response.Headers.ETag.Should().NotBeNull();
@@ -108,6 +109,7 @@ public class GetAvatarEndpointTest : IntegrationTestBase
         // Assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         response.Content.Headers.ContentType!.MediaType.Should().Be("image/png");
+        response.Headers.GetValues("X-Content-Type-Options").Should().ContainSingle().Which.Should().Be("nosniff");
         var contentStream = await response.Content.ReadAsStreamAsync();
         contentStream.Should().NotBeNull();
         response.Headers.ETag.Should().NotBeNull();

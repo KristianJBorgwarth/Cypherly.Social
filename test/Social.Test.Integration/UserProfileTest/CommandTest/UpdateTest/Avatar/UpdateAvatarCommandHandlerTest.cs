@@ -102,6 +102,29 @@ public class UpdateAvatarCommandHandlerTest : IntegrationTestBase
     }
 
     [Fact]
+    public async Task Handle_Given_Spoofed_ContentType_Should_Store_Detected_ContentType()
+    {
+        // Arrange
+        var user = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+        Db.UserProfile.Add(user);
+        await Db.SaveChangesAsync();
+
+        var command = new UpdateAvatarCommand()
+        {
+            TenantId = user.Id,
+            Avatar = FormFileHelper.CreateFormFile(Path.Combine(DirectoryHelper.GetProjectRootDirectory(), "test/Social.Test.Integration/Setup/Resources/test_profile_picture.png"), "text/html")
+        };
+
+        // Act
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        var updatedUser = await Db.UserProfile.AsNoTracking().Include(userProfile => userProfile.Avatar).FirstOrDefaultAsync(x => x.Id == user.Id);
+        updatedUser!.Avatar!.ConentType.Should().Be("image/png");
+    }
+
+    [Fact]
     public async Task Handle_Invalid_Command_WrongID_Should_Return_NotFound_Fail_Result()
     {
         // Arrange

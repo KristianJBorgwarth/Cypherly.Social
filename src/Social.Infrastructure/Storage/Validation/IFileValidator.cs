@@ -4,5 +4,5 @@ namespace Social.Infrastructure.Storage.Validation;
 
 public interface IFileValidator
 {
-    bool IsValidImageFile(IFormFile file, out string errorMessage);
+    bool IsValidImageFile(IFormFile file, out string contentType, out string errorMessage);
 }

@@ -23,6 +23,8 @@ public class UpdateAvatarCommandHandler(
         if (!uploadResult.Success)
             return Result.Fail<UpdateAvatarDto>(uploadResult.Error);
 
+        avatar.UpdateContentType(uploadResult.RequiredValue.ContentType);
+
         await uow.SaveChangesAsync(ct);
 
         return Result.Ok(new UpdateAvatarDto()

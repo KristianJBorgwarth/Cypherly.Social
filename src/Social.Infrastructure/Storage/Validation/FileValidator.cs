@@ -7,8 +7,10 @@ public class FileValidator : IFileValidator
     private const int MaxFileSize = 5 * 1024 * 1024; //5MB
     private readonly static string[] AllowedExtensions = [".jpg", ".jpeg", ".png"];
 
-    public bool IsValidImageFile(IFormFile file, out string errorMessage)
+    public bool IsValidImageFile(IFormFile file, out string contentType, out string errorMessage)
     {
+        contentType = string.Empty;
+
         if (!IsCorrectFileExtension(file))
         {
             errorMessage = "Invalid file type. Only JPG, JPEG and PNG files are allowed.";
@@ -21,12 +23,14 @@ public class FileValidator : IFileValidator
             return false;
         }
 
-        if (!IsValidImageSignature(file))
+        var detectedContentType = DetectContentType(file);
+        if (detectedContentType is null)
         {
             errorMessage = "Invalid file content. Only JPG, JPEG and PNG files are allowed.";
             return false;
         }
 
+        contentType = detectedContentType;
         errorMessage = string.Empty;
         return true;
     }
@@ -42,7 +46,7 @@ public class FileValidator : IFileValidator
         return file.Length <= MaxFileSize;
     }
 
-    private static bool IsValidImageSignature(IFormFile file)
+    private static string? DetectContentType(IFormFile file)
     {
         using var reader = new BinaryReader(file.OpenReadStream());
         var bytes = reader.ReadBytes(8);
@@ -51,7 +55,7 @@ public class FileValidator : IFileValidator
         // Check JPEG signature
         if (bytes.Length >= 2 && bytes[0] == 0xFF && bytes[1] == 0xD8)
         {
-            return true;
+            return "image/jpeg";
         }
 
         // Check PNG signature
@@ -61,9 +65,9 @@ public class FileValidator : IFileValidator
             bytes[4] == 0x0D && bytes[5] == 0x0A &&
             bytes[6] == 0x1A && bytes[7] == 0x0A)
         {
-            return true;
+            return "image/png";
         }
 
-        return false;
+        return null;
     }
 }
