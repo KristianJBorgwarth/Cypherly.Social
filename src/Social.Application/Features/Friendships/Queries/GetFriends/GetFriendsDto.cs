@@ -9,18 +9,20 @@ public sealed class GetFriendsDto
     public string UserTag { get; private init; }
     public string? DisplayName { get; private init; }
     public Guid? AvatarKey { get; private init; }
+    public IReadOnlyCollection<Guid> ConnectionIds { get; private init; }
 
-    public GetFriendsDto(Domain.Aggregates.UserProfile userProfile)
+    public GetFriendsDto(Domain.Aggregates.UserProfile userProfile, IReadOnlyCollection<Guid> connectionIds)
     {
         Id = userProfile.Id;
         Username = userProfile.Username;
         UserTag = userProfile.UserTag.Tag;
         DisplayName = userProfile.DisplayName;
         AvatarKey = userProfile.Avatar?.FileKey;
+        ConnectionIds = connectionIds;
     }
 
-    public static GetFriendsDto MapFrom(Domain.Aggregates.UserProfile userProfile)
+    public static GetFriendsDto MapFrom(Domain.Aggregates.UserProfile userProfile, IReadOnlyCollection<Guid> connectionIds)
     {
-        return new GetFriendsDto(userProfile);
+        return new GetFriendsDto(userProfile, connectionIds);
     }
 }

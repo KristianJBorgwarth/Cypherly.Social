@@ -1,4 +1,5 @@
 using Social.Application.Abstractions;
+using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 using Social.Application.Specifications.User;
 using Social.Domain.Common;
@@ -8,7 +9,8 @@ using Social.Domain.Common;
 namespace Social.Application.Features.Friendships.Queries.GetFriends;
 
 public class GetFriendsQueryHandler(
-    IUserProfileRepository userProfileRepository)
+    IUserProfileRepository userProfileRepository,
+    IConnectionIdProvider connectionIdProvider)
     : ILimitedQueryHandler<GetFriendsQuery, List<GetFriendsDto>>
 {
     public async ValueTask<Result<List<GetFriendsDto>>> Handle(GetFriendsQuery q, CancellationToken ct)
@@ -23,7 +25,9 @@ public class GetFriendsQueryHandler(
 
         if (friends.Count is 0) return Result.Ok(new List<GetFriendsDto>());
 
-        var friendDtos = friends.Select(GetFriendsDto.MapFrom).ToList();
+        var connectionIds = await connectionIdProvider.GetConnectionIdsMultipleTenants([.. friends.Select(f => f.Id)], ct);
+
+        var friendDtos = friends.Select(f => GetFriendsDto.MapFrom(f, connectionIds.GetValueOrDefault(f.Id) ?? [])).ToList();
 
         return Result.Ok(friendDtos);
     }
