@@ -1,4 +1,5 @@
 using Social.Application.Abstractions;
+using Social.Application.Contracts.Clients;
 using Social.Application.Contracts.Repositories;
 using FakeItEasy;
 using FluentAssertions;
@@ -17,7 +18,7 @@ public class GetFriendsQueryHandlerTest
     public GetFriendsQueryHandlerTest()
     {
         _fakeRepo = A.Fake<IUserProfileRepository>();
-        _sut = new GetFriendsQueryHandler(_fakeRepo);
+        _sut = new GetFriendsQueryHandler(_fakeRepo, A.Fake<IConnectionIdProvider>());
     }
 
     [Fact]
